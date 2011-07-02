@@ -84,16 +84,17 @@
             [mySession connectToPeer:peerID withTimeout:10];                
             break;
 		case GKPeerStateUnavailable:
-            [delegate peerListDidChange:self];
+            [delegate peerListDidChange:self peer:peerID];
 			break;
 		case GKPeerStateConnected:
-            [delegate peerListDidChange:self];
+            [delegate peerListDidChange:self peer:peerID];
             if ([delegate getLocalSeedPhoto]) {
                 [delegate sendSeedPhotoToPeer:peerID];
             }
+            [delegate sendBasicInfoToPeer:peerID];
 			break;				
 		case GKPeerStateDisconnected:
-            [delegate peerListDidChange:self];
+            [delegate peerListDidChange:self peer:peerID];
 			break;
         case GKPeerStateConnecting:
             if (![mySession acceptConnectionFromPeer:peerID error:&error]) {
@@ -122,7 +123,20 @@
             if ([delegate getLocalSeedPhoto] == nil) {
                 [delegate setLocalSeedPhoto:img];        
             }
-        } else {
+        } 
+        else if (header == PacketTypeDataPlayPhoto) {// play photo (player submits his photo)
+            UIImage *img = [UIImage imageWithData:payload];
+            [delegate updatePlayerInfo:peer currentPlayPhoto:img];
+        }
+        else if (header == PacketTypeDataPlayerName) {// player name
+            NSMutableString *name = [[NSMutableString alloc] initWithData:payload encoding:[NSString defaultCStringEncoding]];
+            [delegate updatePlayerInfo:peer name:name];
+        }        
+        else if (header == PacketTypeDataPlayerStarted) {// player start date/time
+            NSMutableString *started = [[NSMutableString alloc] initWithData:payload encoding:[NSString defaultCStringEncoding]];
+            [delegate updatePlayerInfo:peer started:started];            
+        }        
+        else {
             //[gameDelegate session:self didReceivePacket:payload ofType:header];
         }
     }    

@@ -11,4 +11,6 @@
 
 @implementation Player
 
+@synthesize name, currentPlayPhoto, currentPlayVotes, started;
+
 @end

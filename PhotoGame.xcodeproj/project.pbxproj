@@ -30,6 +30,7 @@
 		27BCB5E413BC3DAB008196D6 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27BCB5E313BC3DAB008196D6 /* AssetsLibrary.framework */; };
 		27BCB5E713BC3FA3008196D6 /* GameData.m in Sources */ = {isa = PBXBuildFile; fileRef = 27BCB5E613BC3FA3008196D6 /* GameData.m */; };
 		27BCB5FA13BCF1D7008196D6 /* SessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 27BCB5F913BCF1D7008196D6 /* SessionManager.m */; };
+		27BCB60513BDB008008196D6 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 27BCB60413BDB007008196D6 /* Player.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,8 @@
 		27BCB5E613BC3FA3008196D6 /* GameData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameData.m; sourceTree = "<group>"; };
 		27BCB5F813BCF1D6008196D6 /* SessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionManager.h; sourceTree = "<group>"; };
 		27BCB5F913BCF1D7008196D6 /* SessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SessionManager.m; sourceTree = "<group>"; };
+		27BCB60313BDB006008196D6 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
+		27BCB60413BDB007008196D6 /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +153,8 @@
 				27BCB5E613BC3FA3008196D6 /* GameData.m */,
 				27BCB5F813BCF1D6008196D6 /* SessionManager.h */,
 				27BCB5F913BCF1D7008196D6 /* SessionManager.m */,
+				27BCB60313BDB006008196D6 /* Player.h */,
+				27BCB60413BDB007008196D6 /* Player.m */,
 				27BCB5A513BC3C4B008196D6 /* Supporting Files */,
 			);
 			path = PhotoGame;
@@ -303,6 +308,7 @@
 				27BCB5DF13BC3CA0008196D6 /* PlayViewController.m in Sources */,
 				27BCB5E713BC3FA3008196D6 /* GameData.m in Sources */,
 				27BCB5FA13BCF1D7008196D6 /* SessionManager.m in Sources */,
+				27BCB60513BDB008008196D6 /* Player.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -16,16 +16,16 @@
 -(IBAction)showEditPhotoView:(id)sender {    
     PhotoGameAppDelegate *delegate = (PhotoGameAppDelegate*)[[UIApplication sharedApplication] delegate];
     PhotosViewController *pvc = [[PhotosViewController alloc] initWithNibName:@"PhotosViewController" bundle:nil];
-    [delegate switchView:self.view to:pvc.view];
     pvc.theParent = self;
+    [delegate switchView:self.view to:pvc.view];
 }
 
 -(IBAction)showPlayView:(id)sender {    
     PhotoGameAppDelegate *delegate = (PhotoGameAppDelegate*)[[UIApplication sharedApplication] delegate];
     PlayViewController *pvc = [[PlayViewController alloc] initWithNibName:@"PlayViewController" bundle:nil];
-    [delegate switchView:self.view to:pvc.view];
-    pvc.theParent = self;
 
+    pvc.theParent = self;  
+    [delegate switchView:self.view to:pvc.view];
 
 }
 
@@ -50,6 +50,7 @@
     
     [self findAllImages];
     [self loadData];
+    
 }
 
 
@@ -123,9 +124,7 @@
         [assetslibrary assetForURL:url resultBlock:resultblock failureBlock:failureblock];    
     }
     self.myUserName = [gameData getUserName];
-    
-    NSLog(@"App started: name=%@, images=%d", [gameData getUserName], [gameData.images count]);
-    
+        
     [gameData release];
     gameData = nil;
     
@@ -137,7 +136,7 @@
     {
         if(result != nil)
         {            
-            [allImages addObject:[[result defaultRepresentation] url]];
+            [self.allImages addObject:[[result defaultRepresentation] url]];
         }
     };    
     
@@ -149,10 +148,10 @@
         }  
     };
     
-    allImages = [[NSMutableArray alloc] init];
-    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+    self.allImages = [[NSMutableArray alloc] init];
+    ALAssetsLibrary *library = [[[ALAssetsLibrary alloc] init] autorelease];
     [library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:assetGroupEnumerator failureBlock: ^(NSError *error) { NSLog(@"Failure");}];
-        
+            
 }
 
 - (NSURL*)getDeviceRandomPhoto {

@@ -18,7 +18,7 @@
     UITextField *nameField;
     GameData *gameData;
     NSMutableArray *allImages;
-    NSString *myUserName;
+    NSMutableString *myUserName;
     
 }
 
@@ -31,7 +31,7 @@
 -(UIImage*)scaleImage:(UIImage*)image toSize:(CGSize)size;
 
 @property (nonatomic, retain) NSMutableArray *allImages;
-@property (nonatomic, retain) NSString *myUserName;
+@property (nonatomic, retain) NSMutableString *myUserName;
 
 
 
