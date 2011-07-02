@@ -28,6 +28,7 @@
 
     //step 1: get seed photo
     //step 2: select a matching photo and submit
+    //step 3: viewing play photos - when all have submitted, photos are shown one at a time, controlled by the current seeder
     NSMutableDictionary *players;
     int gameStep;
     int gameRound;

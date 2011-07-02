@@ -172,7 +172,7 @@
     }    
 
     int submittedPhotoCount = 0;
-    UIButton *btn;
+    UIButton *btn;    
     
     // me first
     btn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -183,20 +183,25 @@
     submittedPhotoCount++;
         
     // other players
+    
+
     for (id key in players) {
         if (key == [sessionManager.mySession peerID]) {
             continue;
         }
         id player = [players objectForKey:key];
-    
-        btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        btn.frame = CGRectMake(((75.0+2.0) * submittedPhotoCount), 0.0, 75.0, 75.0);  
-        [btn setImage:[player currentPlayPhoto] forState:UIControlStateNormal];
-        [btn addTarget:self action:@selector(submittedPhotoClicked:) forControlEvents:UIControlEventTouchUpInside];
+        if ([player currentPlayPhoto]) {
         
-        [scrollView addSubview:btn];                        
-        submittedPhotoCount++;
-    
+            UIImage *hidImg = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"pwp_hidden_image" ofType:@"png"]];        
+            btn = [UIButton buttonWithType:UIButtonTypeCustom];
+            btn.frame = CGRectMake(((75.0+2.0) * submittedPhotoCount), 0.0, 75.0, 75.0);  
+            [btn setImage:hidImg forState:UIControlStateNormal];
+            [btn addTarget:self action:@selector(submittedPhotoClicked:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [scrollView addSubview:btn];                        
+            submittedPhotoCount++;
+
+        }
     }
     [scrollView setContentSize:CGSizeMake(((75.0+2.0) * submittedPhotoCount), 80)];
 }
@@ -315,9 +320,26 @@
     p.currentPlayPhoto = currentPlayPhoto;
     [players setObject:p forKey:peerID];
     
-    // if i've selected my play photo
+    //setup submitted photo view (scrollable)
     if ([previewPhoto image] && gameStep == 2) {
         [self setupSubmittedPhotosView];
+    }
+    
+    //am i the current seeder? and if all have submitted, then on the "viewing" step
+    BOOL allHaveSubmitted = YES;
+    if ([sessionManager.mySession peerID] == currentSeeder) {
+        for (id key in players) {
+            id player = [players objectForKey:key];
+            if (![player currentPlayPhoto]) {
+                allHaveSubmitted = NO;
+                break;
+            }
+        }
+    }
+    if (allHaveSubmitted) {
+        
+        NSLog(@"READY FOR VIEWING?");
+        
     }
 }
 

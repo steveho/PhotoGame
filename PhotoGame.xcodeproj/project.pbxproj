@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2756576513BFBC1B00E9A856 /* pwp_hidden_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 2756576413BFBC1B00E9A856 /* pwp_hidden_image.png */; };
 		27BCB59F13BC3C4B008196D6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27BCB59E13BC3C4B008196D6 /* UIKit.framework */; };
 		27BCB5A113BC3C4B008196D6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27BCB5A013BC3C4B008196D6 /* Foundation.framework */; };
 		27BCB5A313BC3C4B008196D6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27BCB5A213BC3C4B008196D6 /* CoreGraphics.framework */; };
@@ -44,6 +45,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2756576413BFBC1B00E9A856 /* pwp_hidden_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pwp_hidden_image.png; path = ../../../../Desktop/pwp_hidden_image.png; sourceTree = "<group>"; };
 		27BCB59A13BC3C4B008196D6 /* PhotoGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		27BCB59E13BC3C4B008196D6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		27BCB5A013BC3C4B008196D6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -140,6 +142,7 @@
 		27BCB5A413BC3C4B008196D6 /* PhotoGame */ = {
 			isa = PBXGroup;
 			children = (
+				2756576413BFBC1B00E9A856 /* pwp_hidden_image.png */,
 				27BCB5AD13BC3C4B008196D6 /* PhotoGameAppDelegate.h */,
 				27BCB5AE13BC3C4B008196D6 /* PhotoGameAppDelegate.m */,
 				27BCB5B013BC3C4B008196D6 /* MainWindow.xib */,
@@ -266,6 +269,7 @@
 				27BCB5B813BC3C4B008196D6 /* PhotoGameViewController.xib in Resources */,
 				27BCB5DB13BC3C84008196D6 /* PhotosViewController.xib in Resources */,
 				27BCB5E013BC3CA0008196D6 /* PlayViewController.xib in Resources */,
+				2756576513BFBC1B00E9A856 /* pwp_hidden_image.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

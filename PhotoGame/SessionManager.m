@@ -54,7 +54,7 @@
 	mySession.delegate = self; 
 	[mySession setDataReceiveHandler:self withContext:nil]; 
 	mySession.available = YES;
-    mySession.disconnectTimeout = 5;
+    [mySession setDisconnectTimeout:5.0];
     
     [playerList addObject:[mySession peerID]];
     

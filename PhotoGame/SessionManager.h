@@ -9,11 +9,18 @@
 #import <Foundation/Foundation.h>
 #import <GameKit/GameKit.h> 
 
-typedef enum {
-    PacketTypeQueryNeedSeedPhoto = 0,
-    PacketTypeDataSeedPhoto = 1,
-    PacketTypeDataPlayPhoto = 2,
-    PacketTypeDataPlayerName = 3
+typedef enum {    
+    PacketTypeQueryNeedSeedPhoto = 10,
+    PacketTypeDataSeedPhoto = 11,
+    PacketTypeDataPlayPhoto = 12,
+    PacketTypeDataPlayerName = 13,
+
+    
+    PacketTypeGameStep0 = 0,
+    PacketTypeGameStep1 = 1,
+    PacketTypeGameStep2 = 2,
+    PacketTypeGameStep3 = 3,
+    PacketTypeGameStep4 = 4,
 } PacketType;
 
 @interface SessionManager : NSObject <GKSessionDelegate> {
