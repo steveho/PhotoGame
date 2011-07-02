@@ -489,6 +489,7 @@
 				27BCB5D313BC3C4B008196D6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		27BCB5D413BC3C4B008196D6 /* Build configuration list for PBXNativeTarget "PhotoGameTests" */ = {
 			isa = XCConfigurationList;
@@ -497,6 +498,7 @@
 				27BCB5D613BC3C4B008196D6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

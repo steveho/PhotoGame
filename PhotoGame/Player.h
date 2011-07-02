@@ -10,13 +10,11 @@
 
 
 @interface Player : NSObject {
-    NSString *started;
     NSString *name;
     UIImage *currentPlayPhoto;
     int currentPlayVotes;
 }
 
-@property (nonatomic, retain) NSString *started;
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) UIImage *currentPlayPhoto;
 @property int currentPlayVotes;

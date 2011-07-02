@@ -156,7 +156,7 @@
 
 - (NSURL*)getDeviceRandomPhoto {
     if ([allImages count]) {
-        int rand = random() % [allImages count];
+        int rand = arc4random() % [allImages count];
         return [allImages objectAtIndex:rand];
     } 
     else {

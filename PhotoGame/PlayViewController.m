@@ -11,9 +11,9 @@
 
 @implementation PlayViewController
 
-@synthesize theParent, sessionManager, peerLabel, seedPhoto, scrollView, previewPhoto;
+@synthesize theParent, sessionManager, peerLabel, seedPhoto, scrollView, previewPhoto, newRoundBtn, playPhotoBtn;
 @synthesize gamePlayLabel, seedPhotoLoading;
-@synthesize players, gameHostID;
+@synthesize players, gameStep, gameRound, mySeedPhotoURL;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -42,8 +42,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    
+        
     [self setupGame];    
 }
 
@@ -64,6 +63,8 @@
 
 - (void)setupGame {
     players = [[NSMutableDictionary alloc] init];
+    gameStep = 0;
+    mySeedPhotoURL = nil;
     
     sessionManager = [[SessionManager alloc] init];
     sessionManager.delegate = self;
@@ -72,43 +73,51 @@
     // set up me player    
     Player *me = [[Player alloc] init];
     me.name = [theParent myUserName];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"YYYYMMddhhmmss"];
-    me.started = [dateFormatter stringFromDate:[NSDate date]];    
     [players setValue:me forKey:[sessionManager.mySession peerID]];    
 
-    
-    NSLog(@"me [%@]: name=%@, started=%@", [sessionManager.mySession peerID], me.name, me.started);
-    
-    [self setupPlayPhotosView];
+    [self gameFlowNext];
 }
 
-- (IBAction)newSeedPhoto {    
+-(IBAction)newRoundBtnClicked {
     if ([self getLocalSeedPhoto] == nil) {
-        NSURL *seedPhotoURL = [theParent getDeviceRandomPhoto];
-        if (seedPhotoURL) {              
-            ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *myasset) {
-                ALAssetRepresentation *rep = [myasset defaultRepresentation];
-                CGImageRef iref = [rep fullResolutionImage];
-                if (iref) {
-                    
-                    UIImage *img = [UIImage imageWithCGImage:iref];
-                    img = [theParent scaleImage:img toSize:CGSizeMake(150.0f,150.0f)];
-                    [self setLocalSeedPhoto:img];                    
-                    
-                }
-            };    
-            ALAssetsLibraryAccessFailureBlock failureblock  = ^(NSError *myerror) {
-                NSLog(@"Can't get image - %@",[myerror localizedDescription]);
-            };        
-            ALAssetsLibrary* assetslibrary = [[[ALAssetsLibrary alloc] init] autorelease];
-            [assetslibrary assetForURL:seedPhotoURL resultBlock:resultblock failureBlock:failureblock];
-        }        
+        [self pickLocalSeedPhoto];
+        
+        //send seed photo to peers
+        if ([self getLocalSeedPhoto]) {            
+            NSData *imageData = [NSData dataWithData:UIImagePNGRepresentation([self getLocalSeedPhoto])];                    
+            [self sendDataToPeer:nil type:PacketTypeDataSeedPhoto data:imageData];
+            [self setCurrentSeeder:[sessionManager.mySession peerID]];
+        }
+        
+        [newRoundBtn setHidden:YES];
+    }
+}
+
+- (void)pickLocalSeedPhoto {            
+    mySeedPhotoURL = [theParent getDeviceRandomPhoto];
+    if (mySeedPhotoURL) {              
+        ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *myasset) {
+            ALAssetRepresentation *rep = [myasset defaultRepresentation];
+            CGImageRef iref = [rep fullResolutionImage];
+            if (iref) {
+                
+                UIImage *img = [UIImage imageWithCGImage:iref];
+                img = [theParent scaleImage:img toSize:CGSizeMake(150.0f,150.0f)];
+                [self setLocalSeedPhoto:img];                    
+                
+            }
+        };    
+        ALAssetsLibraryAccessFailureBlock failureblock  = ^(NSError *myerror) {
+            NSLog(@"Can't get image - %@",[myerror localizedDescription]);
+        };        
+        ALAssetsLibrary* assetslibrary = [[[ALAssetsLibrary alloc] init] autorelease];
+        [assetslibrary assetForURL:mySeedPhotoURL resultBlock:resultblock failureBlock:failureblock];
     }        
 }
 
 - (void)playPhotoClicked:(id)sender {
     [previewPhoto setImage:[sender currentImage]];
+    [playPhotoBtn setHidden:NO];
 }
 
 - (void)submittedPhotoClicked:(id)sender {
@@ -143,6 +152,9 @@
     NSMutableArray *urls = [theParent allImages];
     int max = 16;
     for (int i=[urls count]-1; i>=0; i--) {
+        if (mySeedPhotoURL == [urls objectAtIndex:i]) {
+            continue;
+        }
         [assetslibrary assetForURL:[urls objectAtIndex:i] resultBlock:resultblock failureBlock:failureblock];
         max--;
         if(max == 0) {
@@ -158,8 +170,6 @@
     for (UIView *view in scrollView.subviews) {
         [view removeFromSuperview];
     }    
-        
-    [gamePlayLabel setText:@"Players submitting their photos..."];
 
     int submittedPhotoCount = 0;
     UIButton *btn;
@@ -171,7 +181,7 @@
     [btn addTarget:self action:@selector(submittedPhotoClicked:) forControlEvents:UIControlEventTouchUpInside];    
     [scrollView addSubview:btn];    
     submittedPhotoCount++;
-    
+        
     // other players
     for (id key in players) {
         if (key == [sessionManager.mySession peerID]) {
@@ -188,14 +198,19 @@
         submittedPhotoCount++;
     
     }
-    
+    [scrollView setContentSize:CGSizeMake(((75.0+2.0) * submittedPhotoCount), 80)];
 }
 
 - (IBAction)playPhotoBtnClicked {
-    [self updatePlayerInfo:[sessionManager.mySession peerID] currentPlayPhoto:[previewPhoto image]];
+    if (gameStep == 1 && [previewPhoto image]) {
+        [self updatePlayerInfoPlayPhoto:[sessionManager.mySession peerID] value:[previewPhoto image]];
     
-    [self setupSubmittedPhotosView];
-    [self sendPlayPhotoToPeer:nil image:[previewPhoto image]];
+        [self setupSubmittedPhotosView];
+        [self sendPlayPhotoToPeer:nil image:[previewPhoto image]];
+        
+        gameStep = 2;
+        [self gameFlowNext];
+    }
 }
 
 - (void)sendPlayPhotoToPeer:(NSString*)peerID image:(UIImage*)img {    
@@ -223,12 +238,14 @@
 
 #pragma mark - GamePlayDelegate methods
 
--(void)peerListDidChange:(SessionManager*)session peer:(NSString*)peerID {
-    NSMutableString *btnTitle = [NSMutableString stringWithString:@"Peers: "];
-    
+-(void)playerListDidChange:(SessionManager*)session peer:(NSString*)peerID {
     NSArray *connectedPeers = [sessionManager.mySession peersWithConnectionState:GKPeerStateConnected];
-    [btnTitle appendString:[NSString stringWithFormat:@"%i", [connectedPeers count]]];
+    int numPlayers = [connectedPeers count] + 1;
+    NSMutableString *btnTitle = [NSMutableString stringWithFormat:@"%d", numPlayers];
+    [btnTitle appendString:@" players"];
     [peerLabel setText:btnTitle];
+    
+    [self gameFlowNext];
 }
 
 - (void)sendSeedPhotoToPeer:(NSString*)peerID {    
@@ -239,16 +256,17 @@
 }
 
 - (void)sendBasicInfoToPeer:(NSString*)peerID {
+    if (!peerID) {
+        return;
+    }
     Player *me = [players objectForKey:[sessionManager.mySession peerID]];
-    
-    NSData *nameData = [me.name dataUsingEncoding:[NSString defaultCStringEncoding]];
-    [self sendDataToPeer:peerID type:PacketTypeDataPlayerName data:nameData];
-
-    NSData *dateData = [me.started dataUsingEncoding:[NSString defaultCStringEncoding]];
-    [self sendDataToPeer:peerID type:PacketTypeDataPlayerStarted data:dateData];
-
-    NSLog(@"me [%@] sent to %@, %@, %@", [sessionManager.mySession peerID], peerID, me.name, me.started);
-    
+    if (!me || me == nil) {
+        return;
+    }
+    if (me.name) {
+        NSData *nameData = [me.name dataUsingEncoding:[NSString defaultCStringEncoding]];
+        [self sendDataToPeer:peerID type:PacketTypeDataPlayerName data:nameData];
+    }
 }
 
 - (void)sendDataToPeer:(NSString*)peerID type:(PacketType)type data:(NSData*)data {
@@ -259,19 +277,24 @@
     else {//broadcast to all
         toPeers = [sessionManager.mySession peersWithConnectionState:GKPeerStateConnected];
     }
-    [sessionManager sendData:data ofType:type to:toPeers];    
+    if ([toPeers count] > 0) {
+        [sessionManager sendData:data ofType:type to:toPeers];    
+    }
 }
 
 - (void)setLocalSeedPhoto:(UIImage*)img {
     [seedPhotoLoading setHidden:YES];
     [seedPhoto setImage:img];
+
+    gameStep = 1;
+    [self gameFlowNext];
 }
 
 - (UIImage*)getLocalSeedPhoto {
     return [seedPhoto image];
 }
 
-- (void)updatePlayerInfo:(NSString*)peerID name:(NSString*)value {
+- (void)updatePlayerInfoName:(NSString*)peerID value:(NSString*)value {
     if (!peerID) { return; }
 
     Player *p;
@@ -282,117 +305,77 @@
     [players setObject:p forKey:peerID];
 }
 
-- (void)updatePlayerInfo:(NSString*)peerID currentPlayPhoto:(UIImage*)value {
+- (void)updatePlayerInfoPlayPhoto:(NSString*)peerID value:(UIImage*)currentPlayPhoto {
     if (!peerID) { return; }
     
     Player *p;
     if (!(p = [players objectForKey:peerID])) {
         p = [[Player alloc] init]; 
     }
-    p.currentPlayPhoto = value;
+    p.currentPlayPhoto = currentPlayPhoto;
     [players setObject:p forKey:peerID];
     
     // if i've selected my play photo
-    if ([previewPhoto image]) {
+    if ([previewPhoto image] && gameStep == 2) {
         [self setupSubmittedPhotosView];
     }
 }
 
-- (void)updatePlayerInfo:(NSString*)peerID currentPlayVotes:(int)value {
+- (void)updatePlayerInfoPlayVotes:(NSString*)peerID value:(int)currentPlayVotes {
     if (!peerID) { return; }
     
     Player *p;
     if (!(p = [players objectForKey:peerID])) {
         p = [[Player alloc] init]; 
     }
-    p.currentPlayVotes = value;
+    p.currentPlayVotes = currentPlayVotes;
     [players setObject:p forKey:peerID];
     
 }
 
-- (void)updatePlayerInfo:(NSString*)peerID started:(NSString*)date {
-    if (!peerID) { return; }
-    
-    Player *p;
-    if (!(p = [players objectForKey:peerID])) {
-        p = [[Player alloc] init]; 
-    }
-    p.started = date;
-    [players setObject:p forKey:peerID];  
-    
-    [self startNewGameRound];
-}
 
-- (void)startNewGameRound {
-    // only host (the first player) can start new game round by sending a random Seed Photo
-    // min # of players is 2
-    
-    [self updateGameHost];
-
-    if ([players count] < 2) {
-        return;
-    }
-
-    Player *pl = [players objectForKey:gameHostID];
-    NSLog(@"game host %@", [pl name]);
-    
-    // i'm the host - start game
-    if ([sessionManager.mySession peerID] == gameHostID) {
-        
-        NSLog(@"i'm the host %@", gameHostID);
-        
-        if ([self getLocalSeedPhoto] == nil) {
-            NSURL *seedPhotoURL = [theParent getDeviceRandomPhoto];
-            if (seedPhotoURL) {              
-                ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *myasset) {
-                    ALAssetRepresentation *rep = [myasset defaultRepresentation];
-                    CGImageRef iref = [rep fullResolutionImage];
-                    if (iref) {
-                        
-                        UIImage *img = [UIImage imageWithCGImage:iref];
-                        img = [theParent scaleImage:img toSize:CGSizeMake(150.0f,150.0f)];
-                        [self setLocalSeedPhoto:img];                    
-
-                        NSData *imageData = [NSData dataWithData:UIImagePNGRepresentation([seedPhoto image])];        
-                        [self sendDataToPeer:nil type:PacketTypeDataSeedPhoto data:imageData];
-                        
-                    }
-                };    
-                ALAssetsLibraryAccessFailureBlock failureblock  = ^(NSError *myerror) {
-                    NSLog(@"Can't get image - %@",[myerror localizedDescription]);
-                };        
-                ALAssetsLibrary* assetslibrary = [[[ALAssetsLibrary alloc] init] autorelease];
-                [assetslibrary assetForURL:seedPhotoURL resultBlock:resultblock failureBlock:failureblock];
-            }        
-        }        
+- (void)removePlayer:(NSString*)peerID {
+    if ([players objectForKey:peerID]) {
+        [players removeObjectForKey:peerID];
     }
 }
 
-- (void)updateGameHost {
-    //game host is the very fist player
-    
-    NSString *smallestDate = nil;
-    gameHostID = nil;
-    for (id key in players) {
-        id p = [players objectForKey:key];
-        if (!p || ![p started]) {
-            continue;
-        }
+- (void)gameFlowNext {
+    if (gameStep == 0) {//new round - need a seed photo
+        currentSeeder = nil;
+        [playPhotoBtn setHidden:YES];        
+        [gamePlayLabel setHidden:YES];
         
-        if (smallestDate == nil) {
-            smallestDate = [p started];
-            gameHostID = key;
+        NSArray *connPeers = [sessionManager.mySession peersWithConnectionState:GKPeerStateConnected];
+        int numPlayers = [connPeers count] + 1;      
+        if (numPlayers >= 2) {
+            [newRoundBtn setHidden:NO];
+        } else {
+            [gamePlayLabel setHidden:NO];
+            [gamePlayLabel setText:@"Waiting For Players..."];
+            [newRoundBtn setHidden:YES];
         }
-        else {
-            NSComparisonResult res = [smallestDate compare:[p started]];
-            if (res == NSOrderedDescending) {
-                smallestDate = [p started];
-                gameHostID = key;
-            }
-        } 
     }
-    
-    [smallestDate release];    
+    else if (gameStep == 1) {//got seed photo - select a match
+        [gamePlayLabel setHidden:NO];
+        [newRoundBtn setHidden:YES];
+        [gamePlayLabel setText:@"Match This Image"];
+        [self setupPlayPhotosView];            
+    }
+    else if (gameStep == 2) {//clicked "Play Photo"
+        [playPhotoBtn setHidden:YES];
+        [gamePlayLabel setText:@"Waiting For Peeps"];
+    }    
+    else {}
+}
+
+- (void)setCurrentSeeder:(NSString*)peerID {
+    if (peerID) {
+        currentSeeder = peerID;
+        
+        Player *p = [players objectForKey:currentSeeder];
+        NSLog(@"Current seeder: %@ (%@)", [p name], currentSeeder);
+    }
 }
 
 @end

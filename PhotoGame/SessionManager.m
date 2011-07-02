@@ -84,17 +84,18 @@
             [mySession connectToPeer:peerID withTimeout:10];                
             break;
 		case GKPeerStateUnavailable:
-            [delegate peerListDidChange:self peer:peerID];
+            [delegate playerListDidChange:self peer:peerID];
 			break;
 		case GKPeerStateConnected:
-            [delegate peerListDidChange:self peer:peerID];
+            [delegate playerListDidChange:self peer:peerID];
             if ([delegate getLocalSeedPhoto]) {
                 [delegate sendSeedPhotoToPeer:peerID];
             }
             [delegate sendBasicInfoToPeer:peerID];
 			break;				
 		case GKPeerStateDisconnected:
-            [delegate peerListDidChange:self peer:peerID];
+            [delegate playerListDidChange:self peer:peerID];
+            [delegate removePlayer:peerID];
 			break;
         case GKPeerStateConnecting:
             if (![mySession acceptConnectionFromPeer:peerID error:&error]) {
@@ -118,24 +119,17 @@
         
         if (header == PacketTypeDataSeedPhoto) {//seed photo
             UIImage *img = [UIImage imageWithData:payload];
-            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(70, 110, 150, 150)];
-            [imageView setImage:img];
-            if ([delegate getLocalSeedPhoto] == nil) {
-                [delegate setLocalSeedPhoto:img];        
-            }
+            [delegate setLocalSeedPhoto:img];
+            [delegate setCurrentSeeder:peer];
         } 
         else if (header == PacketTypeDataPlayPhoto) {// play photo (player submits his photo)
             UIImage *img = [UIImage imageWithData:payload];
-            [delegate updatePlayerInfo:peer currentPlayPhoto:img];
+            [delegate updatePlayerInfoPlayPhoto:peer value:img];
         }
         else if (header == PacketTypeDataPlayerName) {// player name
             NSMutableString *name = [[NSMutableString alloc] initWithData:payload encoding:[NSString defaultCStringEncoding]];
-            [delegate updatePlayerInfo:peer name:name];
-        }        
-        else if (header == PacketTypeDataPlayerStarted) {// player start date/time
-            NSMutableString *started = [[NSMutableString alloc] initWithData:payload encoding:[NSString defaultCStringEncoding]];
-            [delegate updatePlayerInfo:peer started:started];            
-        }        
+            [delegate updatePlayerInfoName:peer value:name];
+        }           
         else {
             //[gameDelegate session:self didReceivePacket:payload ofType:header];
         }
