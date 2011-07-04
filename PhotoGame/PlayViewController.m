@@ -12,8 +12,9 @@
 @implementation PlayViewController
 
 @synthesize theParent, sessionManager, peerLabel, seedPhoto, scrollView, previewPhoto, newRoundBtn, playPhotoBtn;
-@synthesize gamePlayLabel, seedPhotoLoading;
-@synthesize players, gameStep, gameRound, mySeedPhotoURL;
+@synthesize gamePlayLabel, unveilPhotoBig, nextPhotoBtn;
+@synthesize players, gameStep, gameRound, mySeedPhotoURL, unveiledPhotoCounter;
+@synthesize unveilResponseCount, playPhotos, iVoteForPeerID;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -44,6 +45,7 @@
     [super viewDidLoad];
         
     [self setupGame];    
+    
 }
 
 - (void)viewDidUnload
@@ -63,8 +65,9 @@
 
 - (void)setupGame {
     players = [[NSMutableDictionary alloc] init];
-    gameStep = 0;
     mySeedPhotoURL = nil;
+    playPhotos = nil;
+    iVoteForPeerID = nil;
     
     sessionManager = [[SessionManager alloc] init];
     sessionManager.delegate = self;
@@ -75,11 +78,15 @@
     me.name = [theParent myUserName];
     [players setValue:me forKey:[sessionManager.mySession peerID]];    
 
+    gameStep = 0;
     [self gameFlowNext];
 }
 
--(IBAction)newRoundBtnClicked {
-    if ([self getLocalSeedPhoto] == nil) {
+- (IBAction)newRoundBtnClicked {
+    if (currentSeeder == nil) {
+        NSData *data = [@"y" dataUsingEncoding:[NSString defaultCStringEncoding]];
+        [self sendDataToPeer:nil type:PacketTypeNotifyIAmTheSeeder data:data];
+        
         [self pickLocalSeedPhoto];
         
         //send seed photo to peers
@@ -91,6 +98,15 @@
         
         [newRoundBtn setHidden:YES];
     }
+}
+
+- (IBAction)nextPhotoBtnClicked {
+    [nextPhotoBtn setHidden:YES];
+    if ([sessionManager.mySession peerID] != currentSeeder) {
+        NSData *data = [@"y" dataUsingEncoding:[NSString defaultCStringEncoding]];
+        [self sendDataToPeer:currentSeeder type:PacketTypeDataDoneViewingCurrentPhoto data:data];
+    }
+    [self readyForNextUnveilPhoto:[sessionManager.mySession peerID]];
 }
 
 - (void)pickLocalSeedPhoto {            
@@ -122,6 +138,15 @@
 
 - (void)submittedPhotoClicked:(id)sender {
 
+}
+
+- (void)voteForPhoto:(id)sender {
+    if (gameStep == 4 && iVoteForPeerID == nil) {
+        iVoteForPeerID = [(UIButton*)sender titleForState:UIControlStateNormal];
+        NSData *data = [iVoteForPeerID dataUsingEncoding:[NSString defaultCStringEncoding]];
+        [self sendDataToPeer:nil type:PacketTypeDataIVoteForPeerID data:data];    
+        [self whoVotesForWho:[sessionManager.mySession peerID] votee:iVoteForPeerID];
+    }
 }
 
 - (void)setupPlayPhotosView {
@@ -173,7 +198,8 @@
 
     int submittedPhotoCount = 0;
     UIButton *btn;    
-    
+
+    /*    
     // me first
     btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.frame = CGRectMake(((75.0+2.0) * submittedPhotoCount), 0.0, 75.0, 75.0);  
@@ -181,18 +207,16 @@
     [btn addTarget:self action:@selector(submittedPhotoClicked:) forControlEvents:UIControlEventTouchUpInside];    
     [scrollView addSubview:btn];    
     submittedPhotoCount++;
-        
-    // other players
+*/
     
-
+    UIImage *hidImg = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"pwp_hidden_image" ofType:@"png"]];
+    // other players
     for (id key in players) {
-        if (key == [sessionManager.mySession peerID]) {
-            continue;
-        }
+        //if (key == [sessionManager.mySession peerID]) {
+        //    continue;
+        //}
         id player = [players objectForKey:key];
         if ([player currentPlayPhoto]) {
-        
-            UIImage *hidImg = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"pwp_hidden_image" ofType:@"png"]];        
             btn = [UIButton buttonWithType:UIButtonTypeCustom];
             btn.frame = CGRectMake(((75.0+2.0) * submittedPhotoCount), 0.0, 75.0, 75.0);  
             [btn setImage:hidImg forState:UIControlStateNormal];
@@ -215,6 +239,13 @@
         
         gameStep = 2;
         [self gameFlowNext];
+        
+        //am i the current seeder? and if all have submitted, then on the "viewing" step
+        if ([sessionManager.mySession peerID] == currentSeeder && [self allHaveSubmittedPhoto]) {
+            gameStep = 3;
+            [self gameFlowNext];
+            [self unveilNextPhoto:currentSeeder];
+        }        
     }
 }
 
@@ -246,8 +277,8 @@
 -(void)playerListDidChange:(SessionManager*)session peer:(NSString*)peerID {
     NSArray *connectedPeers = [sessionManager.mySession peersWithConnectionState:GKPeerStateConnected];
     int numPlayers = [connectedPeers count] + 1;
-    NSMutableString *btnTitle = [NSMutableString stringWithFormat:@"%d", numPlayers];
-    [btnTitle appendString:@" players"];
+    NSMutableString *btnTitle = [NSMutableString stringWithFormat:@"(%d", numPlayers];
+    [btnTitle appendString:@" players)"];
     [peerLabel setText:btnTitle];
     
     [self gameFlowNext];
@@ -288,7 +319,6 @@
 }
 
 - (void)setLocalSeedPhoto:(UIImage*)img {
-    [seedPhotoLoading setHidden:YES];
     [seedPhoto setImage:img];
 
     gameStep = 1;
@@ -326,21 +356,21 @@
     }
     
     //am i the current seeder? and if all have submitted, then on the "viewing" step
-    BOOL allHaveSubmitted = YES;
-    if ([sessionManager.mySession peerID] == currentSeeder) {
-        for (id key in players) {
-            id player = [players objectForKey:key];
-            if (![player currentPlayPhoto]) {
-                allHaveSubmitted = NO;
-                break;
-            }
+    if ([sessionManager.mySession peerID] != peerID && [sessionManager.mySession peerID] == currentSeeder && [self allHaveSubmittedPhoto]) {
+        gameStep = 3;
+        [self gameFlowNext];
+        [self unveilNextPhoto:currentSeeder]; //unveil first photo, my own photo
+    }
+}
+
+- (BOOL)allHaveSubmittedPhoto {
+    for (id key in players) {
+        id player = [players objectForKey:key];
+        if (![player currentPlayPhoto]) {
+            return NO;
         }
     }
-    if (allHaveSubmitted) {
-        
-        NSLog(@"READY FOR VIEWING?");
-        
-    }
+    return YES;
 }
 
 - (void)updatePlayerInfoPlayVotes:(NSString*)peerID value:(int)currentPlayVotes {
@@ -366,16 +396,18 @@
     if (gameStep == 0) {//new round - need a seed photo
         currentSeeder = nil;
         [playPhotoBtn setHidden:YES];        
-        [gamePlayLabel setHidden:YES];
+        [gamePlayLabel setHidden:NO];
+        [unveilPhotoBig setHidden:YES];
+        unveiledPhotoCounter = 0;
+        [nextPhotoBtn setHidden:YES];
         
         NSArray *connPeers = [sessionManager.mySession peersWithConnectionState:GKPeerStateConnected];
         int numPlayers = [connPeers count] + 1;      
         if (numPlayers >= 2) {
-            [newRoundBtn setHidden:NO];
+            [newRoundBtn setEnabled:YES];
         } else {
-            [gamePlayLabel setHidden:NO];
             [gamePlayLabel setText:@"Waiting For Players..."];
-            [newRoundBtn setHidden:YES];
+            [newRoundBtn setEnabled:NO];
         }
     }
     else if (gameStep == 1) {//got seed photo - select a match
@@ -383,11 +415,21 @@
         [newRoundBtn setHidden:YES];
         [gamePlayLabel setText:@"Match This Image"];
         [self setupPlayPhotosView];            
+        [peerLabel setHidden:YES];
     }
     else if (gameStep == 2) {//clicked "Play Photo"
         [playPhotoBtn setHidden:YES];
         [gamePlayLabel setText:@"Waiting For Peeps"];
     }    
+    else if (gameStep == 3) {//all have submitted - start viewing one by one (initiated by the seeder)
+
+    }    
+    else if (gameStep == 4) {//vote for a match
+        [nextPhotoBtn setHidden:YES];
+        [gamePlayLabel setText:@"Vote For A Match"];
+        [seedPhoto setHidden:NO];
+        [unveilPhotoBig setHidden:YES];
+    }
     else {}
 }
 
@@ -398,6 +440,106 @@
         Player *p = [players objectForKey:currentSeeder];
         NSLog(@"Current seeder: %@ (%@)", [p name], currentSeeder);
     }
+}
+
+- (void)unveilNextPhoto:(NSString*)peerID {    
+    [nextPhotoBtn setHidden:NO];
+    [seedPhoto setHidden:YES];
+    [previewPhoto setHidden:YES];
+    [unveilPhotoBig setHidden:NO];    
+    unveilResponseCount = 0;
+    
+    if ([sessionManager.mySession peerID] == currentSeeder && playPhotos == nil) {
+        playPhotos = [[NSMutableArray alloc] init];
+        [playPhotos addObject:currentSeeder];
+        for (id key in players) {
+            if (key != currentSeeder) {
+                [playPhotos addObject:key];
+            }
+        }  
+    }
+
+    
+    Player *p = [players objectForKey:peerID];
+    UIImage *img = [p currentPlayPhoto];
+    [unveilPhotoBig setImage:img];
+    
+    NSMutableString *label = [NSMutableString stringWithString:[p name]];
+    [label appendString:@"'s Photo"];
+    [gamePlayLabel setText:label];
+    
+    UIButton *btn;
+    btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btn setTitle:peerID forState:UIControlStateNormal];
+    btn.frame = CGRectMake(((75.0+2.0) * unveiledPhotoCounter), 0.0, 75.0, 75.0);  
+    [btn setImage:img forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(voteForPhoto:) forControlEvents:UIControlEventTouchUpInside];
+        
+    [scrollView addSubview:btn];                        
+    unveiledPhotoCounter++;    
+            
+    //notify all peers (ONLY IF I'M THE SEEDER)
+    if ([sessionManager.mySession peerID] == currentSeeder) {
+        NSData *data = [peerID dataUsingEncoding:[NSString defaultCStringEncoding]];
+        [self sendDataToPeer:nil type:PacketTypeDataUnveilPhoto data:data];
+    }    
+    
+    [scrollView setContentSize:CGSizeMake(((75.0+2.0) * unveiledPhotoCounter), 80)];
+}
+
+//peerID is done viewing current photo and ready for next
+- (void)readyForNextUnveilPhoto:(NSString*)peerID {    
+    unveilResponseCount++;
+    if ([sessionManager.mySession peerID] == currentSeeder && unveilResponseCount >= [playPhotos count]) {
+        if (unveiledPhotoCounter < [playPhotos count]) {
+            NSString *nextPeerID = [playPhotos objectAtIndex:unveiledPhotoCounter];
+            [self unveilNextPhoto:nextPeerID];            
+        }
+        else {//last viewing
+            NSData *data = [@"y" dataUsingEncoding:[NSString defaultCStringEncoding]];
+            [self sendDataToPeer:nil type:PacketTypeNotifyDoneUnveilingPhoto data:data];
+            gameStep = 4;
+            [self gameFlowNext];
+        }
+    }
+}
+
+- (void)whoVotesForWho:(NSString*)voter votee:(NSString*)votee {
+    Player *p = [players objectForKey:votee];
+    p.currentPlayVotes++;
+    
+    int j = 0;
+    NSArray *photos = [scrollView subviews];
+    UIButton *photo;
+    for (int i=0; i<[photos count]; i++) {
+        photo = [photos objectAtIndex:i];
+        if ([[photo titleForState:UIControlStateNormal] length] > 3 && [[photo titleForState:UIControlStateNormal] compare:votee] == NSOrderedSame) {
+            UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];                        
+            [btn setTitle:[NSString stringWithFormat:@"%d", p.currentPlayVotes] forState:UIControlStateNormal];
+            [[btn layer] setCornerRadius:10.0f];
+            [[btn layer] setMasksToBounds:YES];
+            [[btn layer] setBorderWidth:0.0f]; 
+            [btn setBackgroundColor:[UIColor greenColor]];
+            [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [btn setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
+            [btn.titleLabel setFont:[UIFont boldSystemFontOfSize:12.0]];  
+            
+            btn.frame = CGRectMake((77*j+55), 0.0, 20, 20);
+            [scrollView addSubview:btn];
+                        
+            break;
+        }
+        //count for photo views, not other views
+        if ([[photo titleForState:UIControlStateNormal] length] > 3) {
+            j++;
+        }
+    }
+}
+
+- (void)doneWithUnveilingPhotos:(NSString*)peerID {
+    //this is sent from the seeder to the rest
+    gameStep = 4;
+    [self gameFlowNext];    
 }
 
 @end

@@ -122,16 +122,34 @@
             [delegate setLocalSeedPhoto:img];
             [delegate setCurrentSeeder:peer];
         } 
-        else if (header == PacketTypeDataPlayPhoto) {// play photo (player submits his photo)
+        else if (header == PacketTypeDataPlayPhoto) {//play photo (player submits his photo)
             UIImage *img = [UIImage imageWithData:payload];
             [delegate updatePlayerInfoPlayPhoto:peer value:img];
         }
-        else if (header == PacketTypeDataPlayerName) {// player name
+        else if (header == PacketTypeDataPlayerName) {//player name
             NSMutableString *name = [[NSMutableString alloc] initWithData:payload encoding:[NSString defaultCStringEncoding]];
             [delegate updatePlayerInfoName:peer value:name];
-        }           
+        }
+        else if (header == PacketTypeDataUnveilPhoto) {//unveil photo
+            NSMutableString *unveilPeerID = [[NSMutableString alloc] initWithData:payload encoding:[NSString defaultCStringEncoding]];
+            [delegate unveilNextPhoto:unveilPeerID];
+        }    
+        else if (header == PacketTypeDataDoneViewingCurrentPhoto) {//done viewing current photo (unveil stage)
+            //this is strictly sent to the current seeder
+            [delegate readyForNextUnveilPhoto:peer];
+        }
+        else if (header == PacketTypeNotifyDoneUnveilingPhoto) {//done with unveiling photos (sent from seeder)
+            [delegate doneWithUnveilingPhotos:peer];
+        }        
+        else if (header == PacketTypeNotifyIAmTheSeeder) {//I am the seeder
+            [delegate setCurrentSeeder:peer];
+        }
+        else if (header == PacketTypeDataIVoteForPeerID) {//vote
+            NSMutableString *votee = [[NSMutableString alloc] initWithData:payload encoding:[NSString defaultCStringEncoding]];            
+            [delegate whoVotesForWho:peer votee:votee];
+        }        
         else {
-            //[gameDelegate session:self didReceivePacket:payload ofType:header];
+
         }
     }    
     

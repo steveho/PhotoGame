@@ -14,7 +14,11 @@ typedef enum {
     PacketTypeDataSeedPhoto = 11,
     PacketTypeDataPlayPhoto = 12,
     PacketTypeDataPlayerName = 13,
-
+    PacketTypeDataUnveilPhoto = 14,
+    PacketTypeDataDoneViewingCurrentPhoto = 15,
+    PacketTypeNotifyIAmTheSeeder = 16,
+    PacketTypeNotifyDoneUnveilingPhoto = 18,
+    PacketTypeDataIVoteForPeerID = 17,
     
     PacketTypeGameStep0 = 0,
     PacketTypeGameStep1 = 1,
@@ -62,5 +66,10 @@ typedef enum {
 
 - (void)gameFlowNext; // to determine the game next step
 - (void)setCurrentSeeder:(NSString*)peerID; // the one with the seed photo being used for this round
+- (BOOL)allHaveSubmittedPhoto;
+- (void)unveilNextPhoto:(NSString*)peerID;
+- (void)readyForNextUnveilPhoto:(NSString*)peerID;
+- (void)whoVotesForWho:(NSString*)voter votee:(NSString*)votee;
+- (void)doneWithUnveilingPhotos:(NSString*)peerID;
 
 @end

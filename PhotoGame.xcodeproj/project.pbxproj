@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2756576513BFBC1B00E9A856 /* pwp_hidden_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 2756576413BFBC1B00E9A856 /* pwp_hidden_image.png */; };
+		2756576713C1AF9A00E9A856 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2756576613C1AF9A00E9A856 /* QuartzCore.framework */; };
 		27BCB59F13BC3C4B008196D6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27BCB59E13BC3C4B008196D6 /* UIKit.framework */; };
 		27BCB5A113BC3C4B008196D6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27BCB5A013BC3C4B008196D6 /* Foundation.framework */; };
 		27BCB5A313BC3C4B008196D6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27BCB5A213BC3C4B008196D6 /* CoreGraphics.framework */; };
@@ -46,6 +47,7 @@
 
 /* Begin PBXFileReference section */
 		2756576413BFBC1B00E9A856 /* pwp_hidden_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pwp_hidden_image.png; path = ../../../../Desktop/pwp_hidden_image.png; sourceTree = "<group>"; };
+		2756576613C1AF9A00E9A856 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		27BCB59A13BC3C4B008196D6 /* PhotoGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		27BCB59E13BC3C4B008196D6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		27BCB5A013BC3C4B008196D6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -92,6 +94,7 @@
 				27BCB5A313BC3C4B008196D6 /* CoreGraphics.framework in Frameworks */,
 				27BCB5E213BC3DA2008196D6 /* GameKit.framework in Frameworks */,
 				27BCB5E413BC3DAB008196D6 /* AssetsLibrary.framework in Frameworks */,
+				2756576713C1AF9A00E9A856 /* QuartzCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -130,6 +133,7 @@
 		27BCB59D13BC3C4B008196D6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2756576613C1AF9A00E9A856 /* QuartzCore.framework */,
 				27BCB5E313BC3DAB008196D6 /* AssetsLibrary.framework */,
 				27BCB5E113BC3DA2008196D6 /* GameKit.framework */,
 				27BCB59E13BC3C4B008196D6 /* UIKit.framework */,
