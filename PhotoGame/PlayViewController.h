@@ -18,6 +18,7 @@
     SessionManager *sessionManager;
     int playPhotoCounter;
     
+    IBOutlet UILabel *scrollViewLabel;
     IBOutlet UILabel *peerLabel;
     IBOutlet UIImageView *seedPhoto;
     IBOutlet UIImageView *unveilPhotoBig;
@@ -32,7 +33,7 @@
     //step 2: select a matching photo and submit
     //step 3: viewing play photos - when all have submitted, photos are shown one at a time, controlled by the current seeder
     //step 4: vote
-    NSMutableArray *playPhotos;
+    NSMutableArray *playPhotos; //for seeder to use only
     NSMutableDictionary *players;
     int gameStep;
     int gameRound;
@@ -48,7 +49,7 @@
 -(IBAction)playPhotoBtnClicked;
 -(void)playPhotoClicked:(id)sender;
 -(void)submittedPhotoClicked:(id)sender;
--(void)voteForPhoto:(id)sender;
+-(void)iVoteForPhoto:(id)sender;
 
 -(void)pickLocalSeedPhoto;
 -(void)setupPlayPhotosView;
@@ -69,6 +70,7 @@
 @property (nonatomic, retain) IBOutlet UILabel *gamePlayLabel;
 @property (nonatomic, retain) IBOutlet UIImageView *seedPhoto;
 @property (nonatomic, retain) IBOutlet UIButton *nextPhotoBtn;
+@property (nonatomic, retain) IBOutlet UILabel *scrollViewLabel;
 
 @property (nonatomic, retain) PhotoGameViewController *theParent;
 @property (nonatomic, retain) SessionManager *sessionManager;

@@ -61,8 +61,8 @@ typedef enum {
 - (UIImage*)getLocalSeedPhoto;
 
 - (void)updatePlayerInfoName:(NSString*)peerID value:(NSString*)name;
-- (void)updatePlayerInfoPlayPhoto:(NSString*)peerID value:(UIImage*)currentPlayPhoto;
-- (void)updatePlayerInfoPlayVotes:(NSString*)peerID value:(int)currentPlayVotes;
+- (void)updatePlayerInfoPlayPhoto:(NSString*)peerID value:(UIImage*)roundPhoto;
+- (void)updatePlayerInfoPlayVotes:(NSString*)peerID value:(int)roundVotes;
 
 - (void)gameFlowNext; // to determine the game next step
 - (void)setCurrentSeeder:(NSString*)peerID; // the one with the seed photo being used for this round

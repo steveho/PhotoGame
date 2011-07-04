@@ -11,6 +11,25 @@
 
 @implementation Player
 
-@synthesize name, currentPlayPhoto, currentPlayVotes;
+@synthesize name, roundPhoto, roundVotes;
+@synthesize roundVotedFor;
+
+
+- (id) init {
+    if ((self = [super init])) {
+        name = nil;
+        roundPhoto = nil;
+        roundVotes = 0;
+        roundVotedFor = nil;
+    }
+    return self;
+}
+
+- (void)dealloc {
+    name = nil;
+    roundPhoto = nil;
+    roundVotedFor = nil;
+    [super dealloc];
+}
 
 @end

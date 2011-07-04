@@ -11,12 +11,14 @@
 
 @interface Player : NSObject {
     NSString *name;
-    UIImage *currentPlayPhoto;
-    int currentPlayVotes;
+    UIImage *roundPhoto;
+    int roundVotes;
+    NSString *roundVotedFor;
 }
 
 @property (nonatomic, retain) NSString *name;
-@property (nonatomic, retain) UIImage *currentPlayPhoto;
-@property int currentPlayVotes;
+@property (nonatomic, retain) UIImage *roundPhoto;
+@property int roundVotes;
+@property (nonatomic, retain) NSString *roundVotedFor;
 
 @end

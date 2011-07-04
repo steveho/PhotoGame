@@ -11,7 +11,7 @@
 
 @implementation PlayViewController
 
-@synthesize theParent, sessionManager, peerLabel, seedPhoto, scrollView, previewPhoto, newRoundBtn, playPhotoBtn;
+@synthesize theParent, sessionManager, peerLabel, seedPhoto, scrollView, previewPhoto, newRoundBtn, playPhotoBtn, scrollViewLabel;
 @synthesize gamePlayLabel, unveilPhotoBig, nextPhotoBtn;
 @synthesize players, gameStep, gameRound, mySeedPhotoURL, unveiledPhotoCounter;
 @synthesize unveilResponseCount, playPhotos, iVoteForPeerID;
@@ -68,6 +68,7 @@
     mySeedPhotoURL = nil;
     playPhotos = nil;
     iVoteForPeerID = nil;
+    [scrollViewLabel setHidden:YES];
     
     sessionManager = [[SessionManager alloc] init];
     sessionManager.delegate = self;
@@ -140,7 +141,7 @@
 
 }
 
-- (void)voteForPhoto:(id)sender {
+- (void)iVoteForPhoto:(id)sender {
     if (gameStep == 4 && iVoteForPeerID == nil) {
         iVoteForPeerID = [(UIButton*)sender titleForState:UIControlStateNormal];
         NSData *data = [iVoteForPeerID dataUsingEncoding:[NSString defaultCStringEncoding]];
@@ -199,15 +200,6 @@
     int submittedPhotoCount = 0;
     UIButton *btn;    
 
-    /*    
-    // me first
-    btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    btn.frame = CGRectMake(((75.0+2.0) * submittedPhotoCount), 0.0, 75.0, 75.0);  
-    [btn setImage:[[players objectForKey:[sessionManager.mySession peerID]] currentPlayPhoto] forState:UIControlStateNormal];
-    [btn addTarget:self action:@selector(submittedPhotoClicked:) forControlEvents:UIControlEventTouchUpInside];    
-    [scrollView addSubview:btn];    
-    submittedPhotoCount++;
-*/
     
     UIImage *hidImg = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"pwp_hidden_image" ofType:@"png"]];
     // other players
@@ -216,7 +208,7 @@
         //    continue;
         //}
         id player = [players objectForKey:key];
-        if ([player currentPlayPhoto]) {
+        if ([player roundPhoto]) {
             btn = [UIButton buttonWithType:UIButtonTypeCustom];
             btn.frame = CGRectMake(((75.0+2.0) * submittedPhotoCount), 0.0, 75.0, 75.0);  
             [btn setImage:hidImg forState:UIControlStateNormal];
@@ -340,14 +332,14 @@
     [players setObject:p forKey:peerID];
 }
 
-- (void)updatePlayerInfoPlayPhoto:(NSString*)peerID value:(UIImage*)currentPlayPhoto {
+- (void)updatePlayerInfoPlayPhoto:(NSString*)peerID value:(UIImage*)roundPhoto {
     if (!peerID) { return; }
     
     Player *p;
     if (!(p = [players objectForKey:peerID])) {
         p = [[Player alloc] init]; 
     }
-    p.currentPlayPhoto = currentPlayPhoto;
+    p.roundPhoto = roundPhoto;
     [players setObject:p forKey:peerID];
     
     //setup submitted photo view (scrollable)
@@ -366,21 +358,21 @@
 - (BOOL)allHaveSubmittedPhoto {
     for (id key in players) {
         id player = [players objectForKey:key];
-        if (![player currentPlayPhoto]) {
+        if (![player roundPhoto]) {
             return NO;
         }
     }
     return YES;
 }
 
-- (void)updatePlayerInfoPlayVotes:(NSString*)peerID value:(int)currentPlayVotes {
+- (void)updatePlayerInfoPlayVotes:(NSString*)peerID value:(int)roundVotes {
     if (!peerID) { return; }
     
     Player *p;
     if (!(p = [players objectForKey:peerID])) {
         p = [[Player alloc] init]; 
     }
-    p.currentPlayVotes = currentPlayVotes;
+    p.roundVotes = roundVotes;
     [players setObject:p forKey:peerID];
     
 }
@@ -404,10 +396,15 @@
         NSArray *connPeers = [sessionManager.mySession peersWithConnectionState:GKPeerStateConnected];
         int numPlayers = [connPeers count] + 1;      
         if (numPlayers >= 2) {
-            [newRoundBtn setEnabled:YES];
+            //[[newRoundBtn layer] ];
+            [[newRoundBtn layer] setCornerRadius:8.0f];
+            [[newRoundBtn layer] setBorderWidth:0.0f]; 
+            [newRoundBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [newRoundBtn setBackgroundColor:[UIColor greenColor]];
+            [newRoundBtn setHidden:NO];
         } else {
             [gamePlayLabel setText:@"Waiting For Players..."];
-            [newRoundBtn setEnabled:NO];
+            [newRoundBtn setHidden:YES];
         }
     }
     else if (gameStep == 1) {//got seed photo - select a match
@@ -430,6 +427,10 @@
         [seedPhoto setHidden:NO];
         [unveilPhotoBig setHidden:YES];
     }
+    else if (gameStep == 5) {//we have a winner
+        [scrollViewLabel setHidden:NO];
+        [gamePlayLabel setHidden:YES];
+    }    
     else {}
 }
 
@@ -461,7 +462,7 @@
 
     
     Player *p = [players objectForKey:peerID];
-    UIImage *img = [p currentPlayPhoto];
+    UIImage *img = [p roundPhoto];
     [unveilPhotoBig setImage:img];
     
     NSMutableString *label = [NSMutableString stringWithString:[p name]];
@@ -473,7 +474,7 @@
     [btn setTitle:peerID forState:UIControlStateNormal];
     btn.frame = CGRectMake(((75.0+2.0) * unveiledPhotoCounter), 0.0, 75.0, 75.0);  
     [btn setImage:img forState:UIControlStateNormal];
-    [btn addTarget:self action:@selector(voteForPhoto:) forControlEvents:UIControlEventTouchUpInside];
+    [btn addTarget:self action:@selector(iVoteForPhoto:) forControlEvents:UIControlEventTouchUpInside];
         
     [scrollView addSubview:btn];                        
     unveiledPhotoCounter++;    
@@ -505,8 +506,10 @@
 }
 
 - (void)whoVotesForWho:(NSString*)voter votee:(NSString*)votee {
-    Player *p = [players objectForKey:votee];
-    p.currentPlayVotes++;
+    Player *pVotee = [players objectForKey:votee];
+    pVotee.roundVotes++;
+    Player *pVoter = [players objectForKey:voter];
+    pVoter.roundVotedFor = votee;
     
     int j = 0;
     NSArray *photos = [scrollView subviews];
@@ -515,7 +518,7 @@
         photo = [photos objectAtIndex:i];
         if ([[photo titleForState:UIControlStateNormal] length] > 3 && [[photo titleForState:UIControlStateNormal] compare:votee] == NSOrderedSame) {
             UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];                        
-            [btn setTitle:[NSString stringWithFormat:@"%d", p.currentPlayVotes] forState:UIControlStateNormal];
+            [btn setTitle:[NSString stringWithFormat:@"%d", pVotee.roundVotes] forState:UIControlStateNormal];
             [[btn layer] setCornerRadius:10.0f];
             [[btn layer] setMasksToBounds:YES];
             [[btn layer] setBorderWidth:0.0f]; 
@@ -534,6 +537,45 @@
             j++;
         }
     }
+    
+    
+    //do we have a winner yet?
+    BOOL done = YES;
+    int highestVotes = 0;
+    NSString *winner;
+    BOOL isTie = NO;
+    for (id key in players) {
+        Player *pl = [players objectForKey:key];
+        if (pl.roundVotedFor == nil) {
+            done = NO;
+            break;
+        }
+        if (highestVotes < pl.roundVotes) {
+            highestVotes = pl.roundVotes;
+            winner = key;
+            isTie = NO;
+        }
+        else if (highestVotes == pl.roundVotes) {
+            highestVotes = pl.roundVotes;
+            winner = key;
+            isTie = YES;
+        } else {}
+    }
+    
+    if (done && winner) {
+        if (isTie) {
+            [scrollViewLabel setText:@"It's a tie!"];            
+        }
+        else {
+            NSMutableString *tempStr = [NSMutableString stringWithString:@"Congrats, "];
+            Player *plWinner = [players objectForKey:winner];
+            [tempStr appendFormat:@"%@!", plWinner.name];
+            [scrollViewLabel setText:tempStr];
+        }
+        gameStep = 5;
+        [self gameFlowNext];        
+    }
+    
 }
 
 - (void)doneWithUnveilingPhotos:(NSString*)peerID {
