@@ -126,6 +126,10 @@
             UIImage *img = [UIImage imageWithData:payload];
             [delegate updatePlayerInfoPlayPhoto:peer value:img];
         }
+        else if (header == PacketTypeDataPlayPhotoCaption) {//play photo caption
+            NSMutableString *caption = [[NSMutableString alloc] initWithData:payload encoding:[NSString defaultCStringEncoding]];            
+            [delegate updatePlayerInfoPlayPhotoCaption:peer value:caption];
+        }
         else if (header == PacketTypeDataPlayerName) {//player name
             NSMutableString *name = [[NSMutableString alloc] initWithData:payload encoding:[NSString defaultCStringEncoding]];
             [delegate updatePlayerInfoName:peer value:name];
@@ -147,7 +151,7 @@
         else if (header == PacketTypeDataIVoteForPeerID) {//vote
             NSMutableString *votee = [[NSMutableString alloc] initWithData:payload encoding:[NSString defaultCStringEncoding]];            
             [delegate whoVotesForWho:peer votee:votee];
-        }        
+        }          
         else {
 
         }

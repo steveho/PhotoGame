@@ -13,10 +13,11 @@
 #import "SessionManager.h"
 #import "Player.h"
 
-@interface PlayViewController : UIViewController <GamePlayDelegate> {
+@interface PlayViewController : UIViewController <GamePlayDelegate, UIAlertViewDelegate> {
     PhotoGameViewController *theParent;
     SessionManager *sessionManager;
     int playPhotoCounter;
+    UITextField *photoCaptionTextField;
     
     IBOutlet UILabel *scrollViewLabel;
     IBOutlet UILabel *peerLabel;
@@ -57,7 +58,6 @@
 -(void)setupSubmittedPhotosView;
 -(void)setupGame;
 -(void)prepareNewRound;
-- (void)sendPlayPhotoToPeer:(NSString*)peerID image:(UIImage*)img;
 
 @property int unveilResponseCount;
 @property int unveiledPhotoCounter;
@@ -74,6 +74,7 @@
 @property (nonatomic, retain) IBOutlet UIImageView *seedPhoto;
 @property (nonatomic, retain) IBOutlet UIButton *nextPhotoBtn;
 @property (nonatomic, retain) IBOutlet UILabel *scrollViewLabel;
+@property (nonatomic, retain) UITextField *photoCaptionTextField;
 
 @property (nonatomic, retain) PhotoGameViewController *theParent;
 @property (nonatomic, retain) SessionManager *sessionManager;

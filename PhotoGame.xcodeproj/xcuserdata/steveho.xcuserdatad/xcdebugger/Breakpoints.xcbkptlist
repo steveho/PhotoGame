@@ -21,11 +21,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "PhotoGame/PlayViewController.m"
-         timestampString = "331519220.995542"
+         timestampString = "331529988.616396"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "136"
-         endingLineNumber = "136"
+         startingLineNumber = "158"
+         endingLineNumber = "158"
          landmarkName = "-pickLocalSeedPhoto"
          landmarkType = "5">
       </FileBreakpoint>
@@ -35,11 +35,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "PhotoGame/PlayViewController.m"
-         timestampString = "331519220.995542"
+         timestampString = "331529988.616396"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "137"
-         endingLineNumber = "137"
+         startingLineNumber = "159"
+         endingLineNumber = "159"
          landmarkName = "-pickLocalSeedPhoto"
          landmarkType = "5">
       </FileBreakpoint>
@@ -49,11 +49,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "PhotoGame/PlayViewController.m"
-         timestampString = "331521018.835344"
+         timestampString = "331530638.136391"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "509"
-         endingLineNumber = "509"
+         startingLineNumber = "525"
+         endingLineNumber = "525"
          landmarkName = "-unveilPhoto:"
          landmarkType = "5">
       </FileBreakpoint>

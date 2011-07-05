@@ -12,7 +12,7 @@
 @implementation Player
 
 @synthesize name, roundPhoto, roundVotes;
-@synthesize roundVotedFor;
+@synthesize roundVotedFor, roundPhotoCaption;
 
 
 - (id) init {
@@ -21,6 +21,7 @@
         roundPhoto = nil;
         roundVotes = 0;
         roundVotedFor = nil;
+        roundPhotoCaption = nil;
     }
     return self;
 }
@@ -29,6 +30,7 @@
     name = nil;
     roundPhoto = nil;
     roundVotedFor = nil;
+    roundPhotoCaption = nil;
     [super dealloc];
 }
 

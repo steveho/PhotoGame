@@ -15,6 +15,7 @@
 @synthesize gamePlayLabel, unveilPhotoBig, nextPhotoBtn;
 @synthesize players, gameStep, gameRound, mySeedPhotoURL, unveiledPhotoCounter;
 @synthesize unveilResponseCount, playPhotos, iVoteForPeerID;
+@synthesize photoCaptionTextField;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -62,6 +63,34 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+#pragma mark - UIAlertViewDelegate methods
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if (buttonIndex == 1 && [photoCaptionTextField text]) {
+        [self updatePlayerInfoPlayPhotoCaption:[sessionManager.mySession peerID] value:[photoCaptionTextField text]];
+        
+        NSData *data = [[photoCaptionTextField text] dataUsingEncoding:[NSString defaultCStringEncoding]];
+        [self sendDataToPeer:nil type:PacketTypeDataPlayPhotoCaption data:data];
+	}
+    
+    [self updatePlayerInfoPlayPhoto:[sessionManager.mySession peerID] value:[previewPhoto image]];    
+    [self setupSubmittedPhotosView];
+    
+    NSData *imageData = [NSData dataWithData:UIImagePNGRepresentation([previewPhoto image])];        
+    [self sendDataToPeer:nil type:PacketTypeDataPlayPhoto data:imageData];
+    
+    gameStep = 2;
+    [self gameFlowNext];
+    
+    //am i the current seeder? and if all have submitted, then on the "viewing" step
+    if ([sessionManager.mySession peerID] == currentSeeder && [self allHaveSubmittedPhoto]) {
+        gameStep = 3;
+        [self gameFlowNext];
+        [self unveilNextPhoto:currentSeeder];
+    }        
+    
+}
+
 #pragma mark - Game methods
 
 - (void)setupGame {
@@ -89,18 +118,11 @@
         player.roundPhoto = nil;
         player.roundVotedFor = nil;
         player.roundVotes = 0;
+        player.roundPhotoCaption = nil;
     }
     gameRound++;
     gameStep = 0;
-    [self gameFlowNext];    
- 
-/*    
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Title" message:@"AThe message."  delegate:self cancelButtonTitle:@"button 1" otherButtonTitles: @"button", nil];
-    [alert show];
-    [alert release];    
-    
-    NSLog(@"start round #%d", gameRound);
-    */
+    [self gameFlowNext];
 }
 
 - (IBAction)newRoundBtnClicked {
@@ -142,7 +164,7 @@
             if (iref) {
                 
                 UIImage *img = [UIImage imageWithCGImage:iref];
-                img = [theParent scaleImage:img toSize:CGSizeMake(150.0f,150.0f)];
+                img = [theParent scaleImage:img toSize:CGSizeMake(160.0f,160.0f)];
                 [self setLocalSeedPhoto:img];                    
                 
             }
@@ -189,7 +211,7 @@
         CGImageRef iref = [rep fullResolutionImage];
         if (iref) {
             UIImage *img = [UIImage imageWithCGImage:iref];
-            img = [theParent scaleImage:img toSize:CGSizeMake(75.0f,75.0f)];            
+            img = [theParent scaleImage:img toSize:CGSizeMake(160.0f,160.0f)];            
             UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
             btn.frame = CGRectMake(((75.0+2.0) * playPhotoCounter), 0.0, 75.0, 75.0);  
             [btn setImage:img forState:UIControlStateNormal];
@@ -205,7 +227,7 @@
     
     ALAssetsLibrary* assetslibrary = [[[ALAssetsLibrary alloc] init] autorelease];    
     NSMutableArray *urls = [theParent allImages];
-    int max = 16;
+    int max = 50;
     for (int i=[urls count]-1; i>=0; i--) {
         if (mySeedPhotoURL == [urls objectAtIndex:i]) {
             continue;
@@ -251,39 +273,16 @@
 
 - (IBAction)playPhotoBtnClicked {
     if (gameStep == 1 && [previewPhoto image]) {
-        [self updatePlayerInfoPlayPhoto:[sessionManager.mySession peerID] value:[previewPhoto image]];
-    
-        [self setupSubmittedPhotosView];
-        [self sendPlayPhotoToPeer:nil image:[previewPhoto image]];
-        
-        gameStep = 2;
-        [self gameFlowNext];
-        
-        //am i the current seeder? and if all have submitted, then on the "viewing" step
-        if ([sessionManager.mySession peerID] == currentSeeder && [self allHaveSubmittedPhoto]) {
-            gameStep = 3;
-            [self gameFlowNext];
-            [self unveilNextPhoto:currentSeeder];
-        }        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Add Photo Caption?" message:@"Add Photo Caption?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];        
+        photoCaptionTextField = [[UITextField alloc] initWithFrame:CGRectMake(20.0, 45.0, 245.0, 25.0)];
+        [photoCaptionTextField setBackgroundColor:[UIColor whiteColor]];
+        [alert addSubview:photoCaptionTextField];     
+        [photoCaptionTextField becomeFirstResponder];
+        [alert show];
+        [alert release];
+        alert = nil; 
     }
 }
-
-- (void)sendPlayPhotoToPeer:(NSString*)peerID image:(UIImage*)img {    
-    if (img) {
-        NSData *imageData = [NSData dataWithData:UIImagePNGRepresentation(img)];
-        
-        if (peerID) { // a specific peerID
-            [sessionManager sendData:imageData ofType:PacketTypeDataPlayPhoto to:[NSArray arrayWithObject:peerID]];
-        }
-        else { // broadcast to all connected peers        
-            NSArray *connectedPeers = [sessionManager.mySession peersWithConnectionState:GKPeerStateConnected]; 
-            if ([connectedPeers count]) {
-                [sessionManager sendData:imageData ofType:PacketTypeDataPlayPhoto to:connectedPeers];                
-            }    
-        }
-    }
-}
-
 
 
 
@@ -325,6 +324,8 @@
 }
 
 - (void)sendDataToPeer:(NSString*)peerID type:(PacketType)type data:(NSData*)data {
+    NSLog(@"data length: %d", [data length]);
+    
     NSArray *toPeers;
     if (peerID) {
         toPeers = [NSArray arrayWithObject:peerID];
@@ -348,14 +349,14 @@
     return [seedPhoto image];
 }
 
-- (void)updatePlayerInfoName:(NSString*)peerID value:(NSString*)value {
+- (void)updatePlayerInfoName:(NSString*)peerID value:(NSString*)name {
     if (!peerID) { return; }
 
     Player *p;
     if (!(p = [players objectForKey:peerID])) {
         p = [[Player alloc] init]; 
     }
-    p.name = value;
+    p.name = name;
     [players setObject:p forKey:peerID];
 }
 
@@ -380,6 +381,17 @@
         [self gameFlowNext];
         [self unveilNextPhoto:currentSeeder]; //unveil first photo, my own photo
     }
+}
+
+- (void)updatePlayerInfoPlayPhotoCaption:(NSString*)peerID value:(NSString*)caption {
+    if (!peerID) { return; }
+    
+    Player *p;
+    if (!(p = [players objectForKey:peerID])) {
+        p = [[Player alloc] init]; 
+    }
+    p.roundPhotoCaption = caption;
+    [players setObject:p forKey:peerID];    
 }
 
 - (BOOL)allHaveSubmittedPhoto {
@@ -456,6 +468,7 @@
         [gamePlayLabel setText:@"Vote For A Match"];
         [seedPhoto setHidden:NO];
         [unveilPhotoBig setHidden:YES];
+        [scrollViewLabel setHidden:YES];
     }
     else if (gameStep == 5) {//we have a winner
         [scrollViewLabel setHidden:NO];
@@ -504,6 +517,9 @@
     UIImage *img = [p roundPhoto];
     [unveilPhotoBig setImage:img];
     
+    [scrollViewLabel setText:p.roundPhotoCaption];
+    [scrollViewLabel setHidden:NO];
+    
     NSMutableString *label = [NSMutableString stringWithString:[p name]];
     [label appendString:@"'s Photo"];
     [gamePlayLabel setText:label];
@@ -550,33 +566,35 @@
     Player *pVoter = [players objectForKey:voter];
     pVoter.roundVotedFor = votee;
     
-    int j = 0;
-    NSArray *photos = [scrollView subviews];
-    UIButton *photo;
-    for (int i=0; i<[photos count]; i++) {
-        photo = [photos objectAtIndex:i];
-        if ([[photo titleForState:UIControlStateNormal] length] > 3 && [[photo titleForState:UIControlStateNormal] compare:votee] == NSOrderedSame) {
-            UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];                        
-            [btn setTitle:[NSString stringWithFormat:@"%d", pVotee.roundVotes] forState:UIControlStateNormal];
-            [[btn layer] setCornerRadius:10.0f];
-            [[btn layer] setMasksToBounds:YES];
-            [[btn layer] setBorderWidth:0.0f]; 
-            [btn setBackgroundColor:[UIColor greenColor]];
-            [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            [btn setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
-            [btn.titleLabel setFont:[UIFont boldSystemFontOfSize:12.0]];  
-            
-            btn.frame = CGRectMake((77*j+55), 0.0, 20, 20);
-            [scrollView addSubview:btn];
-                        
-            break;
+    if (iVoteForPeerID != nil) {
+        int j = 0;
+        NSArray *photos = [scrollView subviews];
+        UIButton *photo;
+        for (int i=0; i<[photos count]; i++) {
+            photo = [photos objectAtIndex:i];
+            if ([[photo titleForState:UIControlStateNormal] length] > 3) {
+                Player *p = [players objectForKey:[photo titleForState:UIControlStateNormal]];
+                if (p.roundVotes == 0) {
+                    j++;
+                    continue;
+                }
+                UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];                        
+                [btn setTitle:[NSString stringWithFormat:@"%d", p.roundVotes] forState:UIControlStateNormal];
+                [[btn layer] setCornerRadius:10.0f];
+                [[btn layer] setMasksToBounds:YES];
+                [[btn layer] setBorderWidth:0.0f]; 
+                [btn setBackgroundColor:[UIColor greenColor]];
+                [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                [btn setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
+                [btn.titleLabel setFont:[UIFont boldSystemFontOfSize:12.0]];  
+                
+                btn.frame = CGRectMake((77*j+55), 0.0, 20, 20);
+                [scrollView addSubview:btn];
+                
+                j++;
+            }
         }
-        //count for photo views, not other views
-        if ([[photo titleForState:UIControlStateNormal] length] > 3) {
-            j++;
-        }
-    }
-    
+    }    
     
     //do we have a winner yet?
     BOOL done = YES;

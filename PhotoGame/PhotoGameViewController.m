@@ -76,6 +76,7 @@
         nameField = [[UITextField alloc] initWithFrame:CGRectMake(20.0, 45.0, 245.0, 25.0)];
         [nameField setBackgroundColor:[UIColor whiteColor]];
         [alert addSubview:nameField];
+        [nameField becomeFirstResponder];
         
         [alert show];
         [alert release];

@@ -17,14 +17,9 @@ typedef enum {
     PacketTypeDataUnveilPhoto = 14,
     PacketTypeDataDoneViewingCurrentPhoto = 15,
     PacketTypeNotifyIAmTheSeeder = 16,
-    PacketTypeNotifyDoneUnveilingPhoto = 18,
     PacketTypeDataIVoteForPeerID = 17,
-    
-    PacketTypeGameStep0 = 0,
-    PacketTypeGameStep1 = 1,
-    PacketTypeGameStep2 = 2,
-    PacketTypeGameStep3 = 3,
-    PacketTypeGameStep4 = 4,
+    PacketTypeNotifyDoneUnveilingPhoto = 18,
+    PacketTypeDataPlayPhotoCaption = 19
 } PacketType;
 
 @interface SessionManager : NSObject <GKSessionDelegate> {
@@ -63,6 +58,7 @@ typedef enum {
 - (void)updatePlayerInfoName:(NSString*)peerID value:(NSString*)name;
 - (void)updatePlayerInfoPlayPhoto:(NSString*)peerID value:(UIImage*)roundPhoto;
 - (void)updatePlayerInfoPlayVotes:(NSString*)peerID value:(int)roundVotes;
+- (void)updatePlayerInfoPlayPhotoCaption:(NSString*)peerID value:(NSString*)caption;
 
 - (void)gameFlowNext; // to determine the game next step
 - (void)setCurrentSeeder:(NSString*)peerID; // the one with the seed photo being used for this round
