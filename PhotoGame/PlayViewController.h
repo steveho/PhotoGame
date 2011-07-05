@@ -26,6 +26,7 @@
     IBOutlet UIImageView *previewPhoto;
     IBOutlet UILabel *gamePlayLabel;
     IBOutlet UIButton *newRoundBtn;
+    IBOutlet UIButton *roundXBtn;
     IBOutlet UIButton *playPhotoBtn;
     IBOutlet UIButton *nextPhotoBtn;
 
@@ -55,6 +56,7 @@
 -(void)setupPlayPhotosView;
 -(void)setupSubmittedPhotosView;
 -(void)setupGame;
+-(void)prepareNewRound;
 - (void)sendPlayPhotoToPeer:(NSString*)peerID image:(UIImage*)img;
 
 @property int unveilResponseCount;
@@ -62,6 +64,7 @@
 @property int gameStep;
 @property int gameRound;
 @property (nonatomic, retain) IBOutlet UIButton *newRoundBtn;
+@property (nonatomic, retain) IBOutlet UIButton *roundXBtn;
 @property (nonatomic, retain) IBOutlet UIButton *playPhotoBtn;
 @property (nonatomic, retain) IBOutlet UIImageView *previewPhoto;
 @property (nonatomic, retain) IBOutlet UIImageView *unveilPhotoBig;

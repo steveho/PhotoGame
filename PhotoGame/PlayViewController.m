@@ -11,7 +11,7 @@
 
 @implementation PlayViewController
 
-@synthesize theParent, sessionManager, peerLabel, seedPhoto, scrollView, previewPhoto, newRoundBtn, playPhotoBtn, scrollViewLabel;
+@synthesize theParent, sessionManager, peerLabel, seedPhoto, scrollView, previewPhoto, newRoundBtn, playPhotoBtn, scrollViewLabel, roundXBtn;
 @synthesize gamePlayLabel, unveilPhotoBig, nextPhotoBtn;
 @synthesize players, gameStep, gameRound, mySeedPhotoURL, unveiledPhotoCounter;
 @synthesize unveilResponseCount, playPhotos, iVoteForPeerID;
@@ -43,7 +43,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        
+    
+    gameRound = 0;
     [self setupGame];    
     
 }
@@ -66,28 +67,51 @@
 - (void)setupGame {
     players = [[NSMutableDictionary alloc] init];
     mySeedPhotoURL = nil;
-    playPhotos = nil;
-    iVoteForPeerID = nil;
-    [scrollViewLabel setHidden:YES];
     
     sessionManager = [[SessionManager alloc] init];
     sessionManager.delegate = self;
     [sessionManager setupSession];
-    
+
     // set up me player    
     Player *me = [[Player alloc] init];
     me.name = [theParent myUserName];
-    [players setValue:me forKey:[sessionManager.mySession peerID]];    
+    [players setValue:me forKey:[sessionManager.mySession peerID]];       
+    
+    [self prepareNewRound];
+}
 
+-(void)prepareNewRound {    
+    playPhotos = nil;
+    iVoteForPeerID = nil;
+    
+    for (id key in players) {
+        Player *player = (Player *)[players objectForKey:key];
+        player.roundPhoto = nil;
+        player.roundVotedFor = nil;
+        player.roundVotes = 0;
+    }
+    gameRound++;
     gameStep = 0;
-    [self gameFlowNext];
+    [self gameFlowNext];    
+ 
+/*    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Title" message:@"AThe message."  delegate:self cancelButtonTitle:@"button 1" otherButtonTitles: @"button", nil];
+    [alert show];
+    [alert release];    
+    
+    NSLog(@"start round #%d", gameRound);
+    */
 }
 
 - (IBAction)newRoundBtnClicked {
-    if (currentSeeder == nil) {
+    if (currentSeeder == nil || gameStep == 5) {        
+        if (gameStep == 5) {
+            [self prepareNewRound];
+        }
+        
         NSData *data = [@"y" dataUsingEncoding:[NSString defaultCStringEncoding]];
         [self sendDataToPeer:nil type:PacketTypeNotifyIAmTheSeeder data:data];
-        
+
         [self pickLocalSeedPhoto];
         
         //send seed photo to peers
@@ -97,8 +121,7 @@
             [self setCurrentSeeder:[sessionManager.mySession peerID]];
         }
         
-        [newRoundBtn setHidden:YES];
-    }
+    }   
 }
 
 - (IBAction)nextPhotoBtnClicked {
@@ -132,9 +155,10 @@
     }        
 }
 
-- (void)playPhotoClicked:(id)sender {
+- (void)playPhotoClicked:(id)sender {    
     [previewPhoto setImage:[sender currentImage]];
     [playPhotoBtn setHidden:NO];
+    [previewPhoto setHidden:NO];
 }
 
 - (void)submittedPhotoClicked:(id)sender {
@@ -151,6 +175,11 @@
 }
 
 - (void)setupPlayPhotosView {
+    //clear all photos in scroll view
+    for (UIView *view in scrollView.subviews) {
+        [view removeFromSuperview];
+    }    
+    
     [scrollView setScrollEnabled:YES];
     [scrollView setContentSize:CGSizeMake(300, 80)];
     playPhotoCounter = 0;
@@ -189,6 +218,7 @@
     }
     [scrollView setContentSize:CGSizeMake(((75.0+2.0) * playPhotoCounter), 80)];
     
+
 }
 
 - (void)setupSubmittedPhotosView {
@@ -204,9 +234,6 @@
     UIImage *hidImg = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"pwp_hidden_image" ofType:@"png"]];
     // other players
     for (id key in players) {
-        //if (key == [sessionManager.mySession peerID]) {
-        //    continue;
-        //}
         id player = [players objectForKey:key];
         if ([player roundPhoto]) {
             btn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -392,6 +419,9 @@
         [unveilPhotoBig setHidden:YES];
         unveiledPhotoCounter = 0;
         [nextPhotoBtn setHidden:YES];
+        [roundXBtn setHidden:YES];
+        [scrollViewLabel setHidden:YES];
+        [newRoundBtn setHidden:YES];        
         
         NSArray *connPeers = [sessionManager.mySession peersWithConnectionState:GKPeerStateConnected];
         int numPlayers = [connPeers count] + 1;      
@@ -430,14 +460,23 @@
     else if (gameStep == 5) {//we have a winner
         [scrollViewLabel setHidden:NO];
         [gamePlayLabel setHidden:YES];
+        
+        NSMutableString *roundXTitle = [NSMutableString stringWithString:@"Round "];
+        [roundXTitle appendFormat:@"%d", (gameRound+1)];
+        [roundXBtn setTitle:roundXTitle forState:UIControlStateNormal];
+        [roundXBtn setHidden:NO];
     }    
     else {}
 }
 
 - (void)setCurrentSeeder:(NSString*)peerID {
     if (peerID) {
-        currentSeeder = peerID;
         
+        if (gameStep == 5) {
+            [self prepareNewRound];
+        }
+        currentSeeder = peerID;
+                
         Player *p = [players objectForKey:currentSeeder];
         NSLog(@"Current seeder: %@ (%@)", [p name], currentSeeder);
     }
