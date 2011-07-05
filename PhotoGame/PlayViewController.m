@@ -47,7 +47,7 @@
     
     gameRound = 0;
     [self setupGame];    
-    
+
 }
 
 - (void)viewDidUnload
@@ -225,7 +225,9 @@
         NSLog(@"Can't get image - %@",[myerror localizedDescription]);
     };        
     
-    ALAssetsLibrary* assetslibrary = [[[ALAssetsLibrary alloc] init] autorelease];    
+    ALAssetsLibrary* assetslibrary = [[[ALAssetsLibrary alloc] init] autorelease];   
+    
+    /*
     NSMutableArray *urls = [theParent allImages];
     int max = 50;
     for (int i=[urls count]-1; i>=0; i--) {
@@ -238,6 +240,21 @@
             break;
         }
     }
+    */
+
+    int j = 0;
+    for (int i=0; i<[theParent.playImages count]; i++) {
+        if (mySeedPhotoURL == [theParent.playImages objectAtIndex:i]) {
+            continue;
+        }
+        [assetslibrary assetForURL:[theParent.playImages objectAtIndex:i] resultBlock:resultblock failureBlock:failureblock];
+        j++;
+        if (j >= 16) {
+            break;
+        }
+    }
+    
+    
     [scrollView setContentSize:CGSizeMake(((75.0+2.0) * playPhotoCounter), 80)];
     
 

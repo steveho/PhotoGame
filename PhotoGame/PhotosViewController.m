@@ -50,85 +50,99 @@
     [super viewDidLoad];
 
     imgBtn0 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn0.frame = CGRectMake(4.0, 48.0, 75.0, 75.0);
+    imgBtn0.frame = CGRectMake(4.0, 53.0, 75.0, 75.0);
     [self.view addSubview:imgBtn0];
     [imgBtn0 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn1 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn1.frame = CGRectMake(83.0, 48.0, 75.0, 75.0);
+    imgBtn1.frame = CGRectMake(83.0, 53.0, 75.0, 75.0);
     [self.view addSubview:imgBtn1];
     [imgBtn1 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn2 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn2.frame = CGRectMake(162.0, 48.0, 75.0, 75.0);
+    imgBtn2.frame = CGRectMake(162.0, 53.0, 75.0, 75.0);
     [self.view addSubview:imgBtn2];
     [imgBtn2 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn3 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn3.frame = CGRectMake(241.0, 48.0, 75.0, 75.0);
+    imgBtn3.frame = CGRectMake(241.0, 53.0, 75.0, 75.0);
     [self.view addSubview:imgBtn3];
     [imgBtn3 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn4 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn4.frame = CGRectMake(4.0, 127.0, 75.0, 75.0);
+    imgBtn4.frame = CGRectMake(4.0, 132.0, 75.0, 75.0);
     [self.view addSubview:imgBtn4];
     [imgBtn4 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn5 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn5.frame = CGRectMake(83.0, 127.0, 75.0, 75.0);
+    imgBtn5.frame = CGRectMake(83.0, 132.0, 75.0, 75.0);
     [self.view addSubview:imgBtn5];
     [imgBtn5 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn6 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn6.frame = CGRectMake(162.0, 127.0, 75.0, 75.0);
+    imgBtn6.frame = CGRectMake(162.0, 132.0, 75.0, 75.0);
     [self.view addSubview:imgBtn6];
     [imgBtn6 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn7 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn7.frame = CGRectMake(241.0, 127.0, 75.0, 75.0);
+    imgBtn7.frame = CGRectMake(241.0, 132.0, 75.0, 75.0);
     [self.view addSubview:imgBtn7];
     [imgBtn7 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn8 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn8.frame = CGRectMake(4.0, 206.0, 75.0, 75.0);
+    imgBtn8.frame = CGRectMake(4.0, 211.0, 75.0, 75.0);
     [self.view addSubview:imgBtn8];
     [imgBtn8 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn9 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn9.frame = CGRectMake(83.0, 206.0, 75.0, 75.0);
+    imgBtn9.frame = CGRectMake(83.0, 211.0, 75.0, 75.0);
     [self.view addSubview:imgBtn9];
     [imgBtn9 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn10 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn10.frame = CGRectMake(162.0, 206.0, 75.0, 75.0);
+    imgBtn10.frame = CGRectMake(162.0, 211.0, 75.0, 75.0);
     [self.view addSubview:imgBtn10];
     [imgBtn10 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn11 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn11.frame = CGRectMake(241.0, 206.0, 75.0, 75.0);
+    imgBtn11.frame = CGRectMake(241.0, 211.0, 75.0, 75.0);
     [self.view addSubview:imgBtn11];
     [imgBtn11 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn12 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn12.frame = CGRectMake(4.0, 285.0, 75.0, 75.0);
+    imgBtn12.frame = CGRectMake(4.0, 290.0, 75.0, 75.0);
     [self.view addSubview:imgBtn12];
     [imgBtn12 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn13 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn13.frame = CGRectMake(83.0, 285.0, 75.0, 75.0);
+    imgBtn13.frame = CGRectMake(83.0, 290.0, 75.0, 75.0);
     [self.view addSubview:imgBtn13];
     [imgBtn13 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn14 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn14.frame = CGRectMake(162.0, 285.0, 75.0, 75.0);
+    imgBtn14.frame = CGRectMake(162.0, 290.0, 75.0, 75.0);
     [self.view addSubview:imgBtn14];
     [imgBtn14 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn15 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn15.frame = CGRectMake(241.0, 285.0, 75.0, 75.0);
+    imgBtn15.frame = CGRectMake(241.0, 290.0, 75.0, 75.0);
     [self.view addSubview:imgBtn15];
     [imgBtn15 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];    
     
+    [self populatePlayPhotoGrid];
+    
+    /*
+    if ([theParent.playImages count] > 0) {
+        theParent.gameData = [[GameData alloc] init];
+        theParent.gameData.images = [[NSMutableArray alloc] init];
+        for (int i=0; i<[theParent.playImages count]; i++) {
+            [theParent.gameData.images addObject:[theParent.playImages objectAtIndex:i]];
+        }
+        NSLog(@"count: %d", [theParent.gameData.images count]);
+        [theParent.gameData saveToFile];
+        [theParent.gameData release];
+    }    
+    */
 }
 
 - (void)viewDidUnload
@@ -144,8 +158,29 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-- (void) buttonPushed:(id)sender {
+- (void)buttonPushed:(id)sender {
     
+}
+
+- (void)populatePlayPhotoGrid {
+    ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *myasset) {
+        ALAssetRepresentation *rep = [myasset defaultRepresentation];
+        CGImageRef iref = [rep fullResolutionImage];
+        if (iref) {
+            
+            UIImage *img = [UIImage imageWithCGImage:iref];
+            [self addImageToGrid:img];                    
+            
+        }
+    };    
+    ALAssetsLibraryAccessFailureBlock failureblock  = ^(NSError *myerror) {
+        NSLog(@"Can't get image - %@",[myerror localizedDescription]);
+    };        
+    ALAssetsLibrary* assetslibrary = [[[ALAssetsLibrary alloc] init] autorelease];
+    
+    for (int i=0; i<[theParent.playImages count]; i++) {
+        [assetslibrary assetForURL:[theParent.playImages objectAtIndex:i] resultBlock:resultblock failureBlock:failureblock];
+    }
 }
 
 - (BOOL)addImageToGrid:(UIImage *)img {

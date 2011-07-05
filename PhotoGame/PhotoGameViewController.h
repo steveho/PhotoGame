@@ -19,7 +19,7 @@
     GameData *gameData;
     NSMutableArray *allImages;
     NSMutableString *myUserName;
-    
+    NSMutableArray *playImages;
 }
 
 -(IBAction)startGame;
@@ -29,10 +29,12 @@
 -(void)findAllImages;
 -(NSURL*)getDeviceRandomPhoto;
 -(UIImage*)scaleImage:(UIImage*)image toSize:(CGSize)size;
+-(void)getRandomPlayPhotos;
 
 @property (nonatomic, retain) NSMutableArray *allImages;
 @property (nonatomic, retain) NSMutableString *myUserName;
-
+@property (nonatomic, retain) NSMutableArray *playImages;
+@property (nonatomic, retain) GameData *gameData;
 
 
 @end

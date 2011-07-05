@@ -11,7 +11,7 @@
 
 @implementation PhotoGameViewController
 
-@synthesize allImages, myUserName;
+@synthesize allImages, myUserName, playImages, gameData;
 
 -(IBAction)showEditPhotoView:(id)sender {    
     PhotoGameAppDelegate *delegate = (PhotoGameAppDelegate*)[[UIApplication sharedApplication] delegate];
@@ -47,11 +47,24 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    /*
+    gameData = [[GameData alloc] init];
+    [gameData.images removeAllObjects];
+    [gameData saveToFile];     
+    [gameData release];    
+    return;
+    */
     
     [self findAllImages];
-    [self loadData];
     
-}
+    [self loadData];
+
+    if ([playImages count] == 0) {
+        [self getRandomPlayPhotos];
+    }
+    
+ }
 
 
 - (void)viewDidUnload
@@ -104,25 +117,38 @@
 
 #pragma mark - data methods
 
-- (void)loadData {
-
-    gameData = [[GameData alloc] init];        
+-(void)getRandomPlayPhotos {
+    //pick 16 random photos from "allImages"
+    NSURL *url;
+    int max = 17;
     
-    ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *myasset) {
-        ALAssetRepresentation *rep = [myasset defaultRepresentation];
-        CGImageRef iref = [rep fullResolutionImage];
-        if (iref) {
-            //UIImage *i = [UIImage imageWithCGImage:iref];
-            //[self addImageToGrid:i];
+    for (int i=0; i<100; i++) {
+        url = [self getDeviceRandomPhoto];
+        if (url && [playImages indexOfObject:url] == NSNotFound) {
+            [playImages addObject:url];
+            if ([playImages count] >= max) {
+                break;
+            }
         }
-    };    
-    ALAssetsLibraryAccessFailureBlock failureblock  = ^(NSError *myerror) {
-        NSLog(@"Can't get image - %@",[myerror localizedDescription]);
-    };
-    ALAssetsLibrary* assetslibrary = [[[ALAssetsLibrary alloc] init] autorelease];
+    }
+
     
+    if ([playImages count] > 0 && [gameData.images count] == 0) {
+        gameData = [[GameData alloc] init];
+        for (int i=0; i<[playImages count]; i++) {
+            [gameData.images addObject:[playImages objectAtIndex:i]];
+        }
+        [gameData saveToFile];        
+        [gameData release];
+    }    
+}
+
+- (void)loadData {
+    playImages = [[NSMutableArray alloc] init];
+    gameData = [[GameData alloc] init];        
+        
     for(NSURL *url in gameData.images) {
-        [assetslibrary assetForURL:url resultBlock:resultblock failureBlock:failureblock];    
+        [playImages addObject:url];
     }
     self.myUserName = [gameData getUserName];
         
@@ -136,16 +162,22 @@
     void (^assetEnumerator)(ALAsset *, NSUInteger, BOOL *) = ^(ALAsset *result, NSUInteger index, BOOL *stop)
     {
         if(result != nil)
-        {            
-            [self.allImages addObject:[[result defaultRepresentation] url]];
+        {        
+            if ([self.allImages count] < 1000) {
+                [self.allImages addObject:[[result defaultRepresentation] url]];
+            }
         }
     };    
     
     void (^assetGroupEnumerator)(ALAssetsGroup *, BOOL *) = ^(ALAssetsGroup *group, BOOL *stop){
-        if(group != nil)
-        {
-            [group enumerateAssetsUsingBlock:assetEnumerator];
-            
+        if(group != nil)            
+        {   
+            if ([self.allImages count] < 1000) {
+                [group enumerateAssetsUsingBlock:assetEnumerator];    
+            }
+            if ([self.playImages count] == 0) {
+                [self getRandomPlayPhotos];
+            }
         }  
     };
     
