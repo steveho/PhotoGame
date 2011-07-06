@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		27041AEA13C3E31B0072A09A /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27041AE913C3E31B0072A09A /* Entitlements.plist */; };
 		2756576513BFBC1B00E9A856 /* pwp_hidden_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 2756576413BFBC1B00E9A856 /* pwp_hidden_image.png */; };
 		2756576713C1AF9A00E9A856 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2756576613C1AF9A00E9A856 /* QuartzCore.framework */; };
 		27BCB59F13BC3C4B008196D6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27BCB59E13BC3C4B008196D6 /* UIKit.framework */; };
@@ -18,12 +19,6 @@
 		27BCB5B213BC3C4B008196D6 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27BCB5B013BC3C4B008196D6 /* MainWindow.xib */; };
 		27BCB5B513BC3C4B008196D6 /* PhotoGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27BCB5B413BC3C4B008196D6 /* PhotoGameViewController.m */; };
 		27BCB5B813BC3C4B008196D6 /* PhotoGameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27BCB5B613BC3C4B008196D6 /* PhotoGameViewController.xib */; };
-		27BCB5BF13BC3C4B008196D6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27BCB59E13BC3C4B008196D6 /* UIKit.framework */; };
-		27BCB5C013BC3C4B008196D6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27BCB5A013BC3C4B008196D6 /* Foundation.framework */; };
-		27BCB5C113BC3C4B008196D6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27BCB5A213BC3C4B008196D6 /* CoreGraphics.framework */; };
-		27BCB5C913BC3C4B008196D6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 27BCB5C713BC3C4B008196D6 /* InfoPlist.strings */; };
-		27BCB5CC13BC3C4B008196D6 /* PhotoGameTests.h in Resources */ = {isa = PBXBuildFile; fileRef = 27BCB5CB13BC3C4B008196D6 /* PhotoGameTests.h */; };
-		27BCB5CE13BC3C4B008196D6 /* PhotoGameTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 27BCB5CD13BC3C4B008196D6 /* PhotoGameTests.m */; };
 		27BCB5DA13BC3C84008196D6 /* PhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27BCB5D813BC3C84008196D6 /* PhotosViewController.m */; };
 		27BCB5DB13BC3C84008196D6 /* PhotosViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27BCB5D913BC3C84008196D6 /* PhotosViewController.xib */; };
 		27BCB5DF13BC3CA0008196D6 /* PlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27BCB5DD13BC3CA0008196D6 /* PlayViewController.m */; };
@@ -35,17 +30,12 @@
 		27BCB60513BDB008008196D6 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 27BCB60413BDB007008196D6 /* Player.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		27BCB5C213BC3C4B008196D6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 27BCB59113BC3C4B008196D6 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 27BCB59913BC3C4B008196D6;
-			remoteInfo = PhotoGame;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
+		27041AE013C3D8E40072A09A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources-iPad/PhotoGame/en.lproj/MainWindow.xib"; sourceTree = "<group>"; };
+		27041AE213C3D8E40072A09A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources-iPad/PhotoGame/en.lproj/PhotoGameViewController.xib"; sourceTree = "<group>"; };
+		27041AE313C3D8E40072A09A /* PhotosViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PhotosViewController.xib; path = "Resources-iPad/PhotoGame/PhotosViewController.xib"; sourceTree = "<group>"; };
+		27041AE413C3D8E40072A09A /* PlayViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PlayViewController.xib; path = "Resources-iPad/PhotoGame/PlayViewController.xib"; sourceTree = "<group>"; };
+		27041AE913C3E31B0072A09A /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		2756576413BFBC1B00E9A856 /* pwp_hidden_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pwp_hidden_image.png; path = ../../../../Desktop/pwp_hidden_image.png; sourceTree = "<group>"; };
 		2756576613C1AF9A00E9A856 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		27BCB59A13BC3C4B008196D6 /* PhotoGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -62,7 +52,6 @@
 		27BCB5B313BC3C4B008196D6 /* PhotoGameViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoGameViewController.h; sourceTree = "<group>"; };
 		27BCB5B413BC3C4B008196D6 /* PhotoGameViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoGameViewController.m; sourceTree = "<group>"; };
 		27BCB5B713BC3C4B008196D6 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/PhotoGameViewController.xib; sourceTree = "<group>"; };
-		27BCB5BE13BC3C4B008196D6 /* PhotoGameTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhotoGameTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		27BCB5C613BC3C4B008196D6 /* PhotoGameTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PhotoGameTests-Info.plist"; sourceTree = "<group>"; };
 		27BCB5C813BC3C4B008196D6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		27BCB5CA13BC3C4B008196D6 /* PhotoGameTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PhotoGameTests-Prefix.pch"; sourceTree = "<group>"; };
@@ -98,22 +87,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		27BCB5BA13BC3C4B008196D6 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				27BCB5BF13BC3C4B008196D6 /* UIKit.framework in Frameworks */,
-				27BCB5C013BC3C4B008196D6 /* Foundation.framework in Frameworks */,
-				27BCB5C113BC3C4B008196D6 /* CoreGraphics.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		27041ADE13C3D8DC0072A09A /* Resources-iPad */ = {
+			isa = PBXGroup;
+			children = (
+				27041ADF13C3D8E40072A09A /* MainWindow.xib */,
+				27041AE113C3D8E40072A09A /* PhotoGameViewController.xib */,
+				27041AE313C3D8E40072A09A /* PhotosViewController.xib */,
+				27041AE413C3D8E40072A09A /* PlayViewController.xib */,
+			);
+			name = "Resources-iPad";
+			sourceTree = "<group>";
+		};
 		27BCB58F13BC3C4B008196D6 = {
 			isa = PBXGroup;
 			children = (
+				27041AE913C3E31B0072A09A /* Entitlements.plist */,
+				27041ADE13C3D8DC0072A09A /* Resources-iPad */,
 				27BCB5A413BC3C4B008196D6 /* PhotoGame */,
 				27BCB5C413BC3C4B008196D6 /* PhotoGameTests */,
 				27BCB59D13BC3C4B008196D6 /* Frameworks */,
@@ -125,7 +117,6 @@
 			isa = PBXGroup;
 			children = (
 				27BCB59A13BC3C4B008196D6 /* PhotoGame.app */,
-				27BCB5BE13BC3C4B008196D6 /* PhotoGameTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -221,25 +212,6 @@
 			productReference = 27BCB59A13BC3C4B008196D6 /* PhotoGame.app */;
 			productType = "com.apple.product-type.application";
 		};
-		27BCB5BD13BC3C4B008196D6 /* PhotoGameTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 27BCB5D413BC3C4B008196D6 /* Build configuration list for PBXNativeTarget "PhotoGameTests" */;
-			buildPhases = (
-				27BCB5B913BC3C4B008196D6 /* Sources */,
-				27BCB5BA13BC3C4B008196D6 /* Frameworks */,
-				27BCB5BB13BC3C4B008196D6 /* Resources */,
-				27BCB5BC13BC3C4B008196D6 /* ShellScript */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				27BCB5C313BC3C4B008196D6 /* PBXTargetDependency */,
-			);
-			name = PhotoGameTests;
-			productName = PhotoGameTests;
-			productReference = 27BCB5BE13BC3C4B008196D6 /* PhotoGameTests.octest */;
-			productType = "com.apple.product-type.bundle";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -258,7 +230,6 @@
 			projectRoot = "";
 			targets = (
 				27BCB59913BC3C4B008196D6 /* PhotoGame */,
-				27BCB5BD13BC3C4B008196D6 /* PhotoGameTests */,
 			);
 		};
 /* End PBXProject section */
@@ -274,35 +245,11 @@
 				27BCB5DB13BC3C84008196D6 /* PhotosViewController.xib in Resources */,
 				27BCB5E013BC3CA0008196D6 /* PlayViewController.xib in Resources */,
 				2756576513BFBC1B00E9A856 /* pwp_hidden_image.png in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		27BCB5BB13BC3C4B008196D6 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				27BCB5C913BC3C4B008196D6 /* InfoPlist.strings in Resources */,
-				27BCB5CC13BC3C4B008196D6 /* PhotoGameTests.h in Resources */,
+				27041AEA13C3E31B0072A09A /* Entitlements.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		27BCB5BC13BC3C4B008196D6 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		27BCB59613BC3C4B008196D6 /* Sources */ = {
@@ -320,25 +267,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		27BCB5B913BC3C4B008196D6 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				27BCB5CE13BC3C4B008196D6 /* PhotoGameTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		27BCB5C313BC3C4B008196D6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 27BCB59913BC3C4B008196D6 /* PhotoGame */;
-			targetProxy = 27BCB5C213BC3C4B008196D6 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin PBXVariantGroup section */
+		27041ADF13C3D8E40072A09A /* MainWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				27041AE013C3D8E40072A09A /* en */,
+			);
+			name = MainWindow.xib;
+			sourceTree = "<group>";
+		};
+		27041AE113C3D8E40072A09A /* PhotoGameViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				27041AE213C3D8E40072A09A /* en */,
+			);
+			name = PhotoGameViewController.xib;
+			sourceTree = "<group>";
+		};
 		27BCB5A713BC3C4B008196D6 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -378,8 +325,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Steve Ho (4WB8YAEDT7)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Steve Ho";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Steve Ho";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
@@ -388,7 +336,8 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				PROVISIONING_PROFILE = "BF2CA1BF-D708-45C1-A7AE-8E14D7647104";
+				PROVISIONING_PROFILE = "DF0806C5-E8E6-4C88-A35B-F4F43E11FE2D";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DF0806C5-E8E6-4C88-A35B-F4F43E11FE2D";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -397,15 +346,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Steve Ho (4WB8YAEDT7)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Steve Ho";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Steve Ho";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "BF2CA1BF-D708-45C1-A7AE-8E14D7647104";
+				PROVISIONING_PROFILE = "DF0806C5-E8E6-4C88-A35B-F4F43E11FE2D";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DF0806C5-E8E6-4C88-A35B-F4F43E11FE2D";
 				SDKROOT = iphoneos;
 			};
 			name = Release;
@@ -414,6 +365,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
 				COPY_PHASE_STRIP = YES;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -428,110 +380,50 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PhotoGame/PhotoGame-Prefix.pch";
 				INFOPLIST_FILE = "PhotoGame/PhotoGame-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				VALIDATE_PRODUCT = YES;
+				VALIDATE_PRODUCT = NO;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
 		};
-		27BCB5D513BC3C4B008196D6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/PhotoGame.app/PhotoGame";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "PhotoGameTests/PhotoGameTests-Prefix.pch";
-				INFOPLIST_FILE = "PhotoGameTests/PhotoGameTests-Info.plist";
-				OTHER_LDFLAGS = (
-					"-framework",
-					SenTestingKit,
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
-			};
-			name = Debug;
-		};
-		27BCB5D613BC3C4B008196D6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/PhotoGame.app/PhotoGame";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "PhotoGameTests/PhotoGameTests-Prefix.pch";
-				INFOPLIST_FILE = "PhotoGameTests/PhotoGameTests-Info.plist";
-				OTHER_LDFLAGS = (
-					"-framework",
-					SenTestingKit,
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
-			};
-			name = Release;
-		};
-		27BDF5BD13C3C674002712AD /* Distribution */ = {
+		27BDF5D513C3D019002712AD /* Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Steve Ho (4WB8YAEDT7)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Steve Ho";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Steve Ho";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "BF2CA1BF-D708-45C1-A7AE-8E14D7647104";
+				PROVISIONING_PROFILE = "DF0806C5-E8E6-4C88-A35B-F4F43E11FE2D";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DF0806C5-E8E6-4C88-A35B-F4F43E11FE2D";
 				SDKROOT = iphoneos;
 			};
 			name = Distribution;
 		};
-		27BDF5BE13C3C674002712AD /* Distribution */ = {
+		27BDF5D613C3D019002712AD /* Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Steve Ho";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PhotoGame/PhotoGame-Prefix.pch";
 				INFOPLIST_FILE = "PhotoGame/PhotoGame-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				VALIDATE_PRODUCT = YES;
+				PROVISIONING_PROFILE = "1252A073-9EEA-4281-8EC5-4FF9CEF5AA03";
+				VALIDATE_PRODUCT = NO;
 				WRAPPER_EXTENSION = app;
-			};
-			name = Distribution;
-		};
-		27BDF5BF13C3C674002712AD /* Distribution */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/PhotoGame.app/PhotoGame";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "PhotoGameTests/PhotoGameTests-Prefix.pch";
-				INFOPLIST_FILE = "PhotoGameTests/PhotoGameTests-Info.plist";
-				OTHER_LDFLAGS = (
-					"-framework",
-					SenTestingKit,
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Distribution;
 		};
@@ -543,7 +435,7 @@
 			buildConfigurations = (
 				27BCB5CF13BC3C4B008196D6 /* Debug */,
 				27BCB5D013BC3C4B008196D6 /* Release */,
-				27BDF5BD13C3C674002712AD /* Distribution */,
+				27BDF5D513C3D019002712AD /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Distribution;
@@ -553,17 +445,7 @@
 			buildConfigurations = (
 				27BCB5D213BC3C4B008196D6 /* Debug */,
 				27BCB5D313BC3C4B008196D6 /* Release */,
-				27BDF5BE13C3C674002712AD /* Distribution */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Distribution;
-		};
-		27BCB5D413BC3C4B008196D6 /* Build configuration list for PBXNativeTarget "PhotoGameTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				27BCB5D513BC3C4B008196D6 /* Debug */,
-				27BCB5D613BC3C4B008196D6 /* Release */,
-				27BDF5BF13C3C674002712AD /* Distribution */,
+				27BDF5D613C3D019002712AD /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Distribution;
