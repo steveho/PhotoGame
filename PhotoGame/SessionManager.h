@@ -52,7 +52,7 @@ typedef enum {
 - (void)sendSeedPhotoToPeer:(NSString*)peerID;
 - (void)sendBasicInfoToPeer:(NSString*)peerID;
 - (void)removePlayer:(NSString*)peerID;
-- (void)setLocalSeedPhoto:(UIImage*)img;
+- (void)setLocalSeedPhoto:(UIImage*)img seeder:(NSString*)peerID;
 - (UIImage*)getLocalSeedPhoto;
 
 - (void)updatePlayerInfoName:(NSString*)peerID value:(NSString*)name;

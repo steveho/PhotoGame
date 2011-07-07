@@ -134,13 +134,16 @@
         NSData *data = [@"y" dataUsingEncoding:[NSString defaultCStringEncoding]];
         [self sendDataToPeer:nil type:PacketTypeNotifyIAmTheSeeder data:data];
 
+        [self setCurrentSeeder:[sessionManager.mySession peerID]];
         [self pickLocalSeedPhoto];
         
         //send seed photo to peers
         if ([self getLocalSeedPhoto]) {            
             NSData *imageData = [NSData dataWithData:UIImagePNGRepresentation([self getLocalSeedPhoto])];                    
-            [self sendDataToPeer:nil type:PacketTypeDataSeedPhoto data:imageData];
-            [self setCurrentSeeder:[sessionManager.mySession peerID]];
+            [self sendDataToPeer:nil type:PacketTypeDataSeedPhoto data:imageData];            
+        }
+        else {
+            currentSeeder = nil;
         }
         
     }   
@@ -165,7 +168,7 @@
                 
                 UIImage *img = [UIImage imageWithCGImage:iref];
                 img = [theParent scaleImage:img toSize:CGSizeMake(160.0f,160.0f)];
-                [self setLocalSeedPhoto:img];                    
+                [self setLocalSeedPhoto:img seeder:[sessionManager.mySession peerID]];                    
                 
             }
         };    
@@ -229,8 +232,12 @@
 
     int j = 0;
     for (int i=0; i<[theParent.playImages count]; i++) {
-        if (mySeedPhotoURL == [theParent.playImages objectAtIndex:i]) {
-            continue;
+        if (mySeedPhotoURL) {
+            NSString *str1 = [mySeedPhotoURL absoluteString];
+            NSString *str2 = [[theParent.playImages objectAtIndex:i] absoluteString];
+            if ([str1 compare:str2] == NSOrderedSame) {
+                continue;
+            }
         }
         [assetslibrary assetForURL:[theParent.playImages objectAtIndex:i] resultBlock:resultblock failureBlock:failureblock];
         j++;
@@ -340,11 +347,16 @@
     }
 }
 
-- (void)setLocalSeedPhoto:(UIImage*)img {
-    [seedPhoto setImage:img];
-
-    gameStep = 1;
-    [self gameFlowNext];
+- (void)setLocalSeedPhoto:(UIImage*)img seeder:(NSString*)peerID {
+    if (currentSeeder && [currentSeeder compare:peerID] == NSOrderedSame) {
+        
+        [seedPhoto setImage:img];
+        gameStep = 1;
+        [self gameFlowNext];        
+        
+        Player *p = [players objectForKey:currentSeeder];
+        NSLog(@"setLocalSeedPhoto(): %@ (%@)", [p name], currentSeeder);        
+    }
 }
 
 - (UIImage*)getLocalSeedPhoto {
@@ -485,15 +497,16 @@
 }
 
 - (void)setCurrentSeeder:(NSString*)peerID {
-    if (peerID) {
-        
+    if (peerID) {        
         if (gameStep == 5) {
             [self prepareNewRound];
         }
-        currentSeeder = peerID;
-                
-        Player *p = [players objectForKey:currentSeeder];
-        NSLog(@"Current seeder: %@ (%@)", [p name], currentSeeder);
+        if (currentSeeder == nil || (currentSeeder && [currentSeeder compare:peerID] == NSOrderedAscending)) {
+            currentSeeder = peerID;
+
+            Player *p = [players objectForKey:currentSeeder];
+            NSLog(@"setCurrentSeeder(): %@ (%@)", [p name], currentSeeder);            
+        }
     }
 }
 

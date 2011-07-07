@@ -119,8 +119,8 @@
         
         if (header == PacketTypeDataSeedPhoto) {//seed photo
             UIImage *img = [UIImage imageWithData:payload];
-            [delegate setLocalSeedPhoto:img];
             [delegate setCurrentSeeder:peer];
+            [delegate setLocalSeedPhoto:img seeder:peer];            
         } 
         else if (header == PacketTypeDataPlayPhoto) {//play photo (player submits his photo)
             UIImage *img = [UIImage imageWithData:payload];
