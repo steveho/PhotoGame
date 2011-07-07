@@ -26,7 +26,12 @@
         pvc = [[PhotosViewController alloc] initWithNibName:@"PhotosViewController" bundle:nil];
     }    
     pvc.theParent = self;
-    [delegate switchView:self.view to:pvc.view];  
+    if ([sender isKindOfClass:[HowToPlay class]]) {
+        [delegate switchView:[sender view] to:pvc.view]; 
+    }
+    else {
+        [delegate switchView:self.view to:pvc.view]; 
+    }
     [views setValue:pvc forKey:@"PhotosViewController"];
     
 }
@@ -42,11 +47,35 @@
     if (!(pvc = [views objectForKey:@"PlayViewController"])) {
         pvc = [[PlayViewController alloc] initWithNibName:@"PlayViewController" bundle:nil];
     }    
-    
     pvc.theParent = self;  
-    [delegate switchView:self.view to:pvc.view];
+
+    if ([sender isKindOfClass:[PhotosViewController class]]) {
+        [delegate switchView:[sender view] to:pvc.view]; 
+    }
+    else {
+        [delegate switchView:self.view to:pvc.view]; 
+    }    
     [views setValue:pvc forKey:@"PlayViewController"];
 }
+
+
+-(IBAction)showHowToPlay:(id)sender {  
+    if (views == nil) {
+        views = [[NSMutableDictionary alloc] init];
+    }
+    
+    PhotoGameAppDelegate *delegate = (PhotoGameAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    HowToPlay *pvc;
+    if (!(pvc = [views objectForKey:@"HowToPlay"])) {
+        pvc = [[HowToPlay alloc] initWithNibName:@"HowToPlay" bundle:nil];
+    }    
+    
+    pvc.theParent = self;  
+    [delegate switchView:[sender view] to:pvc.view];
+    [views setValue:pvc forKey:@"HowToPlay"];
+}
+
 
 - (void)dealloc
 {
@@ -101,7 +130,7 @@
 
 #pragma mark - init methods
 
--(void)startGame {
+-(void)startGame {    
     if (self.myUserName == nil) { 
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Enter Your Name" message:@"Enter Your Name" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
         
@@ -116,7 +145,7 @@
     }    
  
     if (self.myUserName != nil) { 
-        [self showPlayView:self];
+        [self showHowToPlay:self];
     }
 }
 
@@ -131,6 +160,10 @@
         [gameData saveToFile];
         [gameData release];
         gameData = nil;
+        
+        if ([self.myUserName length] > 0) {
+            [self startGame];
+        }
 	}
 }
 

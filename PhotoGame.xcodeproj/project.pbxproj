@@ -11,6 +11,8 @@
 		2756576713C1AF9A00E9A856 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2756576613C1AF9A00E9A856 /* QuartzCore.framework */; };
 		2786211113C3FEA10040A2D6 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2786211013C3FEA10040A2D6 /* Entitlements.plist */; };
 		2786211513C4103F0040A2D6 /* PhotoGame.icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2786211413C4103F0040A2D6 /* PhotoGame.icon.png */; };
+		2786212113C582D80040A2D6 /* HowToPlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 2786211F13C582D70040A2D6 /* HowToPlay.m */; };
+		2786212213C582D80040A2D6 /* HowToPlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2786212013C582D80040A2D6 /* HowToPlay.xib */; };
 		27BCB59F13BC3C4B008196D6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27BCB59E13BC3C4B008196D6 /* UIKit.framework */; };
 		27BCB5A113BC3C4B008196D6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27BCB5A013BC3C4B008196D6 /* Foundation.framework */; };
 		27BCB5A313BC3C4B008196D6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27BCB5A213BC3C4B008196D6 /* CoreGraphics.framework */; };
@@ -40,6 +42,9 @@
 		2756576613C1AF9A00E9A856 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		2786211013C3FEA10040A2D6 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		2786211413C4103F0040A2D6 /* PhotoGame.icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PhotoGame.icon.png; sourceTree = "<group>"; };
+		2786211E13C582D70040A2D6 /* HowToPlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HowToPlay.h; sourceTree = "<group>"; };
+		2786211F13C582D70040A2D6 /* HowToPlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HowToPlay.m; sourceTree = "<group>"; };
+		2786212013C582D80040A2D6 /* HowToPlay.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HowToPlay.xib; sourceTree = "<group>"; };
 		27BCB59A13BC3C4B008196D6 /* PhotoGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		27BCB59E13BC3C4B008196D6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		27BCB5A013BC3C4B008196D6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -156,6 +161,8 @@
 				27BCB5F913BCF1D7008196D6 /* SessionManager.m */,
 				27BCB60313BDB006008196D6 /* Player.h */,
 				27BCB60413BDB007008196D6 /* Player.m */,
+				2786211E13C582D70040A2D6 /* HowToPlay.h */,
+				2786211F13C582D70040A2D6 /* HowToPlay.m */,
 				27BCB5A513BC3C4B008196D6 /* Supporting Files */,
 			);
 			path = PhotoGame;
@@ -164,6 +171,7 @@
 		27BCB5A513BC3C4B008196D6 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				2786212013C582D80040A2D6 /* HowToPlay.xib */,
 				27BCB5D913BC3C84008196D6 /* PhotosViewController.xib */,
 				27BCB5B613BC3C4B008196D6 /* PhotoGameViewController.xib */,
 				27BCB5DE13BC3CA0008196D6 /* PlayViewController.xib */,
@@ -250,6 +258,7 @@
 				2756576513BFBC1B00E9A856 /* pwp_hidden_image.png in Resources */,
 				2786211113C3FEA10040A2D6 /* Entitlements.plist in Resources */,
 				2786211513C4103F0040A2D6 /* PhotoGame.icon.png in Resources */,
+				2786212213C582D80040A2D6 /* HowToPlay.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,6 +277,7 @@
 				27BCB5E713BC3FA3008196D6 /* GameData.m in Sources */,
 				27BCB5FA13BCF1D7008196D6 /* SessionManager.m in Sources */,
 				27BCB60513BDB008008196D6 /* Player.m in Sources */,
+				2786212113C582D80040A2D6 /* HowToPlay.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

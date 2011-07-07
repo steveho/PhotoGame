@@ -13,7 +13,7 @@
 #import "PhotosViewController.h"
 #import "PlayViewController.h"
 #import "PhotoGameAppDelegate.h"
-
+#import "HowToPlay.h"
 
 @interface PhotoGameViewController : UIViewController <UIAlertViewDelegate> {
     UITextField *nameField;
@@ -28,6 +28,7 @@
 -(IBAction)startGame;
 -(IBAction)showEditPhotoView:(id)sender;
 -(IBAction)showPlayView:(id)sender;
+-(IBAction)showHowToPlay:(id)sender;
 -(void)loadData;
 -(void)findAllImages;
 -(NSURL*)getDeviceRandomPhoto;

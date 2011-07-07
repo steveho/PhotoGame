@@ -15,10 +15,10 @@
 @synthesize imgBtn9, imgBtn10, imgBtn11, imgBtn12, imgBtn13, imgBtn14, imgBtn15;
 @synthesize theParent;
 
--(IBAction)showHomeView:(id)sender {
-    PhotoGameAppDelegate *delegate = (PhotoGameAppDelegate*)[[UIApplication sharedApplication] delegate];
-    
-    [delegate switchView:self.view to:theParent.view];
+-(IBAction)playBtnClicked:(id)sender {
+    //PhotoGameAppDelegate *delegate = (PhotoGameAppDelegate*)[[UIApplication sharedApplication] delegate];    
+    //[delegate switchView:self.view to:theParent.view];
+    [theParent showPlayView:self];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -249,82 +249,82 @@
 - (void)setupGrid {    
     
     imgBtn0 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    imgBtn0.frame = CGRectMake(4.0, 58.0, 75.0, 75.0);    
+    imgBtn0.frame = CGRectMake(4.0, 73.0, 75.0, 75.0);    
     [self.view addSubview:imgBtn0];
     [imgBtn0 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn1 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    imgBtn1.frame = CGRectMake(83.0, 58.0, 75.0, 75.0);
+    imgBtn1.frame = CGRectMake(83.0, 73.0, 75.0, 75.0);
     [self.view addSubview:imgBtn1];
     [imgBtn1 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn2 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    imgBtn2.frame = CGRectMake(162.0, 58.0, 75.0, 75.0);
+    imgBtn2.frame = CGRectMake(162.0, 73.0, 75.0, 75.0);
     [self.view addSubview:imgBtn2];
     [imgBtn2 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn3 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    imgBtn3.frame = CGRectMake(241.0, 58.0, 75.0, 75.0);
+    imgBtn3.frame = CGRectMake(241.0, 73.0, 75.0, 75.0);
     [self.view addSubview:imgBtn3];
     [imgBtn3 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn4 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    imgBtn4.frame = CGRectMake(4.0, 137.0, 75.0, 75.0);
+    imgBtn4.frame = CGRectMake(4.0, 152.0, 75.0, 75.0);
     [self.view addSubview:imgBtn4];
     [imgBtn4 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn5 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    imgBtn5.frame = CGRectMake(83.0, 137.0, 75.0, 75.0);
+    imgBtn5.frame = CGRectMake(83.0, 152.0, 75.0, 75.0);
     [self.view addSubview:imgBtn5];
     [imgBtn5 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn6 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    imgBtn6.frame = CGRectMake(162.0, 137.0, 75.0, 75.0);
+    imgBtn6.frame = CGRectMake(162.0, 152.0, 75.0, 75.0);
     [self.view addSubview:imgBtn6];
     [imgBtn6 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn7 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    imgBtn7.frame = CGRectMake(241.0, 137.0, 75.0, 75.0);
+    imgBtn7.frame = CGRectMake(241.0, 152.0, 75.0, 75.0);
     [self.view addSubview:imgBtn7];
     [imgBtn7 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn8 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    imgBtn8.frame = CGRectMake(4.0, 216.0, 75.0, 75.0);
+    imgBtn8.frame = CGRectMake(4.0, 231.0, 75.0, 75.0);
     [self.view addSubview:imgBtn8];
     [imgBtn8 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn9 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    imgBtn9.frame = CGRectMake(83.0, 216.0, 75.0, 75.0);
+    imgBtn9.frame = CGRectMake(83.0, 231.0, 75.0, 75.0);
     [self.view addSubview:imgBtn9];
     [imgBtn9 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn10 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    imgBtn10.frame = CGRectMake(162.0, 216.0, 75.0, 75.0);
+    imgBtn10.frame = CGRectMake(162.0, 231.0, 75.0, 75.0);
     [self.view addSubview:imgBtn10];
     [imgBtn10 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn11 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    imgBtn11.frame = CGRectMake(241.0, 216.0, 75.0, 75.0);
+    imgBtn11.frame = CGRectMake(241.0, 231.0, 75.0, 75.0);
     [self.view addSubview:imgBtn11];
     [imgBtn11 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn12 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    imgBtn12.frame = CGRectMake(4.0, 295.0, 75.0, 75.0);
+    imgBtn12.frame = CGRectMake(4.0, 310.0, 75.0, 75.0);
     [self.view addSubview:imgBtn12];
     [imgBtn12 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn13 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    imgBtn13.frame = CGRectMake(83.0, 295.0, 75.0, 75.0);
+    imgBtn13.frame = CGRectMake(83.0, 310.0, 75.0, 75.0);
     [self.view addSubview:imgBtn13];
     [imgBtn13 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn14 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    imgBtn14.frame = CGRectMake(162.0, 295.0, 75.0, 75.0);
+    imgBtn14.frame = CGRectMake(162.0, 310.0, 75.0, 75.0);
     [self.view addSubview:imgBtn14];
     [imgBtn14 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
     
     imgBtn15 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    imgBtn15.frame = CGRectMake(241.0, 295.0, 75.0, 75.0);
+    imgBtn15.frame = CGRectMake(241.0, 310.0, 75.0, 75.0);
     [self.view addSubview:imgBtn15];
     [imgBtn15 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];     
 }
