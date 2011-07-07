@@ -11,7 +11,7 @@
 
 @implementation PhotoGameViewController
 
-@synthesize allImages, myUserName, playImages, gameData;
+@synthesize allImages, myUserName, playImages, gameData, showRules;
 @synthesize views;
 
 -(IBAction)showEditPhotoView:(id)sender {    
@@ -145,7 +145,12 @@
     }    
  
     if (self.myUserName != nil) { 
-        [self showHowToPlay:self];
+        if (showRules != nil && [showRules compare:@"n"] == NSOrderedSame) {
+            [self showEditPhotoView:self];
+        }
+        else {
+            [self showHowToPlay:self];
+        }
     }
 }
 
@@ -202,7 +207,7 @@
         [playImages addObject:url];
     }
     self.myUserName = [gameData getUserName];
-        
+    self.showRules = [gameData getShowRules];
     [gameData release];
     gameData = nil;
     

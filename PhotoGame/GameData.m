@@ -12,11 +12,11 @@
 @implementation GameData
 
 
-@synthesize images;
+@synthesize images, userName, showRules;
 
 - (id)init {
     self = [super init];
-    
+        
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *directory = [paths objectAtIndex:0];        
     NSString *path = [[NSString alloc] initWithFormat:@"%@/%@", directory, DATA_FILE_NAME];        
@@ -33,6 +33,9 @@
     
     if(images == nil) {
         images = [[NSMutableArray alloc] initWithCapacity:16];
+    }
+    if (showRules == nil) {
+        showRules = [NSMutableString stringWithString:@"y"];
     }
     
     return self;
@@ -69,23 +72,33 @@
     [path release];
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
-    
+- (id)initWithCoder:(NSCoder *)aDecoder {    
     images = [aDecoder decodeObjectForKey:@"images"];
     userName = [aDecoder decodeObjectForKey:@"userName"];
+    showRules = [aDecoder decodeObjectForKey:@"showRules"];
     return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
     [aCoder encodeObject:images forKey:@"images"];
     [aCoder encodeObject:userName forKey:@"userName"];
+    [aCoder encodeObject:showRules forKey:@"showRules"];
 }
 
 - (void)setUserName:(NSMutableString *)name {
     userName = name;
 }
+
 - (NSMutableString*)getUserName {
     return userName;
+}
+
+- (void)setShowRules:(NSMutableString*)rule {
+    showRules = rule;
+}
+
+- (NSMutableString*)getShowRules {
+    return showRules;
 }
 
 @end

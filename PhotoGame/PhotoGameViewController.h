@@ -21,6 +21,7 @@
     NSMutableArray *allImages;
     NSMutableString *myUserName;
     NSMutableArray *playImages;
+    NSMutableString *showRules;
     
     NSMutableDictionary *views;
 }
@@ -38,6 +39,7 @@
 @property (nonatomic, retain) NSMutableDictionary *views;
 @property (nonatomic, retain) NSMutableArray *allImages;
 @property (nonatomic, retain) NSMutableString *myUserName;
+@property (nonatomic, retain) NSMutableString *showRules;
 @property (nonatomic, retain) NSMutableArray *playImages;
 @property (nonatomic, retain) GameData *gameData;
 

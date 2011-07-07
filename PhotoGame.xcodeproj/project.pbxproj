@@ -13,6 +13,8 @@
 		2786211513C4103F0040A2D6 /* PhotoGame.icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2786211413C4103F0040A2D6 /* PhotoGame.icon.png */; };
 		2786212113C582D80040A2D6 /* HowToPlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 2786211F13C582D70040A2D6 /* HowToPlay.m */; };
 		2786212213C582D80040A2D6 /* HowToPlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2786212013C582D80040A2D6 /* HowToPlay.xib */; };
+		2786212513C61BE20040A2D6 /* cb_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 2786212313C61BE00040A2D6 /* cb_off.png */; };
+		2786212613C61BE20040A2D6 /* cb_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 2786212413C61BE10040A2D6 /* cb_on.png */; };
 		27BCB59F13BC3C4B008196D6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27BCB59E13BC3C4B008196D6 /* UIKit.framework */; };
 		27BCB5A113BC3C4B008196D6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27BCB5A013BC3C4B008196D6 /* Foundation.framework */; };
 		27BCB5A313BC3C4B008196D6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27BCB5A213BC3C4B008196D6 /* CoreGraphics.framework */; };
@@ -45,6 +47,8 @@
 		2786211E13C582D70040A2D6 /* HowToPlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HowToPlay.h; sourceTree = "<group>"; };
 		2786211F13C582D70040A2D6 /* HowToPlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HowToPlay.m; sourceTree = "<group>"; };
 		2786212013C582D80040A2D6 /* HowToPlay.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HowToPlay.xib; sourceTree = "<group>"; };
+		2786212313C61BE00040A2D6 /* cb_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cb_off.png; sourceTree = "<group>"; };
+		2786212413C61BE10040A2D6 /* cb_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cb_on.png; sourceTree = "<group>"; };
 		27BCB59A13BC3C4B008196D6 /* PhotoGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		27BCB59E13BC3C4B008196D6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		27BCB5A013BC3C4B008196D6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -145,6 +149,8 @@
 		27BCB5A413BC3C4B008196D6 /* PhotoGame */ = {
 			isa = PBXGroup;
 			children = (
+				2786212313C61BE00040A2D6 /* cb_off.png */,
+				2786212413C61BE10040A2D6 /* cb_on.png */,
 				2756576413BFBC1B00E9A856 /* pwp_hidden_image.png */,
 				27BCB5AD13BC3C4B008196D6 /* PhotoGameAppDelegate.h */,
 				27BCB5AE13BC3C4B008196D6 /* PhotoGameAppDelegate.m */,
@@ -259,6 +265,8 @@
 				2786211113C3FEA10040A2D6 /* Entitlements.plist in Resources */,
 				2786211513C4103F0040A2D6 /* PhotoGame.icon.png in Resources */,
 				2786212213C582D80040A2D6 /* HowToPlay.xib in Resources */,
+				2786212513C61BE20040A2D6 /* cb_off.png in Resources */,
+				2786212613C61BE20040A2D6 /* cb_on.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

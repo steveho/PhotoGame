@@ -11,7 +11,7 @@
 
 @implementation HowToPlay
 
-@synthesize theParent;
+@synthesize theParent, dontShowCBBtn, showRules;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -40,7 +40,22 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+
+
+    GameData *_gameData = [[GameData alloc] init];
+    UIImage *img;
+    NSMutableString *temp = [_gameData getShowRules];
+    if (temp == nil || [temp compare:@"y"] == NSOrderedSame) {
+        showRules = YES;  
+        img = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"cb_off" ofType:@"png"]];
+    }
+    else {
+        showRules = NO;
+        img = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"cb_on" ofType:@"png"]];
+    }
+    [dontShowCBBtn setImage:img forState:UIControlStateNormal];
+    [_gameData release];
+    
 }
 
 - (void)viewDidUnload
@@ -56,8 +71,43 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
--(IBAction)letsGoBtn {
+- (IBAction)letsGoBtn {
     [theParent showEditPhotoView:self];
+}
+
+- (IBAction)dontShowRuleAgainClicked {
+    UIImage *img;
+    if (showRules) {
+        showRules = NO;
+    }
+    else {
+        showRules = YES;        
+    }   
+    if (!showRules) {
+        img = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"cb_on" ofType:@"png"]];
+    }
+    else {
+        img = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"cb_off" ofType:@"png"]];                
+    }
+    
+    [dontShowCBBtn setImage:img forState:UIControlStateNormal];
+    [self updateShowRules];
+}
+
+- (void)updateShowRules {
+        
+    GameData *_gameData = [[GameData alloc] init];
+    if (showRules) {
+        [_gameData setShowRules:[NSMutableString stringWithString:@"y"]];
+        NSLog(@"yes");
+    }
+    else {
+        [_gameData setShowRules:[NSMutableString stringWithString:@"n"]];
+        NSLog(@"no");
+
+    }
+    [_gameData saveToFile];     
+    [_gameData release];    
 }
 
 @end

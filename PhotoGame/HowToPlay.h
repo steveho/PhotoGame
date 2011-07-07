@@ -12,10 +12,16 @@
 
 @interface HowToPlay : UIViewController {
     PhotoGameViewController *theParent;    
+    IBOutlet UIButton *dontShowCBBtn;
+    BOOL showRules;
 }
 
 @property (nonatomic, retain) PhotoGameViewController *theParent;
+@property (nonatomic, retain) IBOutlet UIButton *dontShowCBBtn;
+@property BOOL showRules;
 
 -(IBAction)letsGoBtn;
+-(IBAction)dontShowRuleAgainClicked;
+- (void)updateShowRules;
 
 @end
