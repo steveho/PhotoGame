@@ -67,5 +67,7 @@ typedef enum {
 - (void)readyForNextUnveilPhoto:(NSString*)peerID;
 - (void)whoVotesForWho:(NSString*)voter votee:(NSString*)votee;
 - (void)doneWithUnveilingPhotos:(NSString*)peerID;
+- (void)unveilVotes;
+- (NSString*)doneWithVotingYet;
 
 @end

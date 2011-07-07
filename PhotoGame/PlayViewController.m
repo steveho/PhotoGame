@@ -581,37 +581,49 @@
     Player *pVoter = [players objectForKey:voter];
     pVoter.roundVotedFor = votee;
     
+    //i've voted
     if (iVoteForPeerID != nil) {
-        int j = 0;
-        NSArray *photos = [scrollView subviews];
-        UIButton *photo;
-        for (int i=0; i<[photos count]; i++) {
-            photo = [photos objectAtIndex:i];
-            if ([[photo titleForState:UIControlStateNormal] length] > 3) {
-                Player *p = [players objectForKey:[photo titleForState:UIControlStateNormal]];
-                if (p.roundVotes == 0) {
-                    j++;
-                    continue;
-                }
-                UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];                        
-                [btn setTitle:[NSString stringWithFormat:@"%d", p.roundVotes] forState:UIControlStateNormal];
-                [[btn layer] setCornerRadius:10.0f];
-                [[btn layer] setMasksToBounds:YES];
-                [[btn layer] setBorderWidth:0.0f]; 
-                [btn setBackgroundColor:[UIColor greenColor]];
-                [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-                [btn setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
-                [btn.titleLabel setFont:[UIFont boldSystemFontOfSize:12.0]];  
-                
-                btn.frame = CGRectMake((77*j+55), 0.0, 20, 20);
-                [scrollView addSubview:btn];
-                
-                j++;
+        NSString *winner = [self doneWithVotingYet];
+        //no winner yet
+        if (winner == nil) {
+            //clearing scroll view
+            for (UIView *view in scrollView.subviews) {
+                [view removeFromSuperview];
             }
+
+            //all voted photos faced DOWN
+            int votedCount = 0;
+            UIButton *btn;            
+            UIImage *hidImg = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"pwp_hidden_image" ofType:@"png"]];            
+            for (id key in players) {
+                id player = [players objectForKey:key];
+                if ([player roundVotedFor] != nil) {
+                    btn = [UIButton buttonWithType:UIButtonTypeCustom];
+                    btn.frame = CGRectMake(((75.0+2.0) * votedCount), 0.0, 75.0, 75.0);  
+                    [btn setImage:hidImg forState:UIControlStateNormal];
+                    [btn addTarget:self action:@selector(submittedPhotoClicked:) forControlEvents:UIControlEventTouchUpInside];
+                    
+                    [scrollView addSubview:btn];                        
+                    votedCount++;
+                    
+                }
+            }
+            [scrollView setContentSize:CGSizeMake(((75.0+2.0) * votedCount), 80)];            
+                        
+        }
+        else {//done voting, unveil results
+            [self unveilVotes];
         }
     }    
-    
-    //do we have a winner yet?
+}
+
+- (void)doneWithUnveilingPhotos:(NSString*)peerID {
+    //this is sent from the seeder to the rest
+    gameStep = 4;
+    [self gameFlowNext];    
+}
+
+- (NSString*)doneWithVotingYet {//return nil if not done, winner peerID or "tie"
     BOOL done = YES;
     int highestVotes = 0;
     NSString *winner;
@@ -632,10 +644,26 @@
             winner = key;
             isTie = YES;
         } else {}
-    }
-    
+    }    
     if (done && winner) {
         if (isTie) {
+            return @"tie";
+        }
+        else {
+            return winner;
+        }
+    }
+    else {
+        return nil;
+    }
+}
+
+- (void)unveilVotes {
+    
+    NSString *winner = [self doneWithVotingYet];
+    
+    if (winner != nil) {
+        if ([winner compare:@"tie"] == NSOrderedSame) {
             [scrollViewLabel setText:@"It's a tie!"];            
         }
         else {
@@ -644,16 +672,65 @@
             [tempStr appendFormat:@"%@!", plWinner.name];
             [scrollViewLabel setText:tempStr];
         }
+        
+        
+        //clearing scroll view
+        for (UIView *view in scrollView.subviews) {
+            [view removeFromSuperview];
+        }
+        
+        //all voted photos faced UP
+        int viewCount = 0;
+        UIButton *btn;            
+        for (id key in players) {
+            id player = [players objectForKey:key];
+            btn = [UIButton buttonWithType:UIButtonTypeCustom];
+            [btn setTitle:key forState:UIControlStateNormal];
+            btn.frame = CGRectMake(((75.0+2.0) * viewCount), 0.0, 75.0, 75.0);  
+            [btn setImage:[player roundPhoto] forState:UIControlStateNormal];
+            [btn addTarget:self action:@selector(submittedPhotoClicked:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [scrollView addSubview:btn];                        
+            viewCount++;
+                
+        }
+        [scrollView setContentSize:CGSizeMake(((75.0+2.0) * viewCount), 80)];        
+
+
+        //adding vote count to the top right corner of each image
+        int j = 0;
+        NSArray *photos = [scrollView subviews];
+        UIButton *photo;
+        for (int i=0; i<[photos count]; i++) {
+            photo = [photos objectAtIndex:i];
+            if ([[photo titleForState:UIControlStateNormal] length] > 3) {
+                Player *p = [players objectForKey:[photo titleForState:UIControlStateNormal]];
+                if (p.roundVotes == 0) {
+                    j++;
+                    continue;
+                }
+                UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];                        
+                [btn setTitle:[NSString stringWithFormat:@"%d", p.roundVotes] forState:UIControlStateNormal];
+                [[btn layer] setCornerRadius:10.0f];
+                [[btn layer] setMasksToBounds:YES];
+                [[btn layer] setBorderWidth:0.0f]; 
+                [btn setBackgroundColor:[UIColor greenColor]];
+                [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                [btn setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
+                [btn.titleLabel setFont:[UIFont boldSystemFontOfSize:12.0]];  
+
+                btn.frame = CGRectMake((77*j+55), 0.0, 20, 20);
+                [scrollView addSubview:btn];
+
+                j++;
+            }
+        }
+        
+        
         gameStep = 5;
         [self gameFlowNext];        
     }
     
-}
-
-- (void)doneWithUnveilingPhotos:(NSString*)peerID {
-    //this is sent from the seeder to the rest
-    gameStep = 4;
-    [self gameFlowNext];    
 }
 
 @end
