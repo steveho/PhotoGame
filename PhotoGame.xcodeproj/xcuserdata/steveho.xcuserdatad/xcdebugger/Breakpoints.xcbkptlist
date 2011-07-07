@@ -21,21 +21,7 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "PhotoGame/PlayViewController.m"
-         timestampString = "331721507.550948"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "161"
-         endingLineNumber = "161"
-         landmarkName = "-pickLocalSeedPhoto"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "PhotoGame/PlayViewController.m"
-         timestampString = "331721507.550948"
+         timestampString = "331765069.822767"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "162"
@@ -49,11 +35,25 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "PhotoGame/PlayViewController.m"
-         timestampString = "331722884.818118"
+         timestampString = "331764896.616753"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "540"
-         endingLineNumber = "540"
+         startingLineNumber = "173"
+         endingLineNumber = "173"
+         landmarkName = "-pickLocalSeedPhoto"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "PhotoGame/PlayViewController.m"
+         timestampString = "331764896.616753"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "553"
+         endingLineNumber = "553"
          landmarkName = "-unveilPhoto:"
          landmarkType = "5">
       </FileBreakpoint>

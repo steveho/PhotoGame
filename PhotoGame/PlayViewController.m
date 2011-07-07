@@ -15,7 +15,7 @@
 @synthesize gamePlayLabel, unveilPhotoBig, nextPhotoBtn;
 @synthesize players, gameStep, gameRound, mySeedPhotoURL, unveiledPhotoCounter;
 @synthesize unveilResponseCount, playPhotos, iVoteForPeerID;
-@synthesize photoCaptionTextField;
+@synthesize photoCaptionTextField, alreadySeededPhotos;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -158,9 +158,22 @@
     [self readyForNextUnveilPhoto:[sessionManager.mySession peerID]];
 }
 
-- (void)pickLocalSeedPhoto {            
-    mySeedPhotoURL = [theParent getDeviceRandomPhoto];
+- (void)pickLocalSeedPhoto {    
+    //picking a random seed photo and make sure it has not been used in previous rounds
+    if (alreadySeededPhotos == nil) {
+        alreadySeededPhotos = [[NSMutableArray alloc] init];
+    }    
+    NSURL *tempUrl;
+    for (int i=0; i<50; i++) {
+        tempUrl = [theParent getDeviceRandomPhoto];
+        if ([alreadySeededPhotos indexOfObject:tempUrl] == NSNotFound) {
+            mySeedPhotoURL = tempUrl;
+        }
+    }
+    
     if (mySeedPhotoURL) {              
+        [alreadySeededPhotos addObject:mySeedPhotoURL];
+        NSLog(@"my seeded photo: %d", [alreadySeededPhotos count]);
         ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *myasset) {
             ALAssetRepresentation *rep = [myasset defaultRepresentation];
             CGImageRef iref = [rep fullResolutionImage];

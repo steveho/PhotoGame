@@ -7925,10 +7925,10 @@
 				</dict>
 			</array>
 		</dict>
-		<real>331764170.82710201</real>
-		<string>{17201, 1455}</string>
-		<string>{17970, 0}</string>
-		<string>-unveilNextPhoto:</string>
+		<real>331765147.091389</real>
+		<string>{4011, 1460}</string>
+		<string>{4962, 0}</string>
+		<string>-pickLocalSeedPhoto</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -25003,9 +25003,9 @@
 				</dict>
 			</array>
 		</dict>
-		<real>331764170.82614499</real>
-		<string>{17201, 1455}</string>
-		<string>{17970, 0}</string>
+		<real>331765147.09028298</real>
+		<string>{4011, 1460}</string>
+		<string>{4962, 0}</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -25428,9 +25428,9 @@
 				</dict>
 			</array>
 		</dict>
-		<real>331761988.317976</real>
-		<string>{0, 1282}</string>
-		<string>{1813, 24}</string>
+		<real>331764551.31808299</real>
+		<string>{746, 1248}</string>
+		<string>{1496, 14}</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -27071,7 +27071,7 @@
 				<integer>1738</integer>
 			</dict>
 			<key>NS.time</key>
-			<real>331763374.91986799</real>
+			<real>331765066.37848198</real>
 		</dict>
 		<dict>
 			<key>$classes</key>
@@ -27082,7 +27082,7 @@
 			<key>$classname</key>
 			<string>NSDate</string>
 		</dict>
-		<string>Today at 1:29 PM</string>
+		<string>Today at 1:57 PM</string>
 		<integer>106</integer>
 		<dict>
 			<key>$class</key>
@@ -27724,7 +27724,7 @@
 				<integer>1791</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/steveho/ios/apps/PhotoGame/PhotoGame/SessionManager.m</string>
+		<string>file://localhost/Users/steveho/ios/apps/PhotoGame/PhotoGame/PlayViewController.h</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -27742,7 +27742,7 @@
 				<integer>1793</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/steveho/ios/apps/PhotoGame/PhotoGame/PlayViewController.xib</string>
+		<string>file://localhost/Users/steveho/ios/apps/PhotoGame/PhotoGame/SessionManager.m</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -27760,7 +27760,7 @@
 				<integer>1795</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/steveho/ios/apps/PhotoGame/PhotoGame/Player.h</string>
+		<string>file://localhost/Users/steveho/ios/apps/PhotoGame/PhotoGame/PlayViewController.xib</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -27778,7 +27778,7 @@
 				<integer>1797</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/steveho/ios/apps/PhotoGame/PhotoGame/Player.m</string>
+		<string>file://localhost/Users/steveho/ios/apps/PhotoGame/PhotoGame/Player.h</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -27796,7 +27796,7 @@
 				<integer>1799</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/steveho/ios/apps/PhotoGame/PhotoGame/PlayViewController.h</string>
+		<string>file://localhost/Users/steveho/ios/apps/PhotoGame/PhotoGame/Player.m</string>
 		<dict>
 			<key>$class</key>
 			<dict>

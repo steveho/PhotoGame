@@ -44,6 +44,7 @@
     NSString *currentSeeder; //peerID of the round's seeder
     NSURL *mySeedPhotoURL;
     NSString *iVoteForPeerID;
+    NSMutableArray *alreadySeededPhotos;
 }
 
 -(IBAction)nextPhotoBtnClicked;
@@ -81,7 +82,7 @@
 @property (nonatomic, retain) NSURL *mySeedPhotoURL;
 @property (nonatomic, retain) NSString *iVoteForPeerID;
 @property (nonatomic, retain) NSMutableArray *playPhotos;
-
+@property (nonatomic, retain) NSMutableArray *alreadySeededPhotos;
 @property (nonatomic, retain) NSMutableDictionary *players;
 
 @end
