@@ -52,8 +52,9 @@
 @property (nonatomic, retain) PhotoGameViewController *theParent;
 
 -(BOOL)addImageToGrid:(UIImage*)img;
--(UIImage*)scaleImage:(UIImage*)image toSize:(CGSize)size;
 -(IBAction)showHomeView:(id)sender;
-- (void)populatePlayPhotoGrid;
+-(void)populatePlayPhotoGrid;
+-(void)recreatedRandomPhotos;
+-(void)setupGrid;
 
 @end

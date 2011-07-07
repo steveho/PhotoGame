@@ -12,8 +12,12 @@
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
 	<string></string>
+	<key>CFBundleIconFiles</key>
+	<array>
+		<string>PhotoGame.icon.png</string>
+	</array>
 	<key>CFBundleIdentifier</key>
-	<string>GRJXQVEBX8.photogame.photogame</string>
+	<string>GRJXQVEBX8.com.picswithpeeps.pwp</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>

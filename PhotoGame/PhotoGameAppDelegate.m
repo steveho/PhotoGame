@@ -25,8 +25,6 @@
     [fromView removeFromSuperview];
     [self.window addSubview:toView];
     [UIView commitAnimations];
-    
-
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions

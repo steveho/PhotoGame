@@ -226,21 +226,6 @@
     };        
     
     ALAssetsLibrary* assetslibrary = [[[ALAssetsLibrary alloc] init] autorelease];   
-    
-    /*
-    NSMutableArray *urls = [theParent allImages];
-    int max = 50;
-    for (int i=[urls count]-1; i>=0; i--) {
-        if (mySeedPhotoURL == [urls objectAtIndex:i]) {
-            continue;
-        }
-        [assetslibrary assetForURL:[urls objectAtIndex:i] resultBlock:resultblock failureBlock:failureblock];
-        max--;
-        if(max == 0) {
-            break;
-        }
-    }
-    */
 
     int j = 0;
     for (int i=0; i<[theParent.playImages count]; i++) {

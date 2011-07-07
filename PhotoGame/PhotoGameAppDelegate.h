@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+
 @class PhotoGameViewController;
 
 @interface PhotoGameAppDelegate : NSObject <UIApplicationDelegate> {    

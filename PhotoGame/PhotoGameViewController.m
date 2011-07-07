@@ -12,21 +12,40 @@
 @implementation PhotoGameViewController
 
 @synthesize allImages, myUserName, playImages, gameData;
+@synthesize views;
 
 -(IBAction)showEditPhotoView:(id)sender {    
+    if (views == nil) {
+        views = [[NSMutableDictionary alloc] init];
+    }
+    
     PhotoGameAppDelegate *delegate = (PhotoGameAppDelegate*)[[UIApplication sharedApplication] delegate];
-    PhotosViewController *pvc = [[PhotosViewController alloc] initWithNibName:@"PhotosViewController" bundle:nil];
+    
+    PhotosViewController *pvc;
+    if (!(pvc = [views objectForKey:@"PhotosViewController"])) {
+        pvc = [[PhotosViewController alloc] initWithNibName:@"PhotosViewController" bundle:nil];
+    }    
     pvc.theParent = self;
-    [delegate switchView:self.view to:pvc.view];
+    [delegate switchView:self.view to:pvc.view];  
+    [views setValue:pvc forKey:@"PhotosViewController"];
+    
 }
 
--(IBAction)showPlayView:(id)sender {    
+-(IBAction)showPlayView:(id)sender {  
+    if (views == nil) {
+        views = [[NSMutableDictionary alloc] init];
+    }
+    
     PhotoGameAppDelegate *delegate = (PhotoGameAppDelegate*)[[UIApplication sharedApplication] delegate];
-    PlayViewController *pvc = [[PlayViewController alloc] initWithNibName:@"PlayViewController" bundle:nil];
 
+    PlayViewController *pvc;
+    if (!(pvc = [views objectForKey:@"PlayViewController"])) {
+        pvc = [[PlayViewController alloc] initWithNibName:@"PlayViewController" bundle:nil];
+    }    
+    
     pvc.theParent = self;  
     [delegate switchView:self.view to:pvc.view];
-
+    [views setValue:pvc forKey:@"PlayViewController"];
 }
 
 - (void)dealloc
@@ -47,7 +66,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     /*
     gameData = [[GameData alloc] init];
     [gameData.images removeAllObjects];
@@ -132,7 +151,6 @@
         }
     }
 
-    
     if ([playImages count] > 0 && [gameData.images count] == 0) {
         gameData = [[GameData alloc] init];
         for (int i=0; i<[playImages count]; i++) {

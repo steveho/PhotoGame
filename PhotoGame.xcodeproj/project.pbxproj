@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		27041AEA13C3E31B0072A09A /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27041AE913C3E31B0072A09A /* Entitlements.plist */; };
 		2756576513BFBC1B00E9A856 /* pwp_hidden_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 2756576413BFBC1B00E9A856 /* pwp_hidden_image.png */; };
 		2756576713C1AF9A00E9A856 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2756576613C1AF9A00E9A856 /* QuartzCore.framework */; };
+		2786211113C3FEA10040A2D6 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2786211013C3FEA10040A2D6 /* Entitlements.plist */; };
+		2786211513C4103F0040A2D6 /* PhotoGame.icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2786211413C4103F0040A2D6 /* PhotoGame.icon.png */; };
 		27BCB59F13BC3C4B008196D6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27BCB59E13BC3C4B008196D6 /* UIKit.framework */; };
 		27BCB5A113BC3C4B008196D6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27BCB5A013BC3C4B008196D6 /* Foundation.framework */; };
 		27BCB5A313BC3C4B008196D6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27BCB5A213BC3C4B008196D6 /* CoreGraphics.framework */; };
@@ -35,9 +36,10 @@
 		27041AE213C3D8E40072A09A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources-iPad/PhotoGame/en.lproj/PhotoGameViewController.xib"; sourceTree = "<group>"; };
 		27041AE313C3D8E40072A09A /* PhotosViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PhotosViewController.xib; path = "Resources-iPad/PhotoGame/PhotosViewController.xib"; sourceTree = "<group>"; };
 		27041AE413C3D8E40072A09A /* PlayViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PlayViewController.xib; path = "Resources-iPad/PhotoGame/PlayViewController.xib"; sourceTree = "<group>"; };
-		27041AE913C3E31B0072A09A /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		2756576413BFBC1B00E9A856 /* pwp_hidden_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pwp_hidden_image.png; path = ../../../../Desktop/pwp_hidden_image.png; sourceTree = "<group>"; };
 		2756576613C1AF9A00E9A856 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		2786211013C3FEA10040A2D6 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
+		2786211413C4103F0040A2D6 /* PhotoGame.icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PhotoGame.icon.png; sourceTree = "<group>"; };
 		27BCB59A13BC3C4B008196D6 /* PhotoGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		27BCB59E13BC3C4B008196D6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		27BCB5A013BC3C4B008196D6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -104,7 +106,8 @@
 		27BCB58F13BC3C4B008196D6 = {
 			isa = PBXGroup;
 			children = (
-				27041AE913C3E31B0072A09A /* Entitlements.plist */,
+				2786211413C4103F0040A2D6 /* PhotoGame.icon.png */,
+				2786211013C3FEA10040A2D6 /* Entitlements.plist */,
 				27041ADE13C3D8DC0072A09A /* Resources-iPad */,
 				27BCB5A413BC3C4B008196D6 /* PhotoGame */,
 				27BCB5C413BC3C4B008196D6 /* PhotoGameTests */,
@@ -245,7 +248,8 @@
 				27BCB5DB13BC3C84008196D6 /* PhotosViewController.xib in Resources */,
 				27BCB5E013BC3CA0008196D6 /* PlayViewController.xib in Resources */,
 				2756576513BFBC1B00E9A856 /* pwp_hidden_image.png in Resources */,
-				27041AEA13C3E31B0072A09A /* Entitlements.plist in Resources */,
+				2786211113C3FEA10040A2D6 /* Entitlements.plist in Resources */,
+				2786211513C4103F0040A2D6 /* PhotoGame.icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -321,13 +325,51 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		2786211213C40C3E0040A2D6 /* AdHoc */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Steve Ho";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Steve Ho";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "7257337B-F992-41C6-A81D-CB9F949C4D83";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7257337B-F992-41C6-A81D-CB9F949C4D83";
+				SDKROOT = iphoneos;
+			};
+			name = AdHoc;
+		};
+		2786211313C40C3E0040A2D6 /* AdHoc */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Steve Ho";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Steve Ho";
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "PhotoGame/PhotoGame-Prefix.pch";
+				INFOPLIST_FILE = "PhotoGame/PhotoGame-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "7257337B-F992-41C6-A81D-CB9F949C4D83";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7257337B-F992-41C6-A81D-CB9F949C4D83";
+				VALIDATE_PRODUCT = NO;
+				WRAPPER_EXTENSION = app;
+			};
+			name = AdHoc;
+		};
 		27BCB5CF13BC3C4B008196D6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Steve Ho";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Steve Ho";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Steve Ho (4WB8YAEDT7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Steve Ho (4WB8YAEDT7)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
@@ -336,8 +378,8 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				PROVISIONING_PROFILE = "DF0806C5-E8E6-4C88-A35B-F4F43E11FE2D";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DF0806C5-E8E6-4C88-A35B-F4F43E11FE2D";
+				PROVISIONING_PROFILE = "BF2CA1BF-D708-45C1-A7AE-8E14D7647104";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "BF2CA1BF-D708-45C1-A7AE-8E14D7647104";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -347,16 +389,16 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Steve Ho";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Steve Ho";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Steve Ho (4WB8YAEDT7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Steve Ho (4WB8YAEDT7)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "DF0806C5-E8E6-4C88-A35B-F4F43E11FE2D";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DF0806C5-E8E6-4C88-A35B-F4F43E11FE2D";
+				PROVISIONING_PROFILE = "BF2CA1BF-D708-45C1-A7AE-8E14D7647104";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "BF2CA1BF-D708-45C1-A7AE-8E14D7647104";
 				SDKROOT = iphoneos;
 			};
 			name = Release;
@@ -365,13 +407,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Steve Ho (4WB8YAEDT7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Steve Ho (4WB8YAEDT7)";
 				COPY_PHASE_STRIP = YES;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PhotoGame/PhotoGame-Prefix.pch";
 				INFOPLIST_FILE = "PhotoGame/PhotoGame-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "BF2CA1BF-D708-45C1-A7AE-8E14D7647104";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "BF2CA1BF-D708-45C1-A7AE-8E14D7647104";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -380,52 +426,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Steve Ho (4WB8YAEDT7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Steve Ho (4WB8YAEDT7)";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PhotoGame/PhotoGame-Prefix.pch";
 				INFOPLIST_FILE = "PhotoGame/PhotoGame-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "BF2CA1BF-D708-45C1-A7AE-8E14D7647104";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "BF2CA1BF-D708-45C1-A7AE-8E14D7647104";
 				VALIDATE_PRODUCT = NO;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
-		};
-		27BDF5D513C3D019002712AD /* Distribution */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Steve Ho";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Steve Ho";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "DF0806C5-E8E6-4C88-A35B-F4F43E11FE2D";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DF0806C5-E8E6-4C88-A35B-F4F43E11FE2D";
-				SDKROOT = iphoneos;
-			};
-			name = Distribution;
-		};
-		27BDF5D613C3D019002712AD /* Distribution */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Steve Ho";
-				COPY_PHASE_STRIP = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "PhotoGame/PhotoGame-Prefix.pch";
-				INFOPLIST_FILE = "PhotoGame/PhotoGame-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "1252A073-9EEA-4281-8EC5-4FF9CEF5AA03";
-				VALIDATE_PRODUCT = NO;
-				WRAPPER_EXTENSION = app;
-			};
-			name = Distribution;
 		};
 /* End XCBuildConfiguration section */
 
@@ -435,20 +449,20 @@
 			buildConfigurations = (
 				27BCB5CF13BC3C4B008196D6 /* Debug */,
 				27BCB5D013BC3C4B008196D6 /* Release */,
-				27BDF5D513C3D019002712AD /* Distribution */,
+				2786211213C40C3E0040A2D6 /* AdHoc */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Distribution;
+			defaultConfigurationName = Debug;
 		};
 		27BCB5D113BC3C4B008196D6 /* Build configuration list for PBXNativeTarget "PhotoGame" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				27BCB5D213BC3C4B008196D6 /* Debug */,
 				27BCB5D313BC3C4B008196D6 /* Release */,
-				27BDF5D613C3D019002712AD /* Distribution */,
+				2786211313C40C3E0040A2D6 /* AdHoc */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Distribution;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};

@@ -11,8 +11,9 @@
 
 #import "GameData.h"
 #import "PhotosViewController.h"
-#import "PhotoGameAppDelegate.h"
 #import "PlayViewController.h"
+#import "PhotoGameAppDelegate.h"
+
 
 @interface PhotoGameViewController : UIViewController <UIAlertViewDelegate> {
     UITextField *nameField;
@@ -20,6 +21,8 @@
     NSMutableArray *allImages;
     NSMutableString *myUserName;
     NSMutableArray *playImages;
+    
+    NSMutableDictionary *views;
 }
 
 -(IBAction)startGame;
@@ -31,10 +34,10 @@
 -(UIImage*)scaleImage:(UIImage*)image toSize:(CGSize)size;
 -(void)getRandomPlayPhotos;
 
+@property (nonatomic, retain) NSMutableDictionary *views;
 @property (nonatomic, retain) NSMutableArray *allImages;
 @property (nonatomic, retain) NSMutableString *myUserName;
 @property (nonatomic, retain) NSMutableArray *playImages;
 @property (nonatomic, retain) GameData *gameData;
-
 
 @end

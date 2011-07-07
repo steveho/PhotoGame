@@ -17,8 +17,8 @@
 
 -(IBAction)showHomeView:(id)sender {
     PhotoGameAppDelegate *delegate = (PhotoGameAppDelegate*)[[UIApplication sharedApplication] delegate];
-    PhotoGameViewController *pvc = [[PhotoGameViewController alloc] initWithNibName:@"PhotoGameViewController" bundle:nil];
-    [delegate switchView:self.view to:pvc.view];
+    
+    [delegate switchView:self.view to:theParent.view];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -33,6 +33,7 @@
 - (void)dealloc
 {
     [super dealloc];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -45,111 +46,42 @@
 
 #pragma mark - View lifecycle
 
+
+- (BOOL)canBecomeFirstResponder {
+    return YES;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self becomeFirstResponder];    
+}
+
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+    if ( event.subtype == UIEventSubtypeMotionShake ) {       
+        [self recreatedRandomPhotos];     
+    }    
+    if ([super respondsToSelector:@selector(motionEnded:withEvent:)]) {
+        [super motionEnded:motion withEvent:event];
+    }
+}
+
+
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
-
-    imgBtn0 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn0.frame = CGRectMake(4.0, 53.0, 75.0, 75.0);
-    [self.view addSubview:imgBtn0];
-    [imgBtn0 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
-    
-    imgBtn1 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn1.frame = CGRectMake(83.0, 53.0, 75.0, 75.0);
-    [self.view addSubview:imgBtn1];
-    [imgBtn1 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
-    
-    imgBtn2 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn2.frame = CGRectMake(162.0, 53.0, 75.0, 75.0);
-    [self.view addSubview:imgBtn2];
-    [imgBtn2 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
-    
-    imgBtn3 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn3.frame = CGRectMake(241.0, 53.0, 75.0, 75.0);
-    [self.view addSubview:imgBtn3];
-    [imgBtn3 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
-    
-    imgBtn4 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn4.frame = CGRectMake(4.0, 132.0, 75.0, 75.0);
-    [self.view addSubview:imgBtn4];
-    [imgBtn4 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
-    
-    imgBtn5 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn5.frame = CGRectMake(83.0, 132.0, 75.0, 75.0);
-    [self.view addSubview:imgBtn5];
-    [imgBtn5 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
-    
-    imgBtn6 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn6.frame = CGRectMake(162.0, 132.0, 75.0, 75.0);
-    [self.view addSubview:imgBtn6];
-    [imgBtn6 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
-    
-    imgBtn7 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn7.frame = CGRectMake(241.0, 132.0, 75.0, 75.0);
-    [self.view addSubview:imgBtn7];
-    [imgBtn7 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
-    
-    imgBtn8 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn8.frame = CGRectMake(4.0, 211.0, 75.0, 75.0);
-    [self.view addSubview:imgBtn8];
-    [imgBtn8 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
-    
-    imgBtn9 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn9.frame = CGRectMake(83.0, 211.0, 75.0, 75.0);
-    [self.view addSubview:imgBtn9];
-    [imgBtn9 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
-    
-    imgBtn10 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn10.frame = CGRectMake(162.0, 211.0, 75.0, 75.0);
-    [self.view addSubview:imgBtn10];
-    [imgBtn10 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
-    
-    imgBtn11 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn11.frame = CGRectMake(241.0, 211.0, 75.0, 75.0);
-    [self.view addSubview:imgBtn11];
-    [imgBtn11 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
-    
-    imgBtn12 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn12.frame = CGRectMake(4.0, 290.0, 75.0, 75.0);
-    [self.view addSubview:imgBtn12];
-    [imgBtn12 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
-    
-    imgBtn13 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn13.frame = CGRectMake(83.0, 290.0, 75.0, 75.0);
-    [self.view addSubview:imgBtn13];
-    [imgBtn13 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
-    
-    imgBtn14 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn14.frame = CGRectMake(162.0, 290.0, 75.0, 75.0);
-    [self.view addSubview:imgBtn14];
-    [imgBtn14 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
-    
-    imgBtn15 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn15.frame = CGRectMake(241.0, 290.0, 75.0, 75.0);
-    [self.view addSubview:imgBtn15];
-    [imgBtn15 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];    
-    
+    [super viewDidLoad];    
+    [self becomeFirstResponder];
+    [self setupGrid];
     [self populatePlayPhotoGrid];
-    
-    /*
-    if ([theParent.playImages count] > 0) {
-        theParent.gameData = [[GameData alloc] init];
-        theParent.gameData.images = [[NSMutableArray alloc] init];
-        for (int i=0; i<[theParent.playImages count]; i++) {
-            [theParent.gameData.images addObject:[theParent.playImages objectAtIndex:i]];
-        }
-        NSLog(@"count: %d", [theParent.gameData.images count]);
-        [theParent.gameData saveToFile];
-        [theParent.gameData release];
-    }    
-    */
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [self viewDidAppear:animated];
+    [self resignFirstResponder];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -161,6 +93,7 @@
 - (void)buttonPushed:(id)sender {
     
 }
+
 
 - (void)populatePlayPhotoGrid {
     ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *myasset) {
@@ -181,6 +114,7 @@
     for (int i=0; i<[theParent.playImages count]; i++) {
         [assetslibrary assetForURL:[theParent.playImages objectAtIndex:i] resultBlock:resultblock failureBlock:failureblock];
     }
+    
 }
 
 - (BOOL)addImageToGrid:(UIImage *)img {
@@ -190,7 +124,7 @@
     if(img == nil) {
         return added;
     }
-    img = [self scaleImage:img toSize:CGSizeMake(150.0f,150.0f)];
+    img = [theParent scaleImage:img toSize:CGSizeMake(150.0f,150.0f)];
     if ([imgBtn0 currentImage] == nil) {
         [imgBtn0 setImage:img forState:UIControlStateNormal];
         added = YES;
@@ -262,21 +196,139 @@
     return added;
 }
 
-- (UIImage*)scaleImage:(UIImage*)image toSize:(CGSize)size {
-    UIGraphicsBeginImageContext(size);
+- (void)recreatedRandomPhotos {
     
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextTranslateCTM(context, 0.0, size.height);
-    CGContextScaleCTM(context, 1.0, -1.0);
     
-    CGContextDrawImage(context, CGRectMake(0.0f, 0.0f, size.width, size.height), image.CGImage);
+    if ([theParent.playImages count] > 0) {
+        
+        GameData *_gameData = [[GameData alloc] init];
+        [_gameData.images removeAllObjects];
+        [theParent.playImages removeAllObjects];
+        
+        [imgBtn0 setImage:nil forState:UIControlStateNormal];
+        [imgBtn1 setImage:nil forState:UIControlStateNormal];
+        [imgBtn2 setImage:nil forState:UIControlStateNormal];
+        [imgBtn3 setImage:nil forState:UIControlStateNormal];
+        [imgBtn4 setImage:nil forState:UIControlStateNormal];
+        [imgBtn5 setImage:nil forState:UIControlStateNormal];
+        [imgBtn6 setImage:nil forState:UIControlStateNormal];
+        [imgBtn7 setImage:nil forState:UIControlStateNormal];
+        [imgBtn8 setImage:nil forState:UIControlStateNormal];
+        [imgBtn9 setImage:nil forState:UIControlStateNormal];
+        [imgBtn10 setImage:nil forState:UIControlStateNormal];
+        [imgBtn11 setImage:nil forState:UIControlStateNormal];
+        [imgBtn12 setImage:nil forState:UIControlStateNormal];
+        [imgBtn13 setImage:nil forState:UIControlStateNormal];
+        [imgBtn14 setImage:nil forState:UIControlStateNormal];
+        [imgBtn15 setImage:nil forState:UIControlStateNormal]; 
+
+        NSURL *url;
+        int max = 17;
+        
+        for (int i=0; i<100; i++) {
+            url = [theParent getDeviceRandomPhoto];
+            if (url && [theParent.playImages indexOfObject:url] == NSNotFound) {
+                [theParent.playImages addObject:url];
+                if ([theParent.playImages count] >= max) {
+                    break;
+                }
+            }
+        }
+        
+        [self populatePlayPhotoGrid];   
+
+        for (int i=0; i<[theParent.playImages count]; i++) {
+            [_gameData.images addObject:[theParent.playImages objectAtIndex:i]];
+        }        
+        [_gameData saveToFile];     
+        [_gameData release];        
+    }
     
-    UIImage* scaledImage = UIGraphicsGetImageFromCurrentImageContext();
-    
-    UIGraphicsEndImageContext();
-    
-    return scaledImage;
 }
+
+- (void)setupGrid {    
+    
+    imgBtn0 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    imgBtn0.frame = CGRectMake(4.0, 58.0, 75.0, 75.0);    
+    [self.view addSubview:imgBtn0];
+    [imgBtn0 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    imgBtn1 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    imgBtn1.frame = CGRectMake(83.0, 58.0, 75.0, 75.0);
+    [self.view addSubview:imgBtn1];
+    [imgBtn1 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    imgBtn2 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    imgBtn2.frame = CGRectMake(162.0, 58.0, 75.0, 75.0);
+    [self.view addSubview:imgBtn2];
+    [imgBtn2 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    imgBtn3 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    imgBtn3.frame = CGRectMake(241.0, 58.0, 75.0, 75.0);
+    [self.view addSubview:imgBtn3];
+    [imgBtn3 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    imgBtn4 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    imgBtn4.frame = CGRectMake(4.0, 137.0, 75.0, 75.0);
+    [self.view addSubview:imgBtn4];
+    [imgBtn4 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    imgBtn5 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    imgBtn5.frame = CGRectMake(83.0, 137.0, 75.0, 75.0);
+    [self.view addSubview:imgBtn5];
+    [imgBtn5 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    imgBtn6 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    imgBtn6.frame = CGRectMake(162.0, 137.0, 75.0, 75.0);
+    [self.view addSubview:imgBtn6];
+    [imgBtn6 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    imgBtn7 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    imgBtn7.frame = CGRectMake(241.0, 137.0, 75.0, 75.0);
+    [self.view addSubview:imgBtn7];
+    [imgBtn7 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    imgBtn8 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    imgBtn8.frame = CGRectMake(4.0, 216.0, 75.0, 75.0);
+    [self.view addSubview:imgBtn8];
+    [imgBtn8 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    imgBtn9 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    imgBtn9.frame = CGRectMake(83.0, 216.0, 75.0, 75.0);
+    [self.view addSubview:imgBtn9];
+    [imgBtn9 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    imgBtn10 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    imgBtn10.frame = CGRectMake(162.0, 216.0, 75.0, 75.0);
+    [self.view addSubview:imgBtn10];
+    [imgBtn10 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    imgBtn11 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    imgBtn11.frame = CGRectMake(241.0, 216.0, 75.0, 75.0);
+    [self.view addSubview:imgBtn11];
+    [imgBtn11 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    imgBtn12 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    imgBtn12.frame = CGRectMake(4.0, 295.0, 75.0, 75.0);
+    [self.view addSubview:imgBtn12];
+    [imgBtn12 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    imgBtn13 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    imgBtn13.frame = CGRectMake(83.0, 295.0, 75.0, 75.0);
+    [self.view addSubview:imgBtn13];
+    [imgBtn13 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    imgBtn14 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    imgBtn14.frame = CGRectMake(162.0, 295.0, 75.0, 75.0);
+    [self.view addSubview:imgBtn14];
+    [imgBtn14 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    imgBtn15 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    imgBtn15.frame = CGRectMake(241.0, 295.0, 75.0, 75.0);
+    [self.view addSubview:imgBtn15];
+    [imgBtn15 addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];     
+}
+
 
 
 @end
