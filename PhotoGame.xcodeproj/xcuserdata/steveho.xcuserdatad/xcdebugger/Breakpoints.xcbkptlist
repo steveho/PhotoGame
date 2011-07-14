@@ -21,11 +21,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "PhotoGame/PlayViewController.m"
-         timestampString = "331765069.822767"
+         timestampString = "332369323.534107"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "162"
-         endingLineNumber = "162"
+         startingLineNumber = "218"
+         endingLineNumber = "218"
          landmarkName = "-pickLocalSeedPhoto"
          landmarkType = "5">
       </FileBreakpoint>
@@ -35,26 +35,12 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "PhotoGame/PlayViewController.m"
-         timestampString = "331764896.616753"
+         timestampString = "332369323.534107"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "173"
-         endingLineNumber = "173"
+         startingLineNumber = "229"
+         endingLineNumber = "229"
          landmarkName = "-pickLocalSeedPhoto"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "PhotoGame/PlayViewController.m"
-         timestampString = "331764896.616753"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "553"
-         endingLineNumber = "553"
-         landmarkName = "-unveilPhoto:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -126,6 +112,20 @@
          endingLineNumber = "110"
          landmarkName = "-updateShowRules"
          landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "PhotoGame/PlayViewController.m"
+         timestampString = "332307321.765229"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "19"
+         endingLineNumber = "19"
+         landmarkName = "curSelectedPlayPhoto,customeBtn1"
+         landmarkType = "19">
       </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>

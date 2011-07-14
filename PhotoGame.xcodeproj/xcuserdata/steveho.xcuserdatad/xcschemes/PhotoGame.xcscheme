@@ -81,6 +81,7 @@
    </AnalyzeAction>
    <ArchiveAction
       buildConfiguration = "AdHoc"
+      customArchiveName = "PWP"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

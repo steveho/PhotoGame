@@ -11,11 +11,12 @@
 
 @implementation PlayViewController
 
-@synthesize theParent, sessionManager, peerLabel, seedPhoto, scrollView, previewPhoto, newRoundBtn, playPhotoBtn, scrollViewLabel, roundXBtn;
-@synthesize gamePlayLabel, unveilPhotoBig, nextPhotoBtn;
+@synthesize theParent, sessionManager, peerLabel, seedPhoto, scrollView, previewPhoto, scrollViewLabel;
+@synthesize gamePlayLabel, unveilPhotoBig;
 @synthesize players, gameStep, gameRound, mySeedPhotoURL, unveiledPhotoCounter;
 @synthesize unveilResponseCount, playPhotos, iVoteForPeerID;
-@synthesize photoCaptionTextField, alreadySeededPhotos;
+@synthesize photoCaptionTextField, alreadySeededPhotos, startGameBtn, navBar, navBarItem, navBarBtnItem;
+@synthesize curSelectedPlayPhoto, customeBtn1;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -44,6 +45,31 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0f, 18.0f, 320.0f, 48.0f)];
+    //navBarBtnItem = [[UIBarButtonItem alloc] initWithTitle:PLAY_PIC style:UIBarButtonItemStyleDone target:self action:@selector(navBarBtnItemClicked:)];
+    
+    customeBtn1 = [UIButton buttonWithType:UIButtonTypeCustom];
+    [customeBtn1 setTitle:PLAY_PIC forState:UIControlStateNormal];
+    customeBtn1.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.0f];
+    [customeBtn1 setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];    
+    customeBtn1.showsTouchWhenHighlighted = YES;
+    [customeBtn1.layer setCornerRadius:4.0f];
+    [customeBtn1.layer setMasksToBounds:YES];
+    [customeBtn1.layer setBorderWidth:1.0f];
+    [customeBtn1.layer setBorderColor:[[UIColor grayColor] CGColor]];
+    [customeBtn1.layer setBackgroundColor:[[UIColor colorWithRed:31.0/255.0 green:199.0/255.0 blue:48.0/255.0 alpha:1.0] CGColor]];
+    customeBtn1.frame=CGRectMake(0.0, 100.0, 65.0, 28.0);    
+    [customeBtn1 addTarget:self action:@selector(navBarBtnItemClicked:) forControlEvents:UIControlEventTouchUpInside];
+        
+    navBarBtnItem = [[UIBarButtonItem alloc] initWithCustomView:customeBtn1];    
+    
+    navBarItem = [[UINavigationItem alloc] initWithTitle:@"Match This Image"];
+    [navBarItem setBackBarButtonItem:nil];
+    [navBar pushNavigationItem:navBarItem animated:NO];    
+    [self.view addSubview: navBar]; 
+    [navBar setHidden:YES];
+    
     
     gameRound = 0;
     [self setupGame];    
@@ -96,6 +122,7 @@
 - (void)setupGame {
     players = [[NSMutableDictionary alloc] init];
     mySeedPhotoURL = nil;
+    curSelectedPlayPhoto = nil;
     
     sessionManager = [[SessionManager alloc] init];
     sessionManager.delegate = self;
@@ -108,6 +135,44 @@
     
     [self prepareNewRound];
 }
+
+
+-(void)navBarBtnItemClicked:(id)sender {    
+    NSString *btnText = [customeBtn1.titleLabel text];
+    
+    NSLog(@"%@", btnText);
+        
+    if ([btnText compare:PLAY_PIC] == NSOrderedSame) {
+        if (gameStep == 1 && [previewPhoto image]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Add Photo Caption?" message:@"Add Photo Caption?" delegate:self cancelButtonTitle:@"Skip" otherButtonTitles:@"Add", nil];        
+            photoCaptionTextField = [[UITextField alloc] initWithFrame:CGRectMake(20.0, 45.0, 245.0, 25.0)];
+            [photoCaptionTextField setBackgroundColor:[UIColor whiteColor]];
+            [alert addSubview:photoCaptionTextField];     
+            [photoCaptionTextField becomeFirstResponder];
+            [alert show];
+            [alert release];
+            alert = nil; 
+        }    
+        else {
+            NSLog(@"here %d", gameStep);
+        }
+    }
+    else if ([btnText compare:NEXT_PIC] == NSOrderedSame || [btnText compare:GO_VOTE] == NSOrderedSame) {
+        if ([sessionManager.mySession peerID] != currentSeeder) {
+            NSData *data = [@"y" dataUsingEncoding:[NSString defaultCStringEncoding]];
+            [self sendDataToPeer:currentSeeder type:PacketTypeDataDoneViewingCurrentPhoto data:data];
+        }
+        [customeBtn1 setTitle:WAITINGX forState:UIControlStateNormal];
+        [self readyForNextUnveilPhoto:[sessionManager.mySession peerID]];
+        
+    }
+    else if ([[btnText substringToIndex:5] compare:@"Round"] == NSOrderedSame) {
+        [self newRoundBtnClicked];
+    }
+    else {}
+    
+}
+
 
 -(void)prepareNewRound {    
     playPhotos = nil;
@@ -149,15 +214,6 @@
     }   
 }
 
-- (IBAction)nextPhotoBtnClicked {
-    [nextPhotoBtn setHidden:YES];
-    if ([sessionManager.mySession peerID] != currentSeeder) {
-        NSData *data = [@"y" dataUsingEncoding:[NSString defaultCStringEncoding]];
-        [self sendDataToPeer:currentSeeder type:PacketTypeDataDoneViewingCurrentPhoto data:data];
-    }
-    [self readyForNextUnveilPhoto:[sessionManager.mySession peerID]];
-}
-
 - (void)pickLocalSeedPhoto {    
     //picking a random seed photo and make sure it has not been used in previous rounds
     if (alreadySeededPhotos == nil) {
@@ -194,9 +250,21 @@
 }
 
 - (void)playPhotoClicked:(id)sender {    
-    [previewPhoto setImage:[sender currentImage]];
-    [playPhotoBtn setHidden:NO];
-    [previewPhoto setHidden:NO];
+    if (curSelectedPlayPhoto == nil || curSelectedPlayPhoto != sender) {
+        curSelectedPlayPhoto = sender;
+        [previewPhoto setImage:[sender currentImage]];
+        [previewPhoto setHidden:NO];        
+        [customeBtn1 setTitle:PLAY_PIC forState:UIControlStateNormal];
+        [navBarItem setRightBarButtonItem:navBarBtnItem animated:NO];        
+    }
+    else {
+        curSelectedPlayPhoto = nil;
+        [previewPhoto setImage:nil];
+        [previewPhoto setHidden:YES];
+        [navBarItem setRightBarButtonItem:nil animated:NO];
+    }
+    
+    
 }
 
 - (void)submittedPhotoClicked:(id)sender {
@@ -209,6 +277,8 @@
         NSData *data = [iVoteForPeerID dataUsingEncoding:[NSString defaultCStringEncoding]];
         [self sendDataToPeer:nil type:PacketTypeDataIVoteForPeerID data:data];    
         [self whoVotesForWho:[sessionManager.mySession peerID] votee:iVoteForPeerID];
+
+        
     }
 }
 
@@ -293,18 +363,6 @@
     [scrollView setContentSize:CGSizeMake(((75.0+2.0) * submittedPhotoCount), 80)];
 }
 
-- (IBAction)playPhotoBtnClicked {
-    if (gameStep == 1 && [previewPhoto image]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Add Photo Caption?" message:@"Add Photo Caption?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];        
-        photoCaptionTextField = [[UITextField alloc] initWithFrame:CGRectMake(20.0, 45.0, 245.0, 25.0)];
-        [photoCaptionTextField setBackgroundColor:[UIColor whiteColor]];
-        [alert addSubview:photoCaptionTextField];     
-        [photoCaptionTextField becomeFirstResponder];
-        [alert show];
-        [alert release];
-        alert = nil; 
-    }
-}
 
 
 
@@ -453,58 +511,59 @@
 - (void)gameFlowNext {
     if (gameStep == 0) {//new round - need a seed photo
         currentSeeder = nil;
-        [playPhotoBtn setHidden:YES];        
         [gamePlayLabel setHidden:NO];
+        [navBar setHidden:YES];
         [unveilPhotoBig setHidden:YES];
         unveiledPhotoCounter = 0;
-        [nextPhotoBtn setHidden:YES];
-        [roundXBtn setHidden:YES];
         [scrollViewLabel setHidden:YES];
-        [newRoundBtn setHidden:YES];        
+        [navBarItem setRightBarButtonItem:nil animated:NO];
         
         NSArray *connPeers = [sessionManager.mySession peersWithConnectionState:GKPeerStateConnected];
         int numPlayers = [connPeers count] + 1;      
         if (numPlayers >= 2) {
-            //[[newRoundBtn layer] ];
-            [[newRoundBtn layer] setCornerRadius:8.0f];
-            [[newRoundBtn layer] setBorderWidth:0.0f]; 
-            [newRoundBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            [newRoundBtn setBackgroundColor:[UIColor greenColor]];
-            [newRoundBtn setHidden:NO];
-        } else {
-            [gamePlayLabel setText:@"Waiting For Players..."];
-            [newRoundBtn setHidden:YES];
+            //[[newRoundBtn layer] setCornerRadius:8.0f];
+            //[[newRoundBtn layer] setBorderWidth:0.0f]; 
+            //[newRoundBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            //[newRoundBtn setBackgroundColor:[UIColor greenColor]];
+            //[newRoundBtn setHidden:NO];
+        } else {            
+            //[newRoundBtn setHidden:YES];
         }
     }
     else if (gameStep == 1) {//got seed photo - select a match
-        [gamePlayLabel setHidden:NO];
-        [newRoundBtn setHidden:YES];
-        [gamePlayLabel setText:@"Match This Image"];
+        [gamePlayLabel setHidden:YES];
+        [navBar setHidden:NO];
+        [navBarItem setTitle:@"Match This Image"];
         [self setupPlayPhotosView];            
         [peerLabel setHidden:YES];
     }
     else if (gameStep == 2) {//clicked "Play Photo"
-        [playPhotoBtn setHidden:YES];
-        [gamePlayLabel setText:@"Waiting For Peeps"];
+        [gamePlayLabel setHidden:YES];
+        [navBarItem setTitle:@"Waiting For Peeps"];
+        [navBarItem setRightBarButtonItem:nil animated:NO];
     }    
     else if (gameStep == 3) {//all have submitted - start viewing one by one (initiated by the seeder)
-
+        [navBarItem setRightBarButtonItem:navBarBtnItem animated:NO];
     }    
     else if (gameStep == 4) {//vote for a match
-        [nextPhotoBtn setHidden:YES];
-        [gamePlayLabel setText:@"Vote For A Match"];
+        [gamePlayLabel setHidden:YES];
         [seedPhoto setHidden:NO];
         [unveilPhotoBig setHidden:YES];
         [scrollViewLabel setHidden:YES];
+        [navBarItem setTitle:@"Vote For A Match"];
+        [navBarItem setRightBarButtonItem:nil animated:NO];
+        
     }
     else if (gameStep == 5) {//we have a winner
-        [scrollViewLabel setHidden:NO];
         [gamePlayLabel setHidden:YES];
+        [scrollViewLabel setHidden:NO];
+        [navBarItem setTitle:@""];
         
         NSMutableString *roundXTitle = [NSMutableString stringWithString:@"Round "];
         [roundXTitle appendFormat:@"%d", (gameRound+1)];
-        [roundXBtn setTitle:roundXTitle forState:UIControlStateNormal];
-        [roundXBtn setHidden:NO];
+        [customeBtn1 setTitle:roundXTitle forState:UIControlStateNormal];
+        [navBarItem setRightBarButtonItem:navBarBtnItem animated:NO];
+        
     }    
     else {}
 }
@@ -523,8 +582,7 @@
     }
 }
 
-- (void)unveilNextPhoto:(NSString*)peerID {    
-    [nextPhotoBtn setHidden:NO];
+- (void)unveilNextPhoto:(NSString*)peerID {      
     [seedPhoto setHidden:YES];
     [previewPhoto setHidden:YES];
     [unveilPhotoBig setHidden:NO];    
@@ -539,7 +597,6 @@
             }
         }  
     }
-
     
     Player *p = [players objectForKey:peerID];
     UIImage *img = [p roundPhoto];
@@ -550,7 +607,7 @@
     
     NSMutableString *label = [NSMutableString stringWithString:[p name]];
     [label appendString:@"'s Photo"];
-    [gamePlayLabel setText:label];
+    [navBarItem setTitle:label];
     
     UIButton *btn;
     btn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -569,6 +626,15 @@
     }    
     
     [scrollView setContentSize:CGSizeMake(((75.0+2.0) * unveiledPhotoCounter), 80)];
+
+    
+    if (unveiledPhotoCounter >= [players count]) {
+        [customeBtn1 setTitle:GO_VOTE forState:UIControlStateNormal];
+    } 
+    else {
+        [customeBtn1 setTitle:NEXT_PIC forState:UIControlStateNormal];        
+    }
+    [navBarItem setRightBarButtonItem:navBarBtnItem animated:NO];     
 }
 
 //peerID is done viewing current photo and ready for next
@@ -577,7 +643,7 @@
     if ([sessionManager.mySession peerID] == currentSeeder && unveilResponseCount >= [playPhotos count]) {
         if (unveiledPhotoCounter < [playPhotos count]) {
             NSString *nextPeerID = [playPhotos objectAtIndex:unveiledPhotoCounter];
-            [self unveilNextPhoto:nextPeerID];            
+            [self unveilNextPhoto:nextPeerID];          
         }
         else {//last viewing
             NSData *data = [@"y" dataUsingEncoding:[NSString defaultCStringEncoding]];
@@ -722,17 +788,19 @@
                     j++;
                     continue;
                 }
+                
                 UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];                        
                 [btn setTitle:[NSString stringWithFormat:@"%d", p.roundVotes] forState:UIControlStateNormal];
-                [[btn layer] setCornerRadius:10.0f];
+                [btn setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
+                [btn.layer setBorderColor:[[UIColor whiteColor] CGColor]];
+                [[btn layer] setCornerRadius:8.0f];
                 [[btn layer] setMasksToBounds:YES];
-                [[btn layer] setBorderWidth:0.0f]; 
-                [btn setBackgroundColor:[UIColor greenColor]];
+                [[btn layer] setBorderWidth:2.0f]; 
+                [btn setBackgroundColor:[UIColor colorWithRed:31.0/255.0 green:199.0/255.0 blue:48.0/255.0 alpha:1.0]];
                 [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                 [btn setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
-                [btn.titleLabel setFont:[UIFont boldSystemFontOfSize:12.0]];  
-
-                btn.frame = CGRectMake((77*j+55), 0.0, 20, 20);
+                [btn.titleLabel setFont:[UIFont boldSystemFontOfSize:11.0]];  
+                btn.frame = CGRectMake((77*j+59), 0.0, 17, 17);
                 [scrollView addSubview:btn];
 
                 j++;

@@ -28,7 +28,8 @@
     IBOutlet UIButton *imgBtn13;
     IBOutlet UIButton *imgBtn14;
     IBOutlet UIButton *imgBtn15;
-
+    IBOutlet UIActivityIndicatorView *loadingBtn;
+    
     PhotoGameViewController *theParent;    
 }
 
@@ -48,13 +49,14 @@
 @property (nonatomic, retain) IBOutlet UIButton *imgBtn13;
 @property (nonatomic, retain) IBOutlet UIButton *imgBtn14;
 @property (nonatomic, retain) IBOutlet UIButton *imgBtn15;
+@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *loadingBtn;
 
 @property (nonatomic, retain) PhotoGameViewController *theParent;
 
 -(BOOL)addImageToGrid:(UIImage*)img;
 -(IBAction)playBtnClicked:(id)sender;
 -(void)populatePlayPhotoGrid;
--(void)recreatedRandomPhotos;
+-(void)recreateRandomPhotos;
 -(void)setupGrid;
 
 @end

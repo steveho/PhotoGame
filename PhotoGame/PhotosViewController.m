@@ -13,7 +13,7 @@
 
 @synthesize imgBtn0, imgBtn1, imgBtn2, imgBtn3, imgBtn4, imgBtn5, imgBtn6, imgBtn7, imgBtn8;
 @synthesize imgBtn9, imgBtn10, imgBtn11, imgBtn12, imgBtn13, imgBtn14, imgBtn15;
-@synthesize theParent;
+@synthesize theParent, loadingBtn;
 
 -(IBAction)playBtnClicked:(id)sender {
     //PhotoGameAppDelegate *delegate = (PhotoGameAppDelegate*)[[UIApplication sharedApplication] delegate];    
@@ -58,7 +58,7 @@
 
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
     if ( event.subtype == UIEventSubtypeMotionShake ) {       
-        [self recreatedRandomPhotos];     
+        [self recreateRandomPhotos];     
     }    
     if ([super respondsToSelector:@selector(motionEnded:withEvent:)]) {
         [super motionEnded:motion withEvent:event];
@@ -196,10 +196,11 @@
     return added;
 }
 
-- (void)recreatedRandomPhotos {
+- (void)recreateRandomPhotos {
     
     
     if ([theParent.playImages count] > 0) {
+        [loadingBtn setHidden:NO];
         
         GameData *_gameData = [[GameData alloc] init];
         [_gameData.images removeAllObjects];
@@ -221,7 +222,26 @@
         [imgBtn13 setImage:nil forState:UIControlStateNormal];
         [imgBtn14 setImage:nil forState:UIControlStateNormal];
         [imgBtn15 setImage:nil forState:UIControlStateNormal]; 
-
+        
+        [imgBtn0 setHidden:YES];
+        [imgBtn1 setHidden:YES];
+        [imgBtn2 setHidden:YES];
+        [imgBtn3 setHidden:YES];
+        [imgBtn4 setHidden:YES];
+        [imgBtn5 setHidden:YES];
+        [imgBtn6 setHidden:YES];
+        [imgBtn7 setHidden:YES];
+        [imgBtn8 setHidden:YES];
+        [imgBtn9 setHidden:YES];
+        [imgBtn10 setHidden:YES];
+        [imgBtn11 setHidden:YES];
+        [imgBtn12 setHidden:YES];
+        [imgBtn13 setHidden:YES];
+        [imgBtn14 setHidden:YES];
+        [imgBtn15 setHidden:YES];
+        
+        return;
+        
         NSURL *url;
         int max = 17;
         
@@ -241,7 +261,26 @@
             [_gameData.images addObject:[theParent.playImages objectAtIndex:i]];
         }        
         [_gameData saveToFile];     
-        [_gameData release];        
+        [_gameData release];    
+        
+        [loadingBtn setHidden:YES];
+        
+        [imgBtn0 setHidden:NO];
+        [imgBtn1 setHidden:NO];
+        [imgBtn2 setHidden:NO];
+        [imgBtn3 setHidden:NO];
+        [imgBtn4 setHidden:NO];
+        [imgBtn5 setHidden:NO];
+        [imgBtn6 setHidden:NO];
+        [imgBtn7 setHidden:NO];
+        [imgBtn8 setHidden:NO];
+        [imgBtn9 setHidden:NO];
+        [imgBtn10 setHidden:NO];
+        [imgBtn11 setHidden:NO];
+        [imgBtn12 setHidden:NO];
+        [imgBtn13 setHidden:NO];
+        [imgBtn14 setHidden:NO];
+        [imgBtn15 setHidden:NO];        
     }
     
 }

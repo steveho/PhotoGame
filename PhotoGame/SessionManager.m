@@ -68,12 +68,16 @@
 
 // Unable to connect to a session with the peer, due to rejection or exiting the app
 - (void)session:(GKSession *)session connectionWithPeerFailed:(NSString *)peerID withError:(NSError *)error {
-    
+    NSLog(@"Bluetooth connectionWithPeerFailed");
 }
 
 // The running session ended, potentially due to network failure.
 - (void)session:(GKSession *)session didFailWithError:(NSError*)error {
-    NSLog(@"%@",[error localizedDescription]);
+    
+    //if ([[error domain] isEqual:GKSessionErrorDomain] && ([error code] == GKSessionCannotEnableError))
+    //{
+        NSLog(@"Bluetooth is disabled");
+    //}    
 }
 
 // React to some activity from other peers on the network.
