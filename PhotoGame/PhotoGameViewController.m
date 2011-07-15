@@ -15,25 +15,41 @@
 @synthesize views;
 
 -(IBAction)showEditPhotoView:(id)sender {    
-    if (views == nil) {
-        views = [[NSMutableDictionary alloc] init];
+    if (self.myUserName == nil) { 
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Enter Your Name" message:@"Enter Your Name" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+        
+        nameField = [[UITextField alloc] initWithFrame:CGRectMake(20.0, 45.0, 245.0, 25.0)];
+        [nameField setBackgroundColor:[UIColor whiteColor]];
+        [alert addSubview:nameField];
+        [nameField becomeFirstResponder];
+        
+        [alert show];
+        [alert release];
+        alert = nil;
+        
     }
-    
-    PhotoGameAppDelegate *delegate = (PhotoGameAppDelegate*)[[UIApplication sharedApplication] delegate];
-    
-    PhotosViewController *pvc;
-    if (!(pvc = [views objectForKey:@"PhotosViewController"])) {
-        pvc = [[PhotosViewController alloc] initWithNibName:@"PhotosViewController" bundle:nil];
+
+    if (self.myUserName != nil) {
+        
+        if (views == nil) {
+            views = [[NSMutableDictionary alloc] init];
+        }
+        
+        PhotoGameAppDelegate *delegate = (PhotoGameAppDelegate*)[[UIApplication sharedApplication] delegate];
+        
+        PhotosViewController *pvc;
+        if (!(pvc = [views objectForKey:@"PhotosViewController"])) {
+            pvc = [[PhotosViewController alloc] initWithNibName:@"PhotosViewController" bundle:nil];
+        }    
+        pvc.theParent = self;
+        if ([sender isKindOfClass:[HowToPlay class]]) {
+            [delegate switchView:[sender view] to:pvc.view]; 
+        }
+        else {
+            [delegate switchView:self.view to:pvc.view]; 
+        }
+        [views setValue:pvc forKey:@"PhotosViewController"];
     }    
-    pvc.theParent = self;
-    if ([sender isKindOfClass:[HowToPlay class]]) {
-        [delegate switchView:[sender view] to:pvc.view]; 
-    }
-    else {
-        [delegate switchView:self.view to:pvc.view]; 
-    }
-    [views setValue:pvc forKey:@"PhotosViewController"];
-    
 }
 
 -(IBAction)showPlayView:(id)sender {  
@@ -158,7 +174,9 @@
 
 // User has reacted to the dialog box and chosen accept or reject.
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-	if (buttonIndex == 1 && [nameField text]) {
+    NSString *enteredName = [[nameField text] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+	if (buttonIndex == 1 && enteredName != nil && [enteredName compare:@""] != NSOrderedSame) {
         gameData = [[GameData alloc] init];        
         [gameData setUserName:[NSMutableString stringWithString:[nameField text]]];
         self.myUserName = [NSMutableString stringWithString:[nameField text]];
@@ -267,6 +285,27 @@
     UIGraphicsEndImageContext();
     
     return scaledImage;
+}
+
+-(CGSize)getImageDimsProportional:(UIImage*)image max:(CGSize)maxSize {
+    float actualHeight = image.size.height;
+    float actualWidth = image.size.width;
+    float imgRatio = actualWidth/actualHeight;
+    float maxRatio = maxSize.width/maxSize.height;
+    
+    if(imgRatio != maxRatio) {
+        if(imgRatio < maxRatio) {
+            imgRatio = maxSize.height / actualHeight;
+            actualWidth = imgRatio * actualWidth;
+            actualHeight = maxSize.height;
+        }
+        else {
+            imgRatio = maxSize.width / actualWidth;
+            actualHeight = imgRatio * actualHeight;
+            actualWidth = maxSize.width;
+        }
+    }    
+    return CGSizeMake(actualWidth, actualHeight);
 }
 
 

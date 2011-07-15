@@ -239,9 +239,7 @@
         [imgBtn13 setHidden:YES];
         [imgBtn14 setHidden:YES];
         [imgBtn15 setHidden:YES];
-        
-        return;
-        
+                
         NSURL *url;
         int max = 17;
         

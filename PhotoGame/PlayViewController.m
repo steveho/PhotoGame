@@ -16,7 +16,7 @@
 @synthesize players, gameStep, gameRound, mySeedPhotoURL, unveiledPhotoCounter;
 @synthesize unveilResponseCount, playPhotos, iVoteForPeerID;
 @synthesize photoCaptionTextField, alreadySeededPhotos, startGameBtn, navBar, navBarItem, navBarBtnItem;
-@synthesize curSelectedPlayPhoto, customeBtn1;
+@synthesize curSelectedPlayPhoto, customeBtn1, playPhotoCheckMarkBtn, imageContainer;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -46,9 +46,9 @@
 {
     [super viewDidLoad];
 
-    navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0f, 18.0f, 320.0f, 48.0f)];
-    //navBarBtnItem = [[UIBarButtonItem alloc] initWithTitle:PLAY_PIC style:UIBarButtonItemStyleDone target:self action:@selector(navBarBtnItemClicked:)];
+    [imageContainer setBackgroundColor:[UIColor colorWithRed:203.0/255.0 green:210.0/255.0 blue:216.0/255.0 alpha:1.0]];
     
+    navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0f, 18.0f, 320.0f, 48.0f)];    
     customeBtn1 = [UIButton buttonWithType:UIButtonTypeCustom];
     [customeBtn1 setTitle:PLAY_PIC forState:UIControlStateNormal];
     customeBtn1.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.0f];
@@ -139,8 +139,6 @@
 
 -(void)navBarBtnItemClicked:(id)sender {    
     NSString *btnText = [customeBtn1.titleLabel text];
-    
-    NSLog(@"%@", btnText);
         
     if ([btnText compare:PLAY_PIC] == NSOrderedSame) {
         if (gameStep == 1 && [previewPhoto image]) {
@@ -153,9 +151,6 @@
             [alert release];
             alert = nil; 
         }    
-        else {
-            NSLog(@"here %d", gameStep);
-        }
     }
     else if ([btnText compare:NEXT_PIC] == NSOrderedSame || [btnText compare:GO_VOTE] == NSOrderedSame) {
         if ([sessionManager.mySession peerID] != currentSeeder) {
@@ -177,6 +172,7 @@
 -(void)prepareNewRound {    
     playPhotos = nil;
     iVoteForPeerID = nil;
+    playPhotoCheckMarkBtn = nil;
     
     for (id key in players) {
         Player *player = (Player *)[players objectForKey:key];
@@ -229,14 +225,14 @@
     
     if (mySeedPhotoURL) {              
         [alreadySeededPhotos addObject:mySeedPhotoURL];
-        NSLog(@"my seeded photo: %d", [alreadySeededPhotos count]);
         ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *myasset) {
             ALAssetRepresentation *rep = [myasset defaultRepresentation];
             CGImageRef iref = [rep fullResolutionImage];
             if (iref) {
                 
                 UIImage *img = [UIImage imageWithCGImage:iref];
-                img = [theParent scaleImage:img toSize:CGSizeMake(160.0f,160.0f)];
+                CGSize newSize = [theParent getImageDimsProportional:img max:IMAGE_PREVIEW_SIZE];
+                img = [theParent scaleImage:img toSize:newSize];
                 [self setLocalSeedPhoto:img seeder:[sessionManager.mySession peerID]];                    
                 
             }
@@ -255,13 +251,35 @@
         [previewPhoto setImage:[sender currentImage]];
         [previewPhoto setHidden:NO];        
         [customeBtn1 setTitle:PLAY_PIC forState:UIControlStateNormal];
-        [navBarItem setRightBarButtonItem:navBarBtnItem animated:NO];        
+        [navBarItem setRightBarButtonItem:navBarBtnItem animated:NO];  
+
+        if (playPhotoCheckMarkBtn == nil) {
+            playPhotoCheckMarkBtn = [UIButton buttonWithType:UIButtonTypeCustom];                        
+            [playPhotoCheckMarkBtn setTitle:[NSString stringWithFormat:@"%@", @"\u2713"] forState:UIControlStateNormal];
+            [playPhotoCheckMarkBtn setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
+            [playPhotoCheckMarkBtn.layer setBorderColor:[[UIColor whiteColor] CGColor]];
+            [[playPhotoCheckMarkBtn layer] setCornerRadius:8.0f];
+            [[playPhotoCheckMarkBtn layer] setMasksToBounds:YES];
+            [[playPhotoCheckMarkBtn layer] setBorderWidth:2.0f]; 
+            [playPhotoCheckMarkBtn setBackgroundColor:[UIColor colorWithRed:31.0/255.0 green:199.0/255.0 blue:48.0/255.0 alpha:1.0]];
+            [playPhotoCheckMarkBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [playPhotoCheckMarkBtn setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
+            [playPhotoCheckMarkBtn.titleLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:12.0f]];
+            
+        }  
+
+        playPhotoCheckMarkBtn.frame = CGRectMake(59.0, 0.0, 17.0, 17.0);
+        [playPhotoCheckMarkBtn setHidden:NO];
+        [sender addSubview:playPhotoCheckMarkBtn];
+        [seedPhoto setHidden:YES];
     }
     else {
         curSelectedPlayPhoto = nil;
         [previewPhoto setImage:nil];
         [previewPhoto setHidden:YES];
         [navBarItem setRightBarButtonItem:nil animated:NO];
+        [playPhotoCheckMarkBtn setHidden:YES];
+        [seedPhoto setHidden:NO];
     }
     
     
@@ -296,8 +314,9 @@
         ALAssetRepresentation *rep = [myasset defaultRepresentation];
         CGImageRef iref = [rep fullResolutionImage];
         if (iref) {
-            UIImage *img = [UIImage imageWithCGImage:iref];
-            img = [theParent scaleImage:img toSize:CGSizeMake(160.0f,160.0f)];            
+            UIImage *img = [UIImage imageWithCGImage:iref];            
+            CGSize newSize = [theParent getImageDimsProportional:img max:IMAGE_PREVIEW_SIZE];
+            img = [theParent scaleImage:img toSize:newSize];
             UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
             btn.frame = CGRectMake(((75.0+2.0) * playPhotoCounter), 0.0, 75.0, 75.0);  
             [btn setImage:img forState:UIControlStateNormal];
@@ -404,17 +423,45 @@
 }
 
 - (void)sendDataToPeer:(NSString*)peerID type:(PacketType)type data:(NSData*)data {
-    NSLog(@"data length: %d", [data length]);
-    
+
     NSArray *toPeers;
-    if (peerID) {
+    if (peerID) { //single peer
         toPeers = [NSArray arrayWithObject:peerID];
     }
     else {//broadcast to all
         toPeers = [sessionManager.mySession peersWithConnectionState:GKPeerStateConnected];
     }
     if ([toPeers count] > 0) {
-        [sessionManager sendData:data ofType:type to:toPeers];    
+        //send in chunks for images
+        if (type == PacketTypeDataSeedPhoto || type == PacketTypeDataPlayPhoto) {
+            NSUInteger chunkCount = (data.length / 51200) + ((data.length % 51200) == 0 ? 0 : 1);
+            NSLog(@"data length: %d => %d chunks", [data length], chunkCount);
+            
+            //send chunk count
+            NSString *chunkCountStr = [NSString stringWithFormat:@"%d",chunkCount];
+            NSData *chunkCountData = [chunkCountStr dataUsingEncoding: NSASCIIStringEncoding];
+            [sessionManager sendData:chunkCountData ofType:PacketTypeDataChunkCount to:toPeers];
+            
+            //split data into chunks and send each individually
+            NSData *chunkData;
+            NSRange range = {0, 0};
+            NSUInteger j = 0;
+            for(NSUInteger i=0; i<data.length; i+=51200){
+                if (i + 51200 < data.length) {
+                    j = 51200;
+                }
+                else {
+                    j = data.length - i;
+                }
+                NSLog(@"range: %d - %d", i, i+j-1);
+                range = NSMakeRange(i, j);
+                chunkData = [data subdataWithRange:range];
+                [sessionManager sendData:chunkData ofType:type to:toPeers];
+            }
+        }
+        else {
+            [sessionManager sendData:data ofType:type to:toPeers];    
+        }
     }
 }
 
@@ -517,6 +564,8 @@
         unveiledPhotoCounter = 0;
         [scrollViewLabel setHidden:YES];
         [navBarItem setRightBarButtonItem:nil animated:NO];
+        [startGameBtn setHidden:NO];
+        [imageContainer setHidden:YES];
         
         NSArray *connPeers = [sessionManager.mySession peersWithConnectionState:GKPeerStateConnected];
         int numPlayers = [connPeers count] + 1;      
@@ -531,13 +580,16 @@
         }
     }
     else if (gameStep == 1) {//got seed photo - select a match
+        [startGameBtn setHidden:YES];
         [gamePlayLabel setHidden:YES];
         [navBar setHidden:NO];
         [navBarItem setTitle:@"Match This Image"];
         [self setupPlayPhotosView];            
         [peerLabel setHidden:YES];
+        [imageContainer setHidden:NO];
     }
     else if (gameStep == 2) {//clicked "Play Photo"
+        [startGameBtn setHidden:YES];
         [gamePlayLabel setHidden:YES];
         [navBarItem setTitle:@"Waiting For Peeps"];
         [navBarItem setRightBarButtonItem:nil animated:NO];

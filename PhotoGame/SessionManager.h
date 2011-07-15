@@ -19,15 +19,23 @@ typedef enum {
     PacketTypeNotifyIAmTheSeeder = 16,
     PacketTypeDataIVoteForPeerID = 17,
     PacketTypeNotifyDoneUnveilingPhoto = 18,
-    PacketTypeDataPlayPhotoCaption = 19
+    PacketTypeDataPlayPhotoCaption = 19,
+    PacketTypeDataChunkCount  = 20
 } PacketType;
 
 @interface SessionManager : NSObject <GKSessionDelegate> {
 	GKSession *mySession;
     NSMutableArray *playerList;
     id delegate;
+    
+    NSMutableDictionary *chunkCountExpected;
+    NSMutableDictionary *chunkCountCurrent;
+    NSMutableDictionary *chunkData;
 }
 
+@property (nonatomic, retain) NSMutableDictionary *chunkCountExpected;
+@property (nonatomic, retain) NSMutableDictionary *chunkCountCurrent;
+@property (nonatomic, retain) NSMutableDictionary *chunkData;
 @property (nonatomic, retain) GKSession *mySession;
 @property (nonatomic, retain) NSMutableArray *playerList;
 @property (nonatomic, assign) id delegate;

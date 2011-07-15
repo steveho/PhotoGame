@@ -35,6 +35,7 @@
 -(NSURL*)getDeviceRandomPhoto;
 -(UIImage*)scaleImage:(UIImage*)image toSize:(CGSize)size;
 -(void)getRandomPlayPhotos;
+-(CGSize)getImageDimsProportional:(UIImage*)img max:(CGSize)maxSize;
 
 @property (nonatomic, retain) NSMutableDictionary *views;
 @property (nonatomic, retain) NSMutableArray *allImages;

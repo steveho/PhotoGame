@@ -17,6 +17,7 @@
 #define PLAY_PIC @"Play Pic"
 #define GO_VOTE @"Go Vote"
 #define WAITINGX @"Waiting"
+#define IMAGE_PREVIEW_SIZE CGSizeMake(320.0f,310.0f)
 
 @interface PlayViewController : UIViewController <GamePlayDelegate, UIAlertViewDelegate> {
     PhotoGameViewController *theParent;
@@ -34,8 +35,10 @@
     IBOutlet UILabel *gamePlayLabel;
     IBOutlet UIButton *startGameBtn;
     IBOutlet UINavigationBar *navBar;
+    IBOutlet UIView *imageContainer;
     UINavigationItem *navBarItem;
     UIBarButtonItem *navBarBtnItem;
+    UIButton *playPhotoCheckMarkBtn;
     
     //step 1: get seed photo
     //step 2: select a matching photo and submit
@@ -71,6 +74,8 @@
 @property int gameStep;
 @property int gameRound;
 
+@property (nonatomic, retain) IBOutlet UIView *imageContainer;
+@property (nonatomic, retain) UIButton *playPhotoCheckMarkBtn;
 @property (nonatomic, retain) UIButton *customeBtn1;
 @property (nonatomic, retain) UIBarButtonItem *navBarBtnItem;
 @property (nonatomic, retain) UINavigationItem *navBarItem;

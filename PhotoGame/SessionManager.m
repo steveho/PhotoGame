@@ -11,7 +11,7 @@
 @implementation SessionManager
 
 @synthesize mySession, delegate, playerList;
-
+@synthesize chunkData, chunkCountCurrent, chunkCountExpected;
 
 - (id)init {
 	if ((self = [super init])) {
@@ -25,7 +25,10 @@
                                                  selector:@selector(willTerminate:)
                                                      name:UIApplicationWillResignActiveNotification
                                                    object:nil];
-        
+            
+        chunkData = [[NSMutableDictionary alloc] init];
+        chunkCountCurrent = [[NSMutableDictionary alloc] init];
+        chunkCountExpected = [[NSMutableDictionary alloc] init];
 	}
 	return self;  
 }
@@ -43,6 +46,10 @@
     mySession = nil;
     [playerList release];
     playerList = nil;
+    
+    [chunkCountCurrent release];
+    [chunkCountExpected release];
+    [chunkData release];
 }
 
 #pragma mark - Session & data
@@ -120,15 +127,82 @@
         header = (PacketType)CFSwapInt32BigToHost(swappedHeader);
         NSRange payloadRange = {sizeof(uint32_t), [data length]-sizeof(uint32_t)};
         NSData* payload = [data subdataWithRange:payloadRange];
-        
-        if (header == PacketTypeDataSeedPhoto) {//seed photo
-            UIImage *img = [UIImage imageWithData:payload];
-            [delegate setCurrentSeeder:peer];
-            [delegate setLocalSeedPhoto:img seeder:peer];            
+
+        if (header == PacketTypeDataChunkCount) {//chunk count (for image data only)
+            NSString *chunkCountStr = [[NSString alloc] initWithData:payload encoding:[NSString defaultCStringEncoding]];        
+            [chunkCountExpected setObject:chunkCountStr forKey:peer];            
+        }        
+        else if (header == PacketTypeDataSeedPhoto) {//seed photo
+            if ([chunkCountExpected valueForKey:peer] != nil) {
+                NSString *curChunkCnt = ([chunkCountCurrent objectForKey:peer] != nil) ? [chunkCountCurrent objectForKey:peer] : @"0";
+                NSString *expectedChunkCnt = [chunkCountExpected objectForKey:peer]; 
+                
+                if ([curChunkCnt integerValue] < [expectedChunkCnt integerValue]) {
+                    
+                    NSString *chunkCntNew = [NSString stringWithFormat:@"%d",curChunkCnt.integerValue+1];
+                    [chunkCountCurrent setObject:chunkCntNew forKey:peer];
+                    
+                    NSMutableData *curChunkData = [chunkData objectForKey:peer];
+                    if (curChunkData == nil) {
+                        curChunkData = [NSMutableData dataWithData:payload];
+                    }
+                    else {
+                        [curChunkData appendData:payload];
+                    }
+                    [chunkData setObject:curChunkData forKey:peer];
+                }
+                
+                curChunkCnt = [chunkCountCurrent objectForKey:peer];
+                expectedChunkCnt = [chunkCountExpected objectForKey:peer];
+                
+                if ([curChunkCnt intValue] == [expectedChunkCnt intValue]) {                    
+                    NSData *finalChunkData = [chunkData objectForKey:peer];
+                    UIImage *img = [UIImage imageWithData:finalChunkData];
+                    [delegate setCurrentSeeder:peer];
+                    [delegate setLocalSeedPhoto:img seeder:peer];            
+                    
+                    [chunkCountCurrent removeObjectForKey:peer];
+                    [chunkCountExpected removeObjectForKey:peer];
+                    [chunkData removeObjectForKey:peer];
+                }                                
+            }            
         } 
         else if (header == PacketTypeDataPlayPhoto) {//play photo (player submits his photo)
-            UIImage *img = [UIImage imageWithData:payload];
-            [delegate updatePlayerInfoPlayPhoto:peer value:img];
+                        
+            if ([chunkCountExpected valueForKey:peer] != nil) {
+                NSString *curChunkCnt = ([chunkCountCurrent objectForKey:peer] != nil) ? [chunkCountCurrent objectForKey:peer] : @"0";
+                NSString *expectedChunkCnt = [chunkCountExpected objectForKey:peer]; 
+                
+                if ([curChunkCnt integerValue] < [expectedChunkCnt integerValue]) {
+                    
+                    NSString *chunkCntNew = [NSString stringWithFormat:@"%d",curChunkCnt.integerValue+1];
+                    [chunkCountCurrent setObject:chunkCntNew forKey:peer];
+                    
+                    NSMutableData *curChunkData = [chunkData objectForKey:peer];
+                    if (curChunkData == nil) {
+                        curChunkData = [NSMutableData dataWithData:payload];
+                    }
+                    else {
+                        [curChunkData appendData:payload];
+                    }
+                    [chunkData setObject:curChunkData forKey:peer];
+                }
+                
+                curChunkCnt = [chunkCountCurrent objectForKey:peer];
+                expectedChunkCnt = [chunkCountExpected objectForKey:peer];
+                
+                if ([curChunkCnt intValue] == [expectedChunkCnt intValue]) {                    
+                    NSData *finalChunkData = [chunkData objectForKey:peer];
+                    UIImage *img = [UIImage imageWithData:finalChunkData];
+                    [delegate updatePlayerInfoPlayPhoto:peer value:img];                    
+                    
+                    [chunkCountCurrent removeObjectForKey:peer];
+                    [chunkCountExpected removeObjectForKey:peer];
+                    [chunkData removeObjectForKey:peer];
+                }                                
+            }            
+            
+            
         }
         else if (header == PacketTypeDataPlayPhotoCaption) {//play photo caption
             NSMutableString *caption = [[NSMutableString alloc] initWithData:payload encoding:[NSString defaultCStringEncoding]];            
